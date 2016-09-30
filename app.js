@@ -7,7 +7,7 @@ let express = require('express'),
     bodyParser = require('body-parser');
 // Mongo-express
 let mongoExpress = require('mongo-express/lib/middleware'),
-    mongoExpressConfig = require('./mongo-config');
+    mongoExpressConfig = require('./mongo_express_config');
 
 // Load routes
 let routes = require('./routes/index'),
@@ -15,6 +15,9 @@ let routes = require('./routes/index'),
     about = require('./routes/about'),
     test = require('./routes/test');
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://10.0.16.101/newDB');
+var User = require('./models/users');
 // Set process name
 process.title = 'node-easyrtc';
 
