@@ -12,8 +12,8 @@ process.title = "node-easyrtc";
 
 // Set options server
 var options = {
-    key: fs.readFileSync('/var/nodes/easyrtc/server_example/server.key'),
-    cert: fs.readFileSync('/var/nodes/easyrtc/server_example/server.crt'),
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.crt'),
     requestCert: false,
     rejectUnauthrized: false
 };
@@ -21,6 +21,10 @@ var options = {
 // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
 var app = express();
 app.use(serveStatic('static', {'index': ['index.html']}));
+var mongo_express = require('mongo-express/lib/middleware');
+var mongo_express_config = require('./mongo_express_config');
+
+app.use('/mongo_express', mongo_express(mongo_express_config));
 
 // Start Express http server on port 8080
 var webServer = https.createServer(options, app).listen(8080,function() {
