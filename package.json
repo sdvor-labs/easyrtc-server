@@ -1,21 +1,29 @@
 {
-  "name": "easyrtc_server_example",
-  "version": "0.1.6",
-  "author": "Priologic Software Inc. <info@priologic.com> (http://priologic.com/)",
-  "description": "Simple EasyRTC server example which includes EasyRTC, Express, and Socket.io",
+
+  "name": "easyrtc-server",
+  "version": "0.0.1",
   "private": true,
+  "author": "Dmitry 'NeuromanticJS' Shevelev",
+  "description": "Server for corporate video and audio calls",
+  "license": "GPL-3.0",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodejs ./bin/www"
   },
   "dependencies": {
+    "body-parser": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "debug": "~0.7.4",
     "easyrtc": "^1.0.15",
-    "express": "^4.10.7",
+    "express": "~4.0.0",
+    "fs": "0.0.1-security",
     "mongo-express": "^0.31.3",
+    "mongodb": "^2.2.10",
+    "mongoose": "^4.6.1",
+    "morgan": "~1.0.0",
+    "pug": "^2.0.0-beta6",
+    "require": "^2.4.20",
     "serve-static": "^1.8.0",
-    "socket.io": "^1.3.7"
-  },
-  "license": "BSD2",
-  "engines": {
-    "node": ">=0.8"
+    "socket.io": "^1.3.7",
+    "static-favicon": "~1.0.0"
   }
 }

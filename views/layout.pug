@@ -1,0 +1,67 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/bulma.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
+  body
+    section(class='hero is-light is-medium')
+        // Hero navigation
+        div(class='hero-head')
+            header(class='nav')
+                div(class='container')
+                    div(class='nav-left')
+                        div(class='nav-item')
+                            img(src='images/logo.png' alt='Строительный двор')
+                    div(class='nav-toggle')
+                        span
+                        span
+                        span
+                    div(class='nav-right nav-menu')
+                        a(class='nav-item is-active' href='/') Главная
+                        a(class='nav-item', href='http://sdvor.com') Наш сайт
+                        a(class='nav-item', href='/about') О сервисе
+                        span(class='nav-item')
+                            a(class='button is-dark is-inverted', href='https://github.com/neuromantic-js/easyrtc-server')
+                                span(class='icon')
+                                    i(class='fa fa-github')
+                                span GitHub
+        //Hero content: will be in the middle
+        div(class='hero-body' id='image-block')
+            div(class='container has-text-centered')
+                h1(class='title') Видеочат
+                h2(class='subtitle') удобный способ поговорить с нашими специалистами
+
+        // Hero footer: will stick at the bottom
+        div(class='hero-foot')
+            nav(class='tabs')
+                div(class='container')
+                    ul
+                        li(class='is-active')
+                            a Клиентский отдел
+                        li
+                            a Розничные продажи
+                        li
+                            a Оптовые продажи
+                        li
+                            a Финансовая служба
+                        li
+                            a Общие вопросы
+                        li
+                            a Техподдержка
+                        li
+                            a(href='/test') Тестовый чат
+    // Content block
+    block content
+    // Footer
+    footer(class='footer')
+        div(class='container')
+            div(class='content has-text-centered')
+                p
+                    strong "Строительный двор"
+                    span , все права защищены
+                p
+                    a(class='icon', href='http://sdvor.com')
+                        i(class='fa fa-github')
+    

@@ -1,7 +1,7 @@
 #!/usr/bin/nodejs
 //var debug = require('debug')('my-application');
 // Main server application variables
-let app = require('./app'),
+let app = require('../app'),
     fs = require('fs'),
     http = require('http'),
     https = require('https'),
@@ -11,43 +11,38 @@ let app = require('./app'),
         key: privateKey,
         cert: certificate
     },
-    socketIo = require('socket.io'),
-    easyrtc = require('../');
+    socketIo = require('socket.io');
+var easyrtc = require('../');
     
 // Create http & https servers
-let httpServer = http.createServer(app).listen(3000),
-    httpsServer = https.createServer(credentials, app).listen(8080);
+let httpServer = http.createServer(app),
+    httpsServer = https.createServer(credentials, app);
 
 // Start socket.io so it attaches itself to Express server
 let socketServer = socketIo.listen(httpsServer, {'log level': 1});
 
-easyrtc.setOption("logLevel", "debug");
-
-// Overriding the default easyrtcAuth listener, only so we can directly access its callback
-easyrtc.events.on("easyrtcAuth", function(socket, easyrtcid, msg, socketCallback, callback) {
-    easyrtc.events.defaultListeners.easyrtcAuth(socket, easyrtcid, msg, socketCallback, function(err, connectionObj){
-        if (err || !msg.msgData || !msg.msgData.credential || !connectionObj) {
-            callback(err, connectionObj);
-            return;
-        }
-
-        connectionObj.setField("credential", msg.msgData.credential, {"isShared":false});
-
-        console.log("["+easyrtcid+"] Credential saved!", connectionObj.getFieldValueSync("credential"));
-
-        callback(err, connectionObj);
+// Overriding the defaukt easyAuth listener, only so we can directly access its callback
+easyrtc.events.on('easyrtcAuth', function(socket, easyrtcid, msg, socketCallback, callback) {
+        easyrtc.events.defaultListeners.easyrtcAuth(socket, easyrtcid, msg, socketCallback, function(err, connectionObj) {
+                if(err || !msg.Data || !msgData.credential || !connectionObj) {
+                    callback(err, connectionObj);
+                    return;
+                }
+                
+                connectionObj.setField('credential', msg.msgData.credential, {'isShared': false});
+                
+                console.log('['+easyrtcid+'] Credential saved!', connectionObj.getFieldValueSync('credential'));
+                
+                callback(err, connectionObj);
+            });
     });
-});
-
 // To test, lets print the credential to the console for every room join!
 easyrtc.events.on("roomJoin", function(connectionObj, roomName, roomParameter, callback) {
     console.log("["+connectionObj.getEasyrtcid()+"] Credential retrieved!", connectionObj.getFieldValueSync("credential"));
     easyrtc.events.defaultListeners.roomJoin(connectionObj, roomName, roomParameter, callback);
 });
-
-
 // Start EasyRTC server
-var rtc = easyrtc.listen(app, socketServer, null, function(err, rtcRef) {
+let rtc = easyrtc.listen(app, socketServer, null, function(err, rtcRef) {
     console.log("Initiated");
 
     rtcRef.events.on("roomCreate", function(appObj, creatorConnectionObj, roomName, roomOptions, callback) {
@@ -56,8 +51,6 @@ var rtc = easyrtc.listen(app, socketServer, null, function(err, rtcRef) {
         appObj.events.defaultListeners.roomCreate(appObj, creatorConnectionObj, roomName, roomOptions, callback);
     });
 });
-
-
 // Listen http & https servers on different ports
 httpServer.listen(3000, '10.0.46.83', function() {
         console.log('listening on http://10.0.46.83:3000');
