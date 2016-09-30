@@ -15,10 +15,13 @@ let routes = require('./routes/index'),
     about = require('./routes/about'),
     test = require('./routes/test');
 // Load Mongoose ODM
-var mongoose = require('mongoose'),
-    mongoose.connect('mongodb://10.0.16.101/newDB');
-
-var User = require('./models/users'),
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://10.0.16.101/newDB');
+// Load models
+var User = require('./models/user'),
+    Company = require('./models/company'),
+    UserStatus = require('./models/user_status'),
+    UserType = require('./models/user_type'),
     Room = require('./models/room');
 // Set process name
 process.title = 'node-easyrtc';
