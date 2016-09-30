@@ -70,6 +70,29 @@ Company.find({}, function(err, lst) {
             throw err;
         }
 });
+///// Find all rooms
+Room.find({}, function(err, lst) {
+        // if find without errors
+        if(lst.length === 0) {
+            // find default company
+            Company.find({name: 'Строительный двор'}, function(err, company) {
+                    if(!err) {
+                            let defaultRoom = Room({
+                                    name: 'Тестовая комната',
+                                    visiability: 'private',
+                                    company: company
+                                });
+                            defaultRoom.save(function() {
+                                    if(err) throw err;
+                                    console.log('Default room created!');
+                                });
+                        } else {
+                        throw err;
+                    }
+                    
+                });
+        }
+    });
 /// Catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
