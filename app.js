@@ -14,10 +14,12 @@ let routes = require('./routes/index'),
     users = require('./routes/users'),
     about = require('./routes/about'),
     test = require('./routes/test');
+// Load Mongoose ODM
+var mongoose = require('mongoose'),
+    mongoose.connect('mongodb://10.0.16.101/newDB');
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://10.0.16.101/newDB');
-var User = require('./models/users');
+var User = require('./models/users'),
+    Room = require('./models/room');
 // Set process name
 process.title = 'node-easyrtc';
 
@@ -44,6 +46,8 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/about', about);
 app.use('/test', test);
+
+// Create default room, if this don't created
 
 /// Catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
