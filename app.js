@@ -8,7 +8,6 @@ let express = require('express'),
 // Mongo-express
 let mongoExpress = require('mongo-express/lib/middleware'),
     mongoExpressConfig = require('./mongo_express_config');
-
 // Load routes
 let routes = require('./routes/index'),
     users = require('./routes/users'),
@@ -25,15 +24,11 @@ var User = require('./models/user'),
     Room = require('./models/room');
 // Set process name
 process.title = 'node-easyrtc';
-
-
 // Create express application
 let app = express();
-
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
 // Application settings
 app.use(favicon());
 app.use(logger('dev'));
@@ -49,18 +44,39 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/about', about);
 app.use('/test', test);
-
-// Create default room, if this don't created
-
+// Create default room, user_status, user_type if it
+// don't created
+/// For Company
+//// Find all companies
+Company.find({}, function(err, lst) {
+        // is find without errors
+        if(!err){
+            // if finding companies equal zero
+            if(lst.length === 0 ) {
+                // create object defaul company
+                let defaultCompany = Company({
+                    name: 'Строительный двор',
+                    address: 'г.Тюмень, ул. Панфиловцев 86',
+                    site: 'sdvor.com',
+                    additionsl_information: 'Компания создана автоматически' 
+                });
+                // save defaule company
+                defaultCompany.save(function(err){
+                        if(err) throw err;
+                        console.log('Default company created!');
+                    });
+            }
+        } else {
+            throw err;
+        }
+});
 /// Catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
-
 /// error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -72,7 +88,6 @@ if (app.get('env') === 'development') {
         });
     });
 }
-
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
@@ -82,6 +97,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
-
+// Export module app to node,js
 module.exports = app;
