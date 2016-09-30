@@ -93,6 +93,88 @@ Room.find({}, function(err, lst) {
                 });
         }
     });
+///// Fins all status
+UserStatus.find({}, function(err, lst) {
+        if(!err) {
+            if(lst.length === 0) {
+                ['Онлайн', 'Офлайн', 'Занят', 'Отошёл'].forEach((i) => {
+                        let tmp = UserStatus({
+                                name: i
+                            });
+                        tmp.save(function(err){
+                                if(err) throw err;
+                                console.log('Добавлен статус ', i);
+                            })
+                    });
+            }
+        } else {
+            throw err;
+        }
+    });
+///// Find all user types
+UserType.find({}, function(err, lst){
+        if(!err) {
+            if(lst.length === 0) {
+                ['клиент', 'сотрудник'].forEach((i) => {
+                        let tmp = UserType({
+                                name: i
+                            });
+                        tmp.save(function(err) {
+                                if(err) throw err;
+                                console.log('Добавлен тип пользователя ', i);
+                            });
+                    });
+            }
+        } else {
+            throw err;
+        }
+    });
+///// Find all users
+User.find({}, function(err, lst) {
+        if(!err) {
+            if(lst.length === 0 ) {
+                Company.find({name: 'Строительный двор'}, function(errc, company) {
+                        if(errc) {
+                            throw errc;
+                        } else {
+                            UserStatus.find({name: 'Офлайн'}, function(errs, status) {
+                                    if(errs) {
+                                        throw errs;
+                                    } else {
+                                        UserType.find({name: 'сотрудник'}, function(errt, userType) {
+                                                if(errt) {
+                                                    throw errt;
+                                                } else {
+                                                    let defauleUser = User({
+                                                        name: 'Иван',
+                                                        surname: 'Иванович',
+                                                        lastname: 'Иванов',
+                                                        username: 'testuser',
+                                                        password: 'testuser123',
+                                                        admin: false,
+                                                        location: 'Тестовое расположение',
+                                                        mobile: '89324700000',
+                                                        status: status,
+                                                        company: company,
+                                                        user_type: userType,
+                                                        created_at: Date.now(),
+                                                        last_online: null,
+                                                        updated_at: null,
+                                                        additional_info: 'Пользователь по умолчанию'
+                                                    });
+                                                    defauleUser.save()
+                                                }
+                                            });
+                                    }
+                                });
+                        }
+                    });
+
+            }
+        } else {
+            throw err;
+        }
+    });
 /// Catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
