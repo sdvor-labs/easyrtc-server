@@ -17,7 +17,10 @@ let routes = require('./routes/index'),
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://10.0.16.101/newDB');
-var User = require('./models/users');
+var User = require('./models/user');
+var Company = require('./models/company');
+var UserStatus = require('./models/user_status');
+var UserType = require('./models/user_type');
 // Set process name
 process.title = 'node-easyrtc';
 
