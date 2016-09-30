@@ -5,6 +5,9 @@ let express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser');
+// Mongo-express
+let mongoExpress = require('mongo-express/lib/middleware'),
+    mongoExpressConfig = require('./mongo-config');
 
 // Load routes
 let routes = require('./routes/index'),
@@ -30,6 +33,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// MongoConfig
+app.use('/mongoadmin', mongoExpress(mongoExpressConfig));
+//app.use('/mongo_express', mongoExpressConfig);
 // Import routes
 app.use('/', routes);
 app.use('/users', users);
