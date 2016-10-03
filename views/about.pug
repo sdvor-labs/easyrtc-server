@@ -1,6 +1,16 @@
 extends layout
 
 block content
+    // Hero footer: will stick at the bottom
+    div(class='hero-foot')
+        nav(class='tabs')
+            div(class='container')
+                ul#rooms
+                    each room in rooms
+                        li(class='room-' + room.id)
+                            a(href='/widget/' + room.id) #{room.label}
+                    li
+                        a(href='/login') Войти в систему
     section(class='section')
         div(class='container')
             div(class='heading')

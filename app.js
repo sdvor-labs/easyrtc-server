@@ -14,6 +14,7 @@ let mongoExpress = require('mongo-express/lib/middleware'),
 let routes = require('./routes/index'),
     users = require('./routes/users'),
     about = require('./routes/about'),
+    widget = require('./routes/widget'),
     test = require('./routes/test'),
     login = require('./routes/login');
 // Load Mongoose ODM
@@ -60,7 +61,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/about', about);
 app.use('/test', test);
-app.use('/login', login);
+app.use('/widget', widget);
 /* end of express app routes, modules etc. */
 // For first run
 let utils = require('./utils.js');

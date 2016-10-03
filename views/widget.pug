@@ -4,14 +4,15 @@ html
         meta(http-equiv="Content-Type", content="text/html", charset="utf-8")
         title EasyRTC Demo: Simple Video+Audio
         link(rel='stylesheet', href='/stylesheets/bulma.css')
-        link(rel="stylesheet", type="text/css", href="easyrtc/easyrtc.css")
+        link(rel="stylesheet", type="text/css", href="/easyrtc/easyrtc.css")
         // show
         // Assumes global locations for socket.io.js and easyrtc.js 
         script(src="/socket.io/socket.io.js")
-        script(type="text/javascript", src="easyrtc/easyrtc.js")
-        script(type="text/javascript", src="client/js/demo_audio_video_simple.js")
-    body(onload="connect();")
-        h1(class='title') Тестовый виджет
+        script(type="text/javascript", src="/easyrtc/easyrtc.js")
+        script(type='text/javascript', src='/client/js/videochat.js')
+        //script(type="text/javascript", src="/client/js/demo_audio_video_simple.js")
+    body(onload="my_init();")
+        h1(class='title' name=roomName id='roomname') #{roomLabel}
             div(class='columns' id="demoContainer")
                 div(class='column is-one-third')
                     div(class="notification is-primary" id="connectControls")
