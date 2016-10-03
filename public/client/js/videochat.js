@@ -42,9 +42,9 @@ function performCall(otherEasyrtcid) {
 }
 // Function exec after success get token EasyRTC
 function loginSuccess(easyrtcid) {
-    selfEasyrtcid = easyrtcid;
+    selfEasyrtcid = easyrtci;
     document.getElementById("iam").innerHTML = "Мой сеанс " + easyrtc.cleanId(easyrtcid);
-    easyrtc.setRoomOccupantListener(convertListToButtons(roomName));
+
     easyrtc.joinRoom(roomName, null, joinSuccess(roomName), loginFailure);
 }
 

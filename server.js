@@ -82,8 +82,8 @@ let myEasyrtcApp = function(err, appObj) {
 
 
 // Listen http & https servers on different ports
-httpServer.listen(3000, '10.0.46.83', function() {
-        console.log('listening on http://10.0.46.83:3000');
+httpServer.listen(8080, '10.0.46.83', function() {
+        console.log('listening on http://10.0.46.83:8081');
     });
 httpsServer.listen(8080, '10.0.46.83',function() {
         console.log('listeninf on https://10.0.46.83:8080')
