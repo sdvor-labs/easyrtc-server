@@ -1,9 +1,11 @@
+/* variables declaration block */
 // Load express modules
 let express = require('express'),
     path = require('path'),
     favicon = require('static-favicon'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
+    session = require('express-session'),
     bodyParser = require('body-parser');
 // Mongo-express
 let mongoExpress = require('mongo-express/lib/middleware'),
@@ -12,7 +14,8 @@ let mongoExpress = require('mongo-express/lib/middleware'),
 let routes = require('./routes/index'),
     users = require('./routes/users'),
     about = require('./routes/about'),
-    test = require('./routes/test');
+    test = require('./routes/test'),
+    login = require('./routes/login');
 // Load Mongoose ODM
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://10.0.16.101/newDB');
@@ -26,6 +29,19 @@ var User = require('./models/user'),
 process.title = 'node-easyrtc';
 // Create express application
 let app = express();
+/* end of variables declaration block */
+
+
+
+/* express app routes, modules etc. */
+// Sessions enable
+app.set('trust proxy', 1);
+app.use(session({
+    secret: 'very secret secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -44,6 +60,10 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/about', about);
 app.use('/test', test);
+app.use('/login', login);
+/* end of express app routes, modules etc. */
+
+
 
 // For first run
 let utils = require('./utils.js');
