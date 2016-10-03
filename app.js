@@ -44,11 +44,9 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/about', about);
 app.use('/test', test);
-
 // For first run
 let utils = require('./utils.js');
 console.log('Is first run', utils('firstRun'));
-
 /// Catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
