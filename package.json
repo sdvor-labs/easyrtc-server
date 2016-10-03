@@ -1,5 +1,4 @@
 {
-
   "name": "easyrtc-server",
   "version": "0.0.1",
   "private": true,
@@ -15,6 +14,7 @@
     "debug": "~0.7.4",
     "easyrtc": "^1.0.15",
     "express": "~4.0.0",
+    "express-session": "^1.14.1",
     "fs": "0.0.1-security",
     "mongo-express": "^0.31.3",
     "mongodb": "^2.2.10",
