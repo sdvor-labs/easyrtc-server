@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title= message
+    title= 'Комната не найдена'
     link(rel='stylesheet', href='/stylesheets/bulma.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
@@ -11,18 +11,18 @@ html
         div(class='card is-fullwidth is-margin-top-half')
           div(class='card-image')
             figure(class='image is-4by3')
-              img(src='images/error-image.png' alt=message)
+              img(src='/images/error-image.png' alt='#!')
           div(class='card-content')
             div(class='media')
               div(class='media-left')
                 figure(class='image is-32x32')
-                  img(src='images/error-icon.png' alt=message)
+                  img(src='/images/error-icon.png' alt='Error')
               div(class='media-content')
-                p(class='title is-5') Извините, но произошла ошибка: #{error.status}
-                p(class='subtitle is-6') Произошла непредвиденная ошибка
+                p(class='title is-5') Извините, но такой комнаты не существует!
+                p(class='subtitle is-6') Вы попытались зайти в несуществующую комнату!
             div(class='content')
               p
-                span Извините, но произошла непредвиденная ошибка #{error.status} (#{message}). Обратитесь в 
+                span Извините, но произошла ошибка. Вы попытались зайти в комнату, которой не существует. Обратитесь в 
                 a(href='#') техническую поддержку
                 span  ресурса или воспользуйтесь гиперссылками, расположенными ниже.
               div(class='columns')
