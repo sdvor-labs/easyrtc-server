@@ -2,31 +2,58 @@ doctype html
 html
     head
         meta(http-equiv="Content-Type", content="text/html", charset="utf-8")
-        title EasyRTC Demo: Simple Video+Audio
+        title= roomLabel
         link(rel='stylesheet', href='/stylesheets/bulma.css')
+        link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
+        link(rel='stylesheet', href='/client/css/widget.css')
         link(rel="stylesheet", type="text/css", href="/easyrtc/easyrtc.css")
-        // show
-        // Assumes global locations for socket.io.js and easyrtc.js 
+        // Load utils scripts
+        script(type='text/javascript' src='/client/js/utils.js')
         script(src="/socket.io/socket.io.js")
         script(type="text/javascript", src="/easyrtc/easyrtc.js")
         script(type='text/javascript', src='/client/js/videochat.js')
-        //script(type="text/javascript", src="/client/js/demo_audio_video_simple.js")
-    body(onload="my_init();")
-        h1(class='title' name=roomName id='roomname') #{roomLabel}
-            div(class='columns' id="demoContainer")
-                div(class='column is-one-third')
-                    div(class="notification is-primary" id="connectControls")
-                        div(id="iam") Not yet connected...
+    body(onload="clientInit();")
+        div#if-not-posible.is-hidden
+            div.card.is-fullwidth.is-fullheight
+                div.card-image
+                    figure.image.is-2by1
+                        img(src='/images/old-browser.png' alt='Uuups!')
+                div.card-content
+                    div.media
+                        div.media-left
+                            figure.image.is-32x32
+                                image(src='/images/error-icon.png', alt='Error')
+                        div.media-content
+                            p.title.is-5 Извините, ваш браузер не поддерживается!
+                            p.subtitle.is-6 Вы используете устаревшую версию браузера
+                    div.content
+                        span Для того, чтобы воспользоваться сервисом установите поддерживаемый браузер или закажите обратную связь
                         br
-                        strong Connected users:
-                        div(id="otherClients")
-                div(class='column', id='video')
-                    div(class='columns')
-                        div(class='column')
-                          video(autoplay="autoplay", class="easyrtcMirror", id="selfVideo", muted="muted", volume="0")
-                        div(class='column')
-                          video(autoplay="autoplay" id="callerVideo")
-                    // each caller video needs to be in it's own div so it's close button can be positioned correctly
-                    // hide
-                    br(style="clear:both;")
-                    hr
+                        div.columns.is-mobile
+                            div.column
+                                a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Скачать Google Chrome
+                            div.column
+                                a.button.is-fullwidth(href='#') Обратная связь
+        div#if-possible.is-hidden
+            nav.nav.is-darken
+                div.nav-left
+                    a.nav-item.is-brand(href='/')
+                        h3.title.is-3.is-yellow
+                            span.icon
+                                i.fa.fa-comments-o
+                            span#roomname(name=roomName) #{roomLabel}
+                div.nav-right.nav-menu
+                    a.nav-item.is-yellow(href='/')
+                        span.icon.is-yellow
+                            i.fa.fa-home
+                        span.is-yellow Главная
+            div.columns
+                div.column.sidebar
+                    video.easyrtcMirror.is-fullwidth#selfVideo(autoplay='autoplay', muted='muted', volume='0')
+                    div(class="notification is-primary" id="connectControls")
+                        div(id="iam")
+                            strong Идет соединение...
+                    div.box#otherClients
+                        h4.title.is-4 В комнате
+                div.column.main-screen
+                    video#callerVideo.is-fullwidth(autoplay="autoplay")

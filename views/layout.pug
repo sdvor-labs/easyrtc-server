@@ -4,45 +4,44 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/bulma.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-    //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
   body
-    section(class='hero is-light is-medium')
+    section.hero.is-light.is-medium
         // Hero navigation
-        div(class='hero-head')
-            header(class='nav')
-                div(class='container')
-                    div(class='nav-left')
-                        div(class='nav-item')
+        div.hero-head
+            header.nav
+                div.container
+                    div.nav-left
+                        div.nav-item
                             img(src='images/logo.png' alt='Строительный двор')
-                    div(class='nav-toggle')
+                    div.nav-toggle
                         span
                         span
                         span
-                    div(class='nav-right nav-menu')
-                        a(class='nav-item is-active' href='/') Главная
-                        a(class='nav-item', href='http://sdvor.com') Наш сайт
-                        a(class='nav-item', href='/about') О сервисе
-                        span(class='nav-item')
-                            a(class='button is-dark is-inverted', href='https://github.com/neuromantic-js/easyrtc-server')
-                                span(class='icon')
-                                    i(class='fa fa-github')
+                    div.nav-right.nav-menu
+                        a.nav-item(href='/') Главная
+                        a.nav-item(href='http://sdvor.com') Наш сайт
+                        a.nav-item(href='/about') О сервисе
+                        span.nav-item
+                            a.button.is-dark.is-inverted(href='https://github.com/neuromantic-js/easyrtc-server')
+                                span.icon
+                                    i.fa.fa-github
                                 span GitHub
         //Hero content: will be in the middle
-        div(class='hero-body' id='image-block')
-            div(class='container has-text-centered')
-                h1(class='title') Видеочат
-                h2(class='subtitle') удобный способ поговорить с нашими специалистами
-
+        div.hero-body#image-block
+            div.container.has-text-centered
+                h1.title Видеочат
+                h2.subtitle удобный способ поговорить с нашими специалистами
     // Content block
     block content
     // Footer
-    footer(class='footer')
-        div(class='container')
-            div(class='content has-text-centered')
+    footer.footer
+        div.container
+            div.content.has-text-centered
                 p
                     strong "Строительный двор"
                     span , все права защищены
                 p
-                    a(class='icon', href='http://sdvor.com')
-                        i(class='fa fa-github')
+                    a.icon(href='http://sdvor.com')
+                        i.fa.fa-github
     

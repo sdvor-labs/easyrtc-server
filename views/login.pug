@@ -1,19 +1,19 @@
 extends layout
 
 block content
-	section(class='section')
-		div(class='container')
-		div(class='columns is-mobile')
-			div(class='column is-4 is-offset-4  box')
+	section.section
+		div.container
+		div.columns.is-mobile
+			div.column.is-4.is-offset-4.box
 				form(method='post')
-					p(class='control')
-						input(type='email' class='input' placeholder='Email' name='login')
-					p(class='control')
-						input(type='password' class='input' placeholder='Password' name='password')
-					div(class='columns')
-						div(class='column')
-							p(class='control')
-								button(class='button is-success') Войти
-						div(class='column')
-							p(class='control is-pulled-right')
-								a(class='button is-warning' href='/register') Зарегистироваться
+					p.control
+						input.input(type='email', placeholder='Email', name='login')
+					p.control
+						input.input(type='password', placeholder='Password', name='password')
+					div.columns
+						div.column
+							p.control
+								button.button.is-success Войти
+						div.column
+							p.control.is-pulled-right
+								a.button.is-warning(href='/register') Зарегистироваться

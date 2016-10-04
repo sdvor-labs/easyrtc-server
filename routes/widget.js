@@ -12,7 +12,7 @@ router.get('/:room_name', function(req, res) {
                     res.render('widget', { roomLabel: findedRoom.label,
                                          roomName: req.params.room_name});
                 } else {
-                    res.send('This room not crated');
+                    res.render('error-room');
                 }        
             }
         });
