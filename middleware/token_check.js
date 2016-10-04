@@ -5,7 +5,7 @@ let User = require('../models/user'),
 let token_check = function (req, res, next) {
 
 
-    let token = req.body.token || req.query.token || req.headers['x-access-token'];
+    let token = req.body.token || req.query.token || req.cookies.get('token') || req.headers['x-access-token'];
 
 // decode token
     if (token) {
