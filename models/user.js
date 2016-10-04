@@ -19,7 +19,8 @@ let userSchema = new Schema({
   created_at: Date,
   last_online: Date,
   updated_at: Date,
-  additional_info: String
+  additional_info: String,
+    token: String,
 });
 
 userSchema.methods.encryptPassword = function (password) {

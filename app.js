@@ -6,6 +6,8 @@ let express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
+    morgan = require('morgan'),
+    jwt = require('jsonwebtoken'),
     bodyParser = require('body-parser');
 // Mongo-express
 let mongoExpress = require('mongo-express/lib/middleware'),
@@ -15,6 +17,7 @@ let routes = require('./routes/index'),
     users = require('./routes/users'),
     about = require('./routes/about'),
     test = require('./routes/test'),
+    api = require('./routes/api'),
     login = require('./routes/login');
 // Load Mongoose ODM
 var mongoose = require('mongoose');
@@ -29,28 +32,24 @@ var User = require('./models/user'),
 process.title = 'node-easyrtc';
 // Create express application
 let app = express();
+// TODO: move to config
+app.set('secret', 'very_secret_secret');
 /* end of variables declaration block */
 
 
 
 /* express app routes, modules etc. */
 // Sessions enable
-app.set('trust proxy', 1);
-app.use(session({
-    secret: 'very secret secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
-}));
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.json());
+app.use(cookieParser());
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 // Application settings
 app.use(favicon());
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-app.use(cookieParser());
+app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 // MongoConfig
 app.use('/mongoadmin', mongoExpress(mongoExpressConfig));
@@ -61,13 +60,14 @@ app.use('/users', users);
 app.use('/about', about);
 app.use('/test', test);
 app.use('/login', login);
+app.use('/api', api);
 /* end of express app routes, modules etc. */
 
 
 
 // For first run
 let utils = require('./utils.js');
-console.log('Is first run', utils('firstRun'));
+console.log('Is first run', utils.utils('firstRun'));
 
 /// Catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

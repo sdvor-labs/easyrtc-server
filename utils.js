@@ -133,6 +133,7 @@ function findUsers() {
                                                             created_at: Date.now(),
                                                             last_online: null,
                                                             updated_at: null,
+                                                            token: null,
                                                             additional_info: 'Пользователь по умолчанию'
                                                         });
                                                         defauleUser.save()
@@ -159,7 +160,17 @@ let utils = function(command) {
         findUsers();
     }
     return true;
-}
+};
+
+let unless_route = function(path, middleware) {
+    return function(req, res, next) {
+        if (path === req.path) {
+            return next();
+        } else {
+            return middleware(req, res, next);
+        }
+    };
+};
 
 
-module.exports = utils;
+module.exports = {utils, unless_route};
