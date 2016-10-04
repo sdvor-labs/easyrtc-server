@@ -59,7 +59,6 @@ app.use('/mongoadmin', mongoExpress(mongoExpressConfig));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/about', about);
-app.use('/test', test);
 app.use('/login', login);
 app.use('/api', api);
 app.use('/widget', widget);

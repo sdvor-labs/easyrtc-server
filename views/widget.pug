@@ -5,18 +5,15 @@ html
         title EasyRTC Demo: Simple Video+Audio
         link(rel='stylesheet', href='/stylesheets/bulma.css')
         link(rel="stylesheet", type="text/css", href="/easyrtc/easyrtc.css")
-        // show
-        // Assumes global locations for socket.io.js and easyrtc.js 
         script(src="/socket.io/socket.io.js")
         script(type="text/javascript", src="/easyrtc/easyrtc.js")
         script(type='text/javascript', src='/client/js/videochat.js')
-        //script(type="text/javascript", src="/client/js/demo_audio_video_simple.js")
     body(onload="my_init();")
         h1(class='title' name=roomName id='roomname') #{roomLabel}
             div(class='columns' id="demoContainer")
                 div(class='column is-one-third')
                     div(class="notification is-primary" id="connectControls")
-                        div(id="iam") Not yet connected...
+                        div(id="iam") Идет соединение...
                         br
                         strong Connected users:
                         div(id="otherClients")
@@ -26,7 +23,5 @@ html
                           video(autoplay="autoplay", class="easyrtcMirror", id="selfVideo", muted="muted", volume="0")
                         div(class='column')
                           video(autoplay="autoplay" id="callerVideo")
-                    // each caller video needs to be in it's own div so it's close button can be positioned correctly
-                    // hide
                     br(style="clear:both;")
                     hr
