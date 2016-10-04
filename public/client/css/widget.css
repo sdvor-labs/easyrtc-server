@@ -1,6 +1,3 @@
-html {
-    background-color: #212121 !important;
-}
 .is-hidden {
     display: none;   
 }
@@ -8,10 +5,10 @@ html {
     width: 100%;
 }
 .is-darken {
-    background-color: #212121;
+    background-color: #00897B;
 }
 .is-yellow {
-    color: #fbcb01;
+    color: #ffffff;
 }
 .is-fullheight {
     position: absolute;
@@ -26,14 +23,14 @@ html {
     width: 20%;
     height: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
-    background-color: #e0e0e0;
+    overflow-y: hiden;
+    background-color: whitesmoke;
 }
 .is-margin-top {
     margin-top: 5px;
 }
 .main-screen {
-    background-color: #212121;
+    background-color: whitesmoke;
     width: 80%;
     height: 100%;
     position: absolute;
@@ -46,7 +43,7 @@ html {
     height: 100%;
 }
 #if-possible {
-    background: ##212121;
+    background: whitesmoke;
     position: absolute;
     width: 100%;
     height: 94%;
