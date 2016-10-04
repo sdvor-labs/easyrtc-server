@@ -24,13 +24,13 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: hiden;
-    background-color: whitesmoke;
+    background-color: #E0F2F1;
 }
 .is-margin-top {
     margin-top: 5px;
 }
 .main-screen {
-    background-color: whitesmoke;
+    background-color: #E0F2F1;
     width: 80%;
     height: 100%;
     position: absolute;
@@ -43,7 +43,7 @@
     height: 100%;
 }
 #if-possible {
-    background: whitesmoke;
+    background-color: #E0F2F1;
     position: absolute;
     width: 100%;
     height: 94%;
