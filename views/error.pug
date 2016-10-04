@@ -4,31 +4,30 @@ html
     title= message
     link(rel='stylesheet', href='/stylesheets/bulma.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-    //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
   body
-    div(class='columns')
-      div(class='column is-6 is-offset-3 is-info')
-        div(class='card is-fullwidth is-margin-top-half')
-          div(class='card-image')
-            figure(class='image is-4by3')
+    div.columns
+      div.column.is-6.is-offset-3.is-info
+        div.card.is-fullwidth.is-margin-top-half
+          div.card-image
+            figure.image.is-4by3
               img(src='images/error-image.png' alt=message)
-          div(class='card-content')
-            div(class='media')
-              div(class='media-left')
-                figure(class='image is-32x32')
+          div.card-content
+            div.media
+              div.media-left
+                figure.image.is-32x32
                   img(src='images/error-icon.png' alt=message)
-              div(class='media-content')
-                p(class='title is-5') Извините, но произошла ошибка: #{error.status}
-                p(class='subtitle is-6') Произошла непредвиденная ошибка
-            div(class='content')
+              div.media-content
+                p.title.is-5 Извините, но произошла ошибка: #{error.status}
+                p.subtitle.is-6 Произошла непредвиденная ошибка
+            div.content
               p
                 span Извините, но произошла непредвиденная ошибка #{error.status} (#{message}). Обратитесь в 
                 a(href='#') техническую поддержку
                 span  ресурса или воспользуйтесь гиперссылками, расположенными ниже.
-              div(class='columns')
-                div(class='column has-text-centered')
+              div.columns
+                div.column.has-text-centered
                   a(href='/') #Главная
-                div(class='column has-text-centered')
+                div.column.has-text-centered
                   a(href='http://sdvor.com') #Интернет-магазин
-                div(class='column has-text-centered')
+                div.column.has-text-centered
                   a(href='igrave@gmail.com') #Техподдержка

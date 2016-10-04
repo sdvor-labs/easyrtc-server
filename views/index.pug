@@ -2,19 +2,19 @@ extends layout
 
 block content
     // Hero footer: will stick at the bottom
-    div(class='hero-foot')
-        nav(class='tabs')
-            div(class='container')
+    div.hero-foot
+        nav.tabs
+            div.container
                 ul#rooms
                     each room in rooms
                         li(class='room-' + room.id)
                             a(href='/widget/' + room.name) #{room.label}
                     li
                         a(href='/login') Войти в систему
-    section(class='section')
-        div(class='container')
-            div(class='heading')
-                h1(class='title') Небольшой приветственный текст
-                h2(class='subtitle') Подзаголовок секции
-                div(class='content')
+    section.section
+        div.container
+            div.heading
+                h1.title Небольшой приветственный текст
+                h2.subtitle Подзаголовок секции
+                div.content
                     p И текст секции

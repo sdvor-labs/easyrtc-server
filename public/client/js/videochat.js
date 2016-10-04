@@ -20,7 +20,7 @@ function joinSuccess(roomName) {
             peers.forEach((peer) => {
                     // Create button
                     let button = document.createElement('button');
-                    // Add action to button
+                    button.className = button.className.concat('button is-fullwidth is-margin-top is-info');
                     button.onclick = function(peer) {
                         return function() {
                             performCall(peer);
@@ -43,7 +43,7 @@ function performCall(otherEasyrtcid) {
 // Function exec after success get token EasyRTC
 function loginSuccess(easyrtcid) {
     selfEasyrtcid = easyrtcid;
-    document.getElementById("iam").innerHTML = "Мой сеанс " + easyrtc.cleanId(easyrtcid);
+    document.getElementById('iam').innerHTML = '<strong class="white-text">' + easyrtc.cleanId(easyrtcid) + '</strong>'; 
 
     easyrtc.joinRoom(roomName, null, joinSuccess(roomName), loginFailure);
 }
