@@ -1,5 +1,7 @@
 #!/usr/bin/nodejs
 //var debug = require('debug')('my-application');
+//Load models
+let Room = require('./models/room.js');
 // Main server application variables
 let app = require('./app'),
     fs = require('fs'),
@@ -41,26 +43,47 @@ easyrtc.events.on("easyrtcAuth", function(socket, easyrtcid, msg, socketCallback
 
 // To test, lets print the credential to the console for every room join!
 easyrtc.events.on("roomJoin", function(connectionObj, roomName, roomParameter, callback) {
+    console.log('JOIN ROOM EVENT!');
     console.log("["+connectionObj.getEasyrtcid()+"] Credential retrieved!", connectionObj.getFieldValueSync("credential"));
     easyrtc.events.defaultListeners.roomJoin(connectionObj, roomName, roomParameter, callback);
 });
 
 
 // Start EasyRTC server
-var rtc = easyrtc.listen(app, socketServer, null, function(err, rtcRef) {
-    console.log("Initiated");
+let easyercServer = easyrtc.listen(
+        app,
+        socketServer,
+        null,
+        function(err, rtc) {
+            console.log("Initialized EasyRTC server");
+            console.log('Creatiing new EasyRTC App...');
+            rtc.createApp(
+                'easyrtc.videochat',
+                {
+                    'roomAutoCreateEnable': false,
+                    'roomDefaultEnable': false
+                },
+                myEasyrtcApp
+            );
+        }
+    );
 
-    rtcRef.events.on("roomCreate", function(appObj, creatorConnectionObj, roomName, roomOptions, callback) {
-        console.log("roomCreate fired! Trying to create: " + roomName);
-
-        appObj.events.defaultListeners.roomCreate(appObj, creatorConnectionObj, roomName, roomOptions, callback);
-    });
-});
+let myEasyrtcApp = function(err, appObj) {
+    Room.find({}, function(err, roomsList){
+            if(err) {
+                throw err;
+            } else {
+                roomsList.forEach((item) => {
+                    appObj.createRoom(item.name, null, function(err, roomObj){});
+                    });
+            }
+        });
+};
 
 
 // Listen http & https servers on different ports
-httpServer.listen(3000, '10.0.46.83', function() {
-        console.log('listening on http://10.0.46.83:3000');
+httpServer.listen(8080, '10.0.46.83', function() {
+        console.log('listening on http://10.0.46.83:8081');
     });
 httpsServer.listen(8080, '10.0.46.83',function() {
         console.log('listeninf on https://10.0.46.83:8080')

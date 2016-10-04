@@ -10,11 +10,17 @@ let roomSchema = new Schema({
             required: true,
             unique: true,
         },
+        label: {
+                type: String,
+                require: true,
+                unique: true
+        },
         visiability: {
             type: String,
             enum: ['public', 'private'],
             required: true
-        }
+        },
+        company: [{type: Schema.Types.ObjectId, ref: 'Company'}]
     });
 // the schema is unless so far
 // we need to create a model using it

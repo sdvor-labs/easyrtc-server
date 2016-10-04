@@ -16,6 +16,7 @@ let mongoExpress = require('mongo-express/lib/middleware'),
 let routes = require('./routes/index'),
     users = require('./routes/users'),
     about = require('./routes/about'),
+    widget = require('./routes/widget'),
     test = require('./routes/test'),
     api = require('./routes/api'),
     login = require('./routes/login');
@@ -61,14 +62,11 @@ app.use('/about', about);
 app.use('/test', test);
 app.use('/login', login);
 app.use('/api', api);
+app.use('/widget', widget);
 /* end of express app routes, modules etc. */
-
-
-
 // For first run
 let utils = require('./utils.js');
 console.log('Is first run', utils.utils('firstRun'));
-
 /// Catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

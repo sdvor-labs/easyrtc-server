@@ -42,7 +42,8 @@ function findRooms() {
                 Company.find({name: 'Строительный двор'}, function(err, company) {
                         if(!err) {
                                 let defaultRoom = Room({
-                                        name: 'Тестовая комната',
+                                        name: 'testroom',
+                                        label: 'Тестовая комната',
                                         visiability: 'private',
                                         company: company
                                     });
