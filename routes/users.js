@@ -5,13 +5,12 @@ let express = require('express'),
 /* GET users listing. */
 router.get('/', function(req, res) {
   utils.utils('tokenVerifity', req.cookies.token).then(result=>{
-      console.log(result);
-  })
-  //if(utils.utils('tokenVerifity', req.cookies.token)){
-  //  res.send('Auth user!');    
-  //} else {
-  //  res.send('Nit auth user');
-  //}
+      if(result) {
+        res.send('Auth user!');
+      } else {
+        res.send('Nit auth user');
+      }
+  });
 });
 
 module.exports = router;

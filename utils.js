@@ -179,7 +179,7 @@ function doVerifityToken(token, callback, res) {
                         if(!user) {
                             resolve(false);
                         } else {
-                            jwt.verify(token, user.salt, function (erru, decoded) {
+                            jwt.verify(token, config.secret, function (erru, decoded) {
                                 if (erru) {
                                     resolve(false);
                                 } else {
