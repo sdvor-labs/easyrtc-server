@@ -3,7 +3,7 @@ let express = require('express'),
 
 router.get('/', function(req, res) {
     res.clearCookie('token');
-    res.redirect('index');
+    res.redirect('/');
 });
 
 module.exports = router;

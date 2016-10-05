@@ -9,8 +9,12 @@ block content
                     each room in rooms
                         li(class='room-' + room.id)
                             a(href='/widget/' + room.id) #{room.label}
-                    li
-                        a(href='/login') Войти в систему
+                    if(isLogin)
+                        li
+                            a(href='.profile') Мой провиль
+                    else
+                        li
+                            a(href='/login') Войти в систему
     section.section
         div.container
             div.heading

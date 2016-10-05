@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
     utils.utils('tokenVerifity', req.cookies.token).then(result=>{
         if(result) {
             User.findOne({
-                username: req.decoded.username
+                token: req.cookies.token
             }, function (err, user) {
                 if (!user){
                     res.redirect('login');

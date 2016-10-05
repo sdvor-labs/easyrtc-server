@@ -4,7 +4,7 @@ let express = require('express'),
     app = require('../app'),
     config = require('../config'),
     router = express.Router();
-/* GET about listing. */
+/* GET login method */
 router.get('/', function(req, res) {
     User.findOne({
         token: req.cookies.token
@@ -13,10 +13,10 @@ router.get('/', function(req, res) {
         if (!user)
             res.render('login', { title: 'login' });
         else
-            res.redirect('profile');
+            res.redirect('./profile');
     });
 });
-
+/* POST method */
 router.post('/', function(req, res){
     let result = 'Successful';
     User.findOne({
@@ -35,7 +35,7 @@ router.post('/', function(req, res){
         else{
             result = 'Unsuccessful';
         }
-        res.render('profile', {'user': user});
+        res.redirect('./profile');
     });
 });
 
