@@ -4,7 +4,11 @@ let User = require('./models/user'),
     UserStatus = require('./models/user_status'),
     UserType = require('./models/user_type'),
     Room = require('./models/room'),
-    jwt = require('jsonwebtoken');
+    jwt = require('jsonwebtoken'),
+    async = require('asyncawait/async'),
+    await = require('asyncawait/await');
+var Promise = require('bluebird');
+
 // Create default room, user_status, user_type if it
 // don't created
 /// For Company
@@ -138,7 +142,7 @@ function findUsers() {
                                                             token: null,
                                                             additional_info: 'Пользователь по умолчанию'
                                                         });
-                                                        defauleUser.save()
+                                                        defauleUser.save();
                                                     }
                                                 });
                                         }
@@ -153,43 +157,55 @@ function findUsers() {
         });
 }
 
+function doFirstRun(callback) {
+    findCompany();
+    findRooms();
+    findUserStatus();
+    findUserType();
+    findUsers();
+    return callback(true);
+}
+
+function doVerifityToken(token, callback, res) {
+    let promise = new Promise((resolve, reject) => {
+            if(token) {
+                User.findOne({
+                    token: token
+                }, function(err, user) {
+                    if(err) {
+                        resolve(err);
+                    } else {
+                        if(!user) {
+                            resolve(false);
+                        } else {
+                            jwt.verify(token, user.salt, function (erru, decoded) {
+                                if (erru) {
+                                    resolve(false);
+                                } else {
+                                    if(decoded) {
+                                        resolve(true);
+                                    } else {
+                                        resolve(false);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+                } else {
+                    resolve(false);
+                }
+            });
+    return promise;
+}
+
 let utils = function(command, cookies) {
     if(command === 'firstRun'){
-        findCompany();
-        findRooms();
-        findUserStatus();
-        findUserType();
-        findUsers();
-        return true;
+        return doFirstRun(function(r) {
+                return r;
+            });
     } else if(command === 'tokenVerifity') {
-        console.log('Verifity token function');
-        console.log('Hi, this is token: ', cookies);
-        if(cookies) {
-            User.findOne({
-                token: cookies
-                }, function(err, user) {
-                        if(err) {
-                            throw err;
-                        } else {
-                            if(!user) {
-                                return false;
-                            } else {
-                                jwt.verify(cookies, user.salt, function (erru, decoded) {
-                                    if (err) {
-                                        console.log('Failed');
-                                        return false;
-                                    } else {
-                                        console.log('Success');
-                                        // if everything is good, save to request for use in other routes
-                                        return true;
-                                    }
-                                });
-                            }
-                        }
-                    });
-        } else {
-            return false;
-        }
+            return doVerifityToken(cookies);
     }
 };
 
