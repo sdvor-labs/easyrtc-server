@@ -3,6 +3,7 @@ let User = require('./models/user'),
     Company = require('./models/company'),
     UserStatus = require('./models/user_status'),
     UserType = require('./models/user_type'),
+    config = require('./config'),
     Room = require('./models/room'),
     jwt = require('jsonwebtoken');
 // Create default room, user_status, user_type if it
@@ -174,12 +175,13 @@ let utils = function(command, cookies) {
                             if(!user) {
                                 return false;
                             } else {
-                                jwt.verify(cookies, user.salt, function (erru, decoded) {
+                                jwt.verify(cookies, config.secret, function (erru, decoded) {
                                     if (err) {
                                         console.log('Failed');
                                         return false;
                                     } else {
                                         console.log('Success');
+                                        console.log(decoded);
                                         // if everything is good, save to request for use in other routes
                                         return true;
                                     }

@@ -8,7 +8,8 @@ let express = require('express'),
     session = require('express-session'),
     morgan = require('morgan'),
     jwt = require('jsonwebtoken'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    config = require('./config');
 // Mongo-express
 let mongoExpress = require('mongo-express/lib/middleware'),
     mongoExpressConfig = require('./mongo_express_config');
@@ -16,6 +17,7 @@ let mongoExpress = require('mongo-express/lib/middleware'),
 let routes = require('./routes/index'),
     users = require('./routes/users'),
     about = require('./routes/about'),
+    profile = require('./routes/profile'),
     widget = require('./routes/widget'),
     //test = require('./routes/test'),
     api = require('./routes/api'),
@@ -34,7 +36,7 @@ process.title = 'node-easyrtc';
 // Create express application
 let app = express();
 // TODO: move to config
-app.set('secret', 'very_secret_secret');
+app.locals.secret = config.secret;
 /* end of variables declaration block */
 
 
@@ -62,6 +64,7 @@ app.use('/about', about);
 app.use('/login', login);
 app.use('/api', api);
 app.use('/widget', widget);
+app.use('/profile', profile);
 /* end of express app routes, modules etc. */
 // For first run
 let utils = require('./utils.js');

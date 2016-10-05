@@ -1,7 +1,7 @@
 let express = require('express'),
     router = express.Router(),
     jwt = require('jsonwebtoken'),
-    app = require('../app'),
+    config = require('../config'),
     token_check = require('../middleware/token_check'),
     utils = require('../utils'),
     User = require('../models/user');
@@ -40,7 +40,7 @@ router.post('/authenticate', function(req, res) {
             } else {
                     // if user is found and password is right
                     // create a token
-                let token = jwt.sign({username: user.username}, user.salt, {
+                let token = jwt.sign({username: user.username}, config.secret, {
                     expiresIn: 60 * 60 * 24});// expires in 24 hours
                     user.update({token :token
                     }).exec();

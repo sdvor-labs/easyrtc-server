@@ -15,7 +15,6 @@ let app = require('./app'),
     },
     socketIo = require('socket.io'),
     easyrtc = require('../');
-    
 // Create http & https servers
 let httpServer = http.createServer(app).listen(3000),
     httpsServer = https.createServer(credentials, app).listen(8080);
