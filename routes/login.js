@@ -1,5 +1,6 @@
 let express = require('express'),
     User = require('../models/user'),
+    jwt = require('jsonwebtoken'),
     router = express.Router();
 
 /* GET about listing. */
@@ -16,7 +17,11 @@ router.post('/', function(req, res){
             result = 'Unsuccessful';
         }
         else if (user.checkPassword(req.body.password)) {
-            res.cookie('token', user.token, {maxAge: 60 * 60 * 24});
+            let token = jwt.sign({username: user.username}, user.salt, {
+                expiresIn: 60 * 60 * 24});// expires in 24 hours
+            user.update({token :token
+            }).exec();
+            res.cookie('token', token, {maxAge: 60 * 60 * 24});
         }
         else{
             result = 'Unsuccessful';
