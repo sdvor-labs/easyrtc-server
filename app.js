@@ -19,6 +19,7 @@ let routes = require('./routes/index'),
     about = require('./routes/about'),
     profile = require('./routes/profile'),
     widget = require('./routes/widget'),
+    logout = require('./routes/logout'),
     //test = require('./routes/test'),
     api = require('./routes/api'),
     login = require('./routes/login');
@@ -65,6 +66,7 @@ app.use('/login', login);
 app.use('/api', api);
 app.use('/widget', widget);
 app.use('/profile', profile);
+app.use('/logout', logout);
 /* end of express app routes, modules etc. */
 // For first run
 let utils = require('./utils.js');
