@@ -1,0 +1,16 @@
+extends layout
+
+
+block content
+    section.section
+        div.container
+        div.columns.is-mobile
+            div.column.is-4.is-offset-4.box
+                h2 #{user.username}
+                p Имя: #{user.name}
+                p Фамилия: #{user.surname}
+                p Отчество: #{user.lastname}
+                p Компания: #{user.company.name}
+                p Дата регистрации: #{user.created_at}
+                p Дополнительные данные: #{user.additional_info}
+                a.button.is-warning(href='/logout') Выйти
