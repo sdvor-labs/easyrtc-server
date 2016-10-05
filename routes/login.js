@@ -10,10 +10,10 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res){
     let result = 'Successful';
     User.findOne({
-        username: req.body.username
+        username: req.body.login
     }, function(err, user) {
         if (user.checkPassword(req.body.password)) {
-            res.cookie('token', user.token, {maxAge: 60 * 60 * 24, httpOnly: true});
+            res.cookie('token', user.token, {maxAge: 60 * 60 * 24});
         }
         else{
             result = 'Unsuccessful';

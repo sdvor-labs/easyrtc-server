@@ -41,9 +41,9 @@ app.set('secret', 'very_secret_secret');
 
 /* express app routes, modules etc. */
 // Sessions enable
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
-app.use(cookieParser());
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
