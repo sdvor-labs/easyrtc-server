@@ -3,7 +3,8 @@ let User = require('./models/user'),
     Company = require('./models/company'),
     UserStatus = require('./models/user_status'),
     UserType = require('./models/user_type'),
-    Room = require('./models/room');
+    Room = require('./models/room'),
+    jwt = require('jsonwebtoken');
 // Create default room, user_status, user_type if it
 // don't created
 /// For Company
@@ -152,15 +153,44 @@ function findUsers() {
         });
 }
 
-let utils = function(command) {
+let utils = function(command, cookies) {
     if(command === 'firstRun'){
         findCompany();
         findRooms();
         findUserStatus();
         findUserType();
         findUsers();
+        return true;
+    } else if(command === 'tokenVerifity') {
+        console.log('Verifity token function');
+        console.log('Hi, this is token: ', cookies);
+        if(cookies) {
+            User.findOne({
+                token: cookies
+                }, function(err, user) {
+                        if(err) {
+                            throw err;
+                        } else {
+                            if(!user) {
+                                return false;
+                            } else {
+                                jwt.verify(cookies, user.salt, function (erru, decoded) {
+                                    if (err) {
+                                        console.log('Failed');
+                                        return false;
+                                    } else {
+                                        console.log('Success');
+                                        // if everything is good, save to request for use in other routes
+                                        return true;
+                                    }
+                                });
+                            }
+                        }
+                    });
+        } else {
+            return false;
+        }
     }
-    return true;
 };
 
 let unless_route = function(path, middleware) {

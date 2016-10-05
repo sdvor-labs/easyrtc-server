@@ -3,11 +3,9 @@ let User = require('../models/user'),
     jwt = require('jsonwebtoken');
 
 let token_check = function (req, res, next) {
-
-
     let token = req.body.token || req.query.token || req.cookies.get('token') || req.headers['x-access-token'];
 
-// decode token
+    // decode token
     if (token) {
         let user = User.findOne({
             token: token
@@ -31,7 +29,6 @@ let token_check = function (req, res, next) {
 
         });
     } else {
-
         // if there is no token
         // return an error
         return res.status(403).send({

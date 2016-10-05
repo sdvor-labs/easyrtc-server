@@ -44,9 +44,6 @@ router.post('/authenticate', function(req, res) {
                     expiresIn: 60 * 60 * 24});// expires in 24 hours
                     user.update({token :token
                     }).exec();
-
-
-
                 // return the information including token as JSON
                 res.json({
                     success: true,
