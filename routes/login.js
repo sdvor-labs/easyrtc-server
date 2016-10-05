@@ -18,8 +18,8 @@ router.post('/', function(req, res){
         else{
             result = 'Unsuccessful';
         }
+        res.render('login', {title: 'login', message: result});
     });
-	res.render('login', {title: 'login', message: result});
 });
 
 module.exports = router;
