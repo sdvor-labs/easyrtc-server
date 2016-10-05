@@ -17,7 +17,7 @@ let routes = require('./routes/index'),
     users = require('./routes/users'),
     about = require('./routes/about'),
     widget = require('./routes/widget'),
-    test = require('./routes/test'),
+    //test = require('./routes/test'),
     api = require('./routes/api'),
     login = require('./routes/login');
 // Load Mongoose ODM

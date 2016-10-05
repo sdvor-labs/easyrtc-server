@@ -5,9 +5,10 @@ block content
 		div.container
 		div.columns.is-mobile
 			div.column.is-4.is-offset-4.box
+				p #{message}
 				form(method='post')
 					p.control
-						input.input(type='email', placeholder='Email', name='login')
+						input.input(type='text', placeholder='Email', name='login')
 					p.control
 						input.input(type='password', placeholder='Password', name='password')
 					div.columns

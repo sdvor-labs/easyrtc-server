@@ -1,4 +1,5 @@
 let express = require('express'),
+    User = require('../models/user'),
     router = express.Router();
 
 /* GET about listing. */
@@ -7,7 +8,18 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res){
-	res.render('login', {title: 'login'});
+    let result = 'Successful';
+    User.findOne({
+        username: req.body.username
+    }, function(err, user) {
+        if (user.checkPassword(req.body.password)) {
+            res.cookie('token', user.token, {maxAge: 60 * 60 * 24, httpOnly: true});
+        }
+        else{
+            result = 'Unsuccessful';
+        }
+    });
+	res.render('login', {title: 'login', message: result});
 });
 
 module.exports = router;
