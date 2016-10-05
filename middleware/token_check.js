@@ -11,24 +11,25 @@ let token_check = function (req, res, next) {
     if (token) {
         let user = User.findOne({
             token: token
-        });
-        if (!user) {
-            return res.status(404).send({
-                success: false,
-                message: 'Authentication failed. User not found.'
-            });
-        }
-        // verifies secret and checks exp
-        jwt.verify(token, user.salt, function (err, decoded) {
-            if (err) {
-                return res.json({success: false, message: 'Failed to authenticate token.'});
-            } else {
-                // if everything is good, save to request for use in other routes
-                req.decoded = decoded;
-                next();
+        }, function (err, user) {
+            if (!user) {
+                return res.status(404).send({
+                    success: false,
+                    message: 'Authentication failed. User not found.'
+                });
             }
-        });
+            // verifies secret and checks exp
+            jwt.verify(token, user.salt, function (err, decoded) {
+                if (err) {
+                    return res.json({success: false, message: 'Failed to authenticate token.'});
+                } else {
+                    // if everything is good, save to request for use in other routes
+                    req.decoded = decoded;
+                    next();
+                }
+            });
 
+        });
     } else {
 
         // if there is no token

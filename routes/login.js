@@ -12,7 +12,10 @@ router.post('/', function(req, res){
     User.findOne({
         username: req.body.login
     }, function(err, user) {
-        if (user.checkPassword(req.body.password)) {
+        if (!user) {
+            result = 'Unsuccessful';
+        }
+        else if (user.checkPassword(req.body.password)) {
             res.cookie('token', user.token, {maxAge: 60 * 60 * 24});
         }
         else{
