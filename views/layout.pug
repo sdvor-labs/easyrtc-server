@@ -32,6 +32,22 @@ html
             div.container.has-text-centered
                 h1.title Видеочат
                 h2.subtitle удобный способ поговорить с нашими специалистами
+        // Hero footer: will stick at the bottom
+        div.hero-foot
+            nav.tabs
+                div.container
+                    ul#rooms
+                        each room in rooms
+                            li(class='room-' + room.id)
+                                a(href='/widget/' + room.name) #{room.label}
+                        if(isLogin)
+                            li
+                                a(href='/profile') Мой профиль
+                            li
+                                a(href='/widgets-and-code') Виджеты
+                        else
+                            li
+                                a(href='/login') Войти в систему
     // Content block
     block content
     // Footer
