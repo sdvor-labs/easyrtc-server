@@ -31,6 +31,7 @@ var User = require('./models/user'),
     Company = require('./models/company'),
     UserStatus = require('./models/user_status'),
     UserType = require('./models/user_type'),
+    UserRtcToken = require('./models/user_rtc_token'),
     Room = require('./models/room');
 // Set process name
 process.title = 'node-easyrtc';
