@@ -3,18 +3,15 @@ let express = require('express'),
     jwt = require('jsonwebtoken'),
     app = require('../app'),
     config = require('../config'),
+    load_user = require('../middleware/load_user');
     router = express.Router();
 /* GET login method */
-router.get('/', function(req, res) {
-    User.findOne({
-        token: req.cookies.token
-        },
-        function(err, user){
-        if (!user)
-            res.render('login', { title: 'login' });
+router.get('/', load_user, function(req, res) {
+    if (!req.user){
+        res.render('login', {title: 'login'});
+    }
         else
             res.redirect('./profile');
-    });
 });
 /* POST method */
 router.post('/', function(req, res){
