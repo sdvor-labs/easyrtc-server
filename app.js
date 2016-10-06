@@ -20,7 +20,7 @@ let routes = require('./routes/index'),
     profile = require('./routes/profile'),
     widget = require('./routes/widget'),
     logout = require('./routes/logout'),
-    //test = require('./routes/test'),
+    code = require('./routes/code'),
     api = require('./routes/api'),
     login = require('./routes/login');
 // Load Mongoose ODM
@@ -67,6 +67,7 @@ app.use('/api', api);
 app.use('/widget', widget);
 app.use('/profile', profile);
 app.use('/logout', logout);
+app.use('/widgets-and-code', code);
 /* end of express app routes, modules etc. */
 // For first run
 let utils = require('./utils.js');
