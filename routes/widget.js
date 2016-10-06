@@ -14,9 +14,9 @@ router.get('/:room_name', load_user, function (req, res) {
                 //"easyrtc.setUsername(%s);easyrtc.setCredential({'user_id': %s});
                 let onloadText =util.format("%s clientInit();");
                 if (req.user)
-                    onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'user_id': '%s'});", req.user.username, req.user.id));
+                    onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'user_id': '%s', 'room_id': '%s'});", req.user.username, req.user.id, findedRoom.id));
                 else
-                    onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');", "client"));
+                    onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'room_id': '%s'});", "client", findedRoom.id));
                 if (findedRoom.visiability == 'private')
                     if (req.user)
                         res.render('widget', {

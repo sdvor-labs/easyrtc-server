@@ -6,6 +6,7 @@ let Room = require('./models/room.js');
 let app = require('./app'),
     fs = require('fs'),
     http = require('http'),
+    UserRtcToken = require('./models/user_rtc_token'),
     https = require('https'),
     privateKey = fs.readFileSync('key.pem', 'utf8'),
     certificate = fs.readFileSync('cert.pem', 'utf8'),
@@ -44,6 +45,25 @@ easyrtc.events.on("easyrtcAuth", function(socket, easyrtcid, msg, socketCallback
 easyrtc.events.on("roomJoin", function(connectionObj, roomName, roomParameter, callback) {
     console.log('JOIN ROOM EVENT!');
     connectionObj.getEasyrtcid();
+    let token = connectionObj.getEasyrtcid();
+    UserRtcToken.findOne({
+        $or:[{user: connectionObj.getFieldValueSync("credential").user_id},
+            {username: connectionObj.getUsername()}],gi
+        room: connectionObj.getFieldValueSync("credential").room_id
+    }, function (err, user_rtc) {
+        if (!user_rtc){
+            let user = UserRtcToken({
+                rtc_token: token,
+                room: connectionObj.getFieldValueSync("credential").room_id,
+                username: connectionObj.getUsername(),
+                user: connectionObj.getFieldValueSync("credential").user_id,
+            });
+            user.save();
+        }
+        else{
+            user_rtc.update({rtc_token: token}).exec();
+        }
+    });
     console.log("["+connectionObj.getEasyrtcid()+"] Credential retrieved!", connectionObj.getFieldValueSync("credential"));
     easyrtc.events.defaultListeners.roomJoin(connectionObj, roomName, roomParameter, callback);
 });
