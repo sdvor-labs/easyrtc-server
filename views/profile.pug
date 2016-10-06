@@ -6,11 +6,42 @@ block content
         div.container
         div.columns.is-mobile
             div.column.is-4.is-offset-4.box
-                h2 #{user.username}
-                p Имя: #{user.name}
-                p Фамилия: #{user.surname}
-                p Отчество: #{user.lastname}
-                p Компания: #{user.company.name}
-                p Дата регистрации: #{user.created_at}
-                p Дополнительные данные: #{user.additional_info}
-                a.button.is-warning(href='/logout') Выйти
+                div.columns
+                    div.column.has-text-centered
+                        h3.title.is-3 Пользователь: #{user.username}
+                div.columns
+                    div.column
+                    div.column
+                        img(src='/images/default-user.png')
+                    div.column
+                div.columns
+                    div.column
+                        h5.title.is-5 Личные данные
+                        p
+                            strong Имя:
+                            span  #{user.name}
+                        p
+                            strong Фамилия:
+                            span  #{user.surname}
+                        p
+                            strong Отчество:
+                            span  #{user.lastname}
+                    div.column
+                        h5.title.is-5 Служебная инф-ия
+                        p
+                            strong Наименование:
+                            span  #{company.name}
+                        p
+                            strong Сайт 
+                            span
+                                  a(href='http://#{company.site}') #{company.site}
+                        p
+                            strong Дата регистрации:
+                            span  #{user.created_at}
+                div.columns
+                    div.column
+                        h5.title.is-5 Дополнительные данные
+                        span #{user.additional_info}
+                div.columns
+                    div.column
+                        a.button.is-danger.is-fullwidth(href='/logout') Выйти

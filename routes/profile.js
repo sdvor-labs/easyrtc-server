@@ -3,6 +3,7 @@ let express = require('express'),
 //    token_check = require('../middleware/token_check'),
     load_user = require('../middleware/load_user'),
     Room = require('../models/room'),
+    Company = require('../models/company'),
     router = express.Router();
     
 //router.use(token_check.token_check);
@@ -22,10 +23,17 @@ router.get('/', load_user, function(req, res) {
                                 if(err) {
                                     throw err;
                                 } else {
-                                    res.render('profile', {
-                                                        user: user,
-                                                        rooms: findedRooms,
-                                                        isLogin: true});
+                                    Company.findOne({'_id': user.company}, function(err, company) {
+                                            if(err) {
+                                                throw err;
+                                            } else {
+                                                res.render('profile', {
+                                                                        user: user,
+                                                                        rooms: findedRooms,
+                                                                        company: company,
+                                                                        isLogin: true});   
+                                            }
+                                        });
                                 }
                             });
                     };
