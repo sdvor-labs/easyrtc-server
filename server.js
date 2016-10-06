@@ -48,7 +48,7 @@ easyrtc.events.on("roomJoin", function(connectionObj, roomName, roomParameter, c
     let token = connectionObj.getEasyrtcid();
     UserRtcToken.findOne({
         $or:[{user: connectionObj.getFieldValueSync("credential").user_id},
-            {username: connectionObj.getUsername()}],gi
+            {username: connectionObj.getUsername()}],
         room: connectionObj.getFieldValueSync("credential").room_id
     }, function (err, user_rtc) {
         if (!user_rtc){
