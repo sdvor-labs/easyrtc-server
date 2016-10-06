@@ -26,32 +26,32 @@ let socketServer = socketIo.listen(httpsServer, {'log level': 1});
 easyrtc.setOption("logLevel", "debug");
 
 // Overriding the default easyrtcAuth listener, only so we can directly access its callback
-easyrtc.events.on("easyrtcAuth", function(socket, easyrtcid, msg, socketCallback, callback) {
-    easyrtc.events.defaultListeners.easyrtcAuth(socket, easyrtcid, msg, socketCallback, function(err, connectionObj){
+easyrtc.events.on("easyrtcAuth", function (socket, easyrtcid, msg, socketCallback, callback) {
+    easyrtc.events.defaultListeners.easyrtcAuth(socket, easyrtcid, msg, socketCallback, function (err, connectionObj) {
         if (err || !msg.msgData || !msg.msgData.credential || !connectionObj) {
             callback(err, connectionObj);
             return;
         }
 
-        connectionObj.setField("credential", msg.msgData.credential, {"isShared":false});
+        connectionObj.setField("credential", msg.msgData.credential, {"isShared": false});
 
-        console.log("["+easyrtcid+"] Credential saved!", connectionObj.getFieldValueSync("credential"));
+        console.log("[" + easyrtcid + "] Credential saved!", connectionObj.getFieldValueSync("credential"));
 
         callback(err, connectionObj);
     });
 });
 
 // To test, lets print the credential to the console for every room join!
-easyrtc.events.on("roomJoin", function(connectionObj, roomName, roomParameter, callback) {
+easyrtc.events.on("roomJoin", function (connectionObj, roomName, roomParameter, callback) {
     console.log('JOIN ROOM EVENT!');
     connectionObj.getEasyrtcid();
     let token = connectionObj.getEasyrtcid();
     UserRtcToken.findOne({
-        $or:[{user: connectionObj.getFieldValueSync("credential").user_id},
+        $or: [{user: connectionObj.getFieldValueSync("credential").user_id},
             {username: connectionObj.getUsername()}],
         room: connectionObj.getFieldValueSync("credential").room_id
     }, function (err, user_rtc) {
-        if (!user_rtc){
+        if (!user_rtc) {
             let user = UserRtcToken({
                 rtc_token: token,
                 room: connectionObj.getFieldValueSync("credential").room_id,
@@ -60,54 +60,69 @@ easyrtc.events.on("roomJoin", function(connectionObj, roomName, roomParameter, c
             });
             user.save();
         }
-        else{
+        else {
             user_rtc.update({rtc_token: token}).exec();
         }
     });
-    console.log("["+connectionObj.getEasyrtcid()+"] Credential retrieved!", connectionObj.getFieldValueSync("credential"));
+    console.log("[" + connectionObj.getEasyrtcid() + "] Credential retrieved!", connectionObj.getFieldValueSync("credential"));
     easyrtc.events.defaultListeners.roomJoin(connectionObj, roomName, roomParameter, callback);
+});
+
+
+easyrtc.events.on("roomLeave", function (connectionObj, roomName, roomParameter, callback) {
+    console.log('LEAVE ROOM EVENT!');
+    let token = connectionObj.getEasyrtcid();
+    UserRtcToken.findOne({
+        $or: [{user: connectionObj.getFieldValueSync("credential").user_id},
+            {username: connectionObj.getUsername()}],
+        room: connectionObj.getFieldValueSync("credential").room_id
+    }, function (err, user_rtc) {
+        user_rtc.update({rtc_token: null}).exec();
+    });
+    easyrtc.events.defaultListeners.roomLeave(connectionObj, roomName, roomParameter, callback);
 });
 
 
 // Start EasyRTC server
 let easyercServer = easyrtc.listen(
-        app,
-        socketServer,
-        null,
-        function(err, rtc) {
-            console.log("Initialized EasyRTC server");
-            console.log('Creatiing new EasyRTC App...');
-            rtc.createApp(
-                'easyrtc.videochat',
-                {
-                    'roomAutoCreateEnable': false,
-                    'roomDefaultEnable': false
-                },
-                myEasyrtcApp
-            );
-        }
-    );
+    app,
+    socketServer,
+    null,
+    function (err, rtc) {
+        console.log("Initialized EasyRTC server");
+        console.log('Creatiing new EasyRTC App...');
+        rtc.createApp(
+            'easyrtc.videochat',
+            {
+                'roomAutoCreateEnable': false,
+                'roomDefaultEnable': false
+            },
+            myEasyrtcApp
+        );
+    }
+);
 
-let myEasyrtcApp = function(err, appObj) {
-    Room.find({}, function(err, roomsList){
-            if(err) {
-                throw err;
-            } else {
-                roomsList.forEach((item) => {
-                    appObj.createRoom(item.name, null, function(err, roomObj){});
-                    });
-            }
-        });
+let myEasyrtcApp = function (err, appObj) {
+    Room.find({}, function (err, roomsList) {
+        if (err) {
+            throw err;
+        } else {
+            roomsList.forEach((item) => {
+                appObj.createRoom(item.name, null, function (err, roomObj) {
+                });
+            });
+        }
+    });
 };
 
 
 // Listen http & https servers on different ports
-httpServer.listen(8080, '10.0.46.83', function() {
-        console.log('listening on http://10.0.46.83:8081');
-    });
-httpsServer.listen(8080, '10.0.46.83',function() {
-        console.log('listeninf on https://10.0.46.83:8080')
-    });
+httpServer.listen(8080, '10.0.46.83', function () {
+    console.log('listening on http://10.0.46.83:8081');
+});
+httpsServer.listen(8080, '10.0.46.83', function () {
+    console.log('listeninf on https://10.0.46.83:8080')
+});
 
 //app.set('port', process.env.PORT || 3000);
 
