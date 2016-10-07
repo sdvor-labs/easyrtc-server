@@ -45,19 +45,32 @@ html
                             span.icon
                                 i.fa.fa-comments-o
                             span#roomname(name=roomName) #{roomLabel}
-                div.nav-right.nav-menu
-                    a.nav-item.is-yellow(href='/')
-                        span.icon.is-yellow
-                            i.fa.fa-home
-                        span.is-yellow Главная
+                        
             div.columns
                 div.column.sidebar
-                    div.box
+                    div.box.self-video-box
                         video.easyrtcMirror.is-fullwidth#selfVideo(autoplay='autoplay', muted='muted', volume='0')
-                    div(class="notification is-primary" id="connectControls")
-                        div(id="iam")
-                            strong Идет соединение...
-                    div.box#otherClients
-                        h4.title.is-4 В комнате
+                    nav.panel
+                        p.panel-heading.has-text-centered#iam Идет соединение
+                        p.panel-tabs
+                            a#all-menu(onclick='clickTab(this.id)') Всё
+                            a#users-menu.is-active(onclick='clickTab(this.id);', href='#') Пользователи
+                            a#rooms-menu(onclick='clickTab(this.id);', href='#') Комнаты
+                            a#call-menu(onclick='clickTab(this.id);', href='#!') Звонок
+                        div#users-menu-block
+                            div#otherClients
+                        div#rooms-menu-block.is-hidden
+                            div#roomList
+                        div#call-menu-block.is-hidden
+                            a.panel-block(href='#')
+                                span.panel-icon
+                                    i.fa.fa-phone
+                                span Положить трубку
+                            a.panel-block(href='#')
+                                span.panel-icon
+                                    i.fa.fa-video-camera
+                                span Выключить камеру
+                        div.panel-block
+                            a.button.is-primary.is-outlined.is-fullwidth(href='/profile') Выйти
                 div.column.main-screen
                     video#callerVideo.is-fullwidth(autoplay="autoplay")
