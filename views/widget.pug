@@ -52,7 +52,8 @@ html
                         span.is-yellow Главная
             div.columns
                 div.column.sidebar
-                    video.easyrtcMirror.is-fullwidth#selfVideo(autoplay='autoplay', muted='muted', volume='0')
+                    div.box
+                        video.easyrtcMirror.is-fullwidth#selfVideo(autoplay='autoplay', muted='muted', volume='0')
                     div(class="notification is-primary" id="connectControls")
                         div(id="iam")
                             strong Идет соединение...

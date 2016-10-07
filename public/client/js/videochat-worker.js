@@ -1,4 +1,4 @@
-//alert('Client chat!');
+//alert('worker-chat');
 // id of client in the signals framework
 let myEasyrtcId;
 // Main functoin connecting client
