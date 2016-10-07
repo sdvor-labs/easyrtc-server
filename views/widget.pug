@@ -67,10 +67,22 @@ html
                                 span.panel-icon
                                     i.fa.fa-phone
                                 span Положить трубку
-                            a.panel-block(href='#')
+                            a.panel-block#cameraOff(href='#', onclick='muteMyVideo();')
+                                span.panel-icon
+                                    i.fa.fa-ban
+                                span Выключить камеру
+                            a.panel-block.is-hidden#cameraOn(href='#', onclick='muteMyVideo();')
                                 span.panel-icon
                                     i.fa.fa-video-camera
-                                span Выключить камеру
+                                span Включить камеру
+                            a.panel-block#microphoneOff(href='#', onclick='muteMyMicrophone();')
+                                span.panel-icon
+                                    i.fa.fa-microphone-slash
+                                span Выключить микрофон
+                            a.panel-block.is-hidden#microphoneOn(href='#', onclick='muteMyMicrophone();')
+                                span.panel-icon
+                                    i.fa.fa-microphone
+                                span Включить микрофон
                         div.panel-block
                             a.button.is-danger.is-outlined.is-fullwidth(href='/profile') Выйти
                 div.column.main-screen
