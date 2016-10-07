@@ -1,6 +1,7 @@
 let activeTab = 'users-menu';
 // id of client in the signals framework
 let myEasyrtcId;
+let withUser;
 // Main functoin connecting client
 function my_init() {
     // Set resolution
@@ -87,6 +88,7 @@ function joinSuccess(roomName) {
 // Call action
 function performCall(otherEasyrtcid) {
     easyrtc.hangupAll();
+    withUser = otherEasyrtcid;
     let successCB = function() {},
         failureCB = function() {};
     easyrtc.call(otherEasyrtcid, successCB, failureCB);
@@ -101,4 +103,8 @@ function loginSuccess(easyrtcid) {
 // Faild login
 function loginFailure(errorCode, message) {
     easyrtc.showError(errorCode, message);
+}
+// Close all chat
+function hangupCall() {
+    easyrtc.hangup(withUser);
 }

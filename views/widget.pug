@@ -63,7 +63,7 @@ html
                         div#rooms-menu-block.is-hidden
                             div#roomList
                         div#call-menu-block.is-hidden
-                            a.panel-block(href='#')
+                            a.panel-block(href='#', onclick='hangupCall();')
                                 span.panel-icon
                                     i.fa.fa-phone
                                 span Положить трубку
@@ -72,6 +72,6 @@ html
                                     i.fa.fa-video-camera
                                 span Выключить камеру
                         div.panel-block
-                            a.button.is-primary.is-outlined.is-fullwidth(href='/profile') Выйти
+                            a.button.is-danger.is-outlined.is-fullwidth(href='/profile') Выйти
                 div.column.main-screen
                     video#callerVideo.is-fullwidth(autoplay="autoplay")
