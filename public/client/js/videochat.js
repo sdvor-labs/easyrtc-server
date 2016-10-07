@@ -1,6 +1,11 @@
-//alert('Client chat!');
+let activeTab = 'users-menu',
 // id of client in the signals framework
-let myEasyrtcId;
+    myEasyrtcId,
+// id of interlocutor
+    withUser,
+// User settings
+    muteVideo = true,
+    muteMicrophone = false;
 // Main functoin connecting client
 function my_init() {
     // Set resolution
@@ -37,10 +42,44 @@ function joinSuccess(roomName) {
 // Call action
 function performCall(otherEasyrtcid) {
     easyrtc.hangupAll();
+    withUser = otherEasyrtcid;
     let successCB = function() {},
         failureCB = function() {};
     easyrtc.call(otherEasyrtcid, successCB, failureCB);
 }
+// Close user chat
+function hangupCall() {
+    easyrtc.hangup(withUser);
+}
+// Mute video function
+function muteMyVideo(){
+    console.log(muteVideo);
+    if(muteVideo === false) {
+        muteVideo = true;
+        document.getElementById('cameraOff').classList.remove('is-hidden');
+        document.getElementById('cameraOn').classList.add('is-hidden');
+    } else {
+        muteVideo = false;
+        document.getElementById('cameraOn').classList.remove('is-hidden');
+        document.getElementById('cameraOff').classList.add('is-hidden');
+    }
+    console.log(muteVideo);
+    easyrtc.enableCamera(muteVideo);
+}
+// Mute my microphone
+function muteMyMicrophone(){
+    if(muteMicrophone === false ){
+        muteMicrophone = true;
+        document.getElementById('microphoneOff').classList.remove('is-hidden');
+        document.getElementById('microphoneOn').classList.add('is-hidden');
+    } else {
+        muteMicrophone = false;
+        document.getElementById('microphoneOn').classList.remove('is-hidden');
+        document.getElementById('microphoneOff').classList.add('is-hidden');
+    }
+    easyrtc.enableMicrophone(muteMicrophone);
+}
+
 // Function exec after success get token EasyRTC
 function loginSuccess(easyrtcid) {
     selfEasyrtcid = easyrtcid;
