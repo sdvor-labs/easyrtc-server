@@ -13,16 +13,22 @@ router.get('/:room_name', load_user, function (req, res) {
             if (findedRoom !== null) {
                 //"easyrtc.setUsername(%s);easyrtc.setCredential({'user_id': %s});
                 let onloadText =util.format("%s clientInit();");
-                if (req.user)
+                let userType = null;
+                if (req.user) {
                     onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'user_id': '%s', 'room_id': '%s'});", req.user.username, req.user.id, findedRoom.id));
-                else
+                    userType = 'worker';
+                }
+                else {
                     onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'room_id': '%s'});", "client", findedRoom.id));
+                    userType = 'client'
+                }
                 if (findedRoom.visiability == 'private')
                     if (req.user)
                         res.render('widget', {
                             roomLabel: findedRoom.label,
                             roomName: req.params.room_name,
-                            onload: onloadText
+                            onload: onloadText,
+                            userType: userType
                         });
                     else
                         res.redirect('/login');
@@ -30,7 +36,8 @@ router.get('/:room_name', load_user, function (req, res) {
                     res.render('widget', {
                         roomLabel: findedRoom.label,
                         roomName: req.params.room_name,
-                        onload: onloadText
+                        onload: onloadText,
+                        userType: userType
                     });
             } else {
                 res.render('error-room');
