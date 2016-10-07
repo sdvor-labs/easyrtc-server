@@ -5,7 +5,9 @@ let activeTab = 'users-menu',
     withUser,
 // User settings
     muteVideo = true,
-    muteMicrophone = false;
+    muteMicrophone = false,
+// Set interval for repaet function
+    userQueryInterval = 6000;
 // Main functoin connecting client
 function my_init() {
     // Set resolution
@@ -15,6 +17,8 @@ function my_init() {
     // Get roomname
     roomName = document.getElementById('roomname').getAttribute('name');
 }
+
+// Function for get all users in this room
 function getUserRoom(roomName) {
     let promise = new Promise((resolve, reject) => {
                         // Get all peers in room
@@ -47,7 +51,7 @@ function getUserRoom(roomName) {
         });
     return promise;
 }
-
+// Get list with all rooms
 function getAllRooms() {
     let promise = new Promise((resolve, reject) => {
             easyrtc.getRoomList(
@@ -140,3 +144,10 @@ function muteMyMicrophone(){
     }
     easyrtc.enableMicrophone(muteMicrophone);
 }
+
+//repreat function...
+let timerId = setInterval(() => {
+        console.log('Timer!');
+        document.getElementById('otherClients').innerHTML = '';
+        getUserRoom(roomName).then();
+    }, userQueryInterval);

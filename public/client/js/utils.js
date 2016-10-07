@@ -15,7 +15,6 @@ function abilityToPerform() {
 function clientInit() {
     if(abilityToPerform()) {
         let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-        console.log(width);
         document.getElementById('if-possible').classList.remove('is-hidden');
         my_init();
     } else {

@@ -44,11 +44,11 @@ function performCall(otherEasyrtcid) {
 // Function exec after success get token EasyRTC
 function loginSuccess(easyrtcid) {
     selfEasyrtcid = easyrtcid;
-    document.getElementById('iam').innerHTML = '<strong class="white-text">' + easyrtc.cleanId(easyrtcid) + '</strong>'; 
+    document.getElementById('iam').innerHTML = 'Мой ID: ' + easyrtc.cleanId(easyrtcid); 
 
     easyrtc.joinRoom(roomName, null, joinSuccess(roomName), loginFailure);
 }
-
+// Message function
 function loginFailure(errorCode, message) {
     easyrtc.showError(errorCode, message);
 }
