@@ -9,6 +9,7 @@ let activeTab = 'users-menu',
 // Set interval for repaet function
     userQueryInterval = 6000,
     callInterval = 6000,
+    iTalkedTo = [];
     usersQuery = [];
 // Main functoin connecting client
 function my_init() {
@@ -24,8 +25,9 @@ function getUsersQuery(peers) {
     console.log('My easyRTC id: ' + myEasyrtcId);
     peers.forEach((peer) => {
         if(peer!=myEasyrtcId)
-            if(usersQuery.indexOf(peer))
-               usersQuery.push(peer);           
+            if(usersQuery.indexOf(peer) === -1)
+                if(iTalkedTo.indexOf(peer) === -1)
+                   usersQuery.push(peer);           
         });
 }
 // Function for get all users in this room
@@ -142,7 +144,6 @@ function muteMyVideo(){
         document.getElementById('cameraOn').classList.remove('is-hidden');
         document.getElementById('cameraOff').classList.add('is-hidden');
     }
-    console.log(muteVideo);
     easyrtc.enableCamera(muteVideo);
 }
 // Mute my microphone
@@ -162,7 +163,21 @@ function muteMyMicrophone(){
 function queryCall() {
     console.log('Connection with peer ' + easyrtc.getConnectionCount());
     if(easyrtc.getConnectionCount() === 0) {
-        performCall(usersQuery[0]);
+        console.log('I am not talking', usersQuery.length);
+        if(usersQuery.length !== 0) {
+            if(iTalkedTo.indexOf(usersQuery[0]) === -1)
+                if(easyrtc.getConnectStatus(usersQuery[0]) === 'not connected') {
+                    performCall(usersQuery[0]);
+                    iTalkedTo.push(usersQuery[0]);
+                    usersQuery.splice(usersQuery.indexOf(usersQuery[0]), 1);
+                    console.log('Users query ', usersQuery);
+                    console.log('Talked with ', iTalkedTo);
+                } else {
+                    iTalkedTo.push(usersQuery[0]);
+                }
+        } else {
+            console.log('You are waiting');
+        }
     } else {
         console.log('You are calling');
     }
