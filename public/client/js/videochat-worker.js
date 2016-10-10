@@ -8,6 +8,7 @@ let activeTab = 'users-menu',
     muteMicrophone = false,
 // Set interval for repaet function
     userQueryInterval = 6000,
+    callInterval = 6000,
     usersQuery = [];
 // Main functoin connecting client
 function my_init() {
@@ -157,10 +158,22 @@ function muteMyMicrophone(){
     }
     easyrtc.enableMicrophone(muteMicrophone);
 }
-
+// worker call to user automatic
+function queryCall() {
+    console.log('Connection with peer ' + easyrtc.getConnectionCount());
+    if(easyrtc.getConnectionCount() === 0) {
+        performCall(usersQuery[0]);
+    } else {
+        console.log('You are calling');
+    }
+}
 //repreat function...
-let timerId = setInterval(() => {
+let timerUsersUpdate = setInterval(() => {
         console.log('Timer!');
         document.getElementById('otherClients').innerHTML = '';
         getUserRoom(roomName).then();
     }, userQueryInterval);
+// repeat calls
+let timerQorkerCall = setInterval(() => {
+        queryCall();
+    }, callInterval);
