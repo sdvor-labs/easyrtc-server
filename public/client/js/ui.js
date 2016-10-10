@@ -13,7 +13,7 @@ function clickTab(name) {
     switch(name) {
         case 'all-menu':
             activeThisTab(name);
-            ['users', 'rooms', 'call'].forEach((item) => {
+            ['users', 'rooms', 'call', 'query'].forEach((item) => {
                     unhideTab(`${item}-menu-block`);
                 });
             break;
@@ -21,7 +21,7 @@ function clickTab(name) {
             if(activeTab !== 'all-menu')
                 unhideTab('users-menu-block');
             activeThisTab(name);
-            ['rooms', 'call'].forEach((item) => {
+            ['rooms', 'call', 'query'].forEach((item) => {
                     hideTab(`${item}-menu-block`);
                 });
             break;
@@ -29,7 +29,7 @@ function clickTab(name) {
             if(activeTab !== 'all-menu')
                 unhideTab('rooms-menu-block');
             activeThisTab(name);
-            ['users', 'call'].forEach((item) => {
+            ['users', 'call', 'query'].forEach((item) => {
                     hideTab(`${item}-menu-block`);
                 });
             break;
@@ -37,12 +37,20 @@ function clickTab(name) {
             if(activeTab !== 'all-menu')
                 unhideTab('call-menu-block');
             activeThisTab(name);
-            ['users', 'rooms'].forEach((item) => {
+            ['users', 'rooms', 'query'].forEach((item) => {
+                    hideTab(`${item}-menu-block`);
+                })
+            break;
+        case 'query-menu':
+            if(activeTab !== 'all-menu')
+                unhideTab('query-menu-block');
+            activeThisTab(name);
+            ['users', 'rooms', 'call'].forEach((item) => {
                     hideTab(`${item}-menu-block`);
                 })
             break;
         default:
-            alert('Произошла ошибка');
+            alert('Произошла ошибка, '+ name);
     }
     
 }
