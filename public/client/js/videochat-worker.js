@@ -174,6 +174,9 @@ function queryCall() {
                     console.log('Talked with ', iTalkedTo);
                 } else {
                     iTalkedTo.push(usersQuery[0]);
+                    usersQuery.splice(usersQuery.indexOf(usersQuery[0]), 1);
+                    console.log('Users query ', usersQuery);
+                    console.log('Talked with ', iTalkedTo);
                 }
         } else {
             console.log('You are waiting');
