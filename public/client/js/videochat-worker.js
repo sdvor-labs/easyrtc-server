@@ -7,7 +7,8 @@ let activeTab = 'users-menu',
     muteVideo = true,
     muteMicrophone = false,
 // Set interval for repaet function
-    userQueryInterval = 6000;
+    userQueryInterval = 6000,
+    usersQuery = [];
 // Main functoin connecting client
 function my_init() {
     // Set resolution
@@ -17,7 +18,15 @@ function my_init() {
     // Get roomname
     roomName = document.getElementById('roomname').getAttribute('name');
 }
-
+// Function for get users in query
+function getUsersQuery(peers) {
+    console.log('My easyRTC id: ' + myEasyrtcId);
+    peers.forEach((peer) => {
+        if(peer!=myEasyrtcId)
+            if(usersQuery.indexOf(peer))
+               usersQuery.push(peer);           
+        });
+}
 // Function for get all users in this room
 function getUserRoom(roomName) {
     let promise = new Promise((resolve, reject) => {
@@ -48,6 +57,10 @@ function getUserRoom(roomName) {
                     
                     otherClientDiv.appendChild(button);
                 });
+            // users in query
+            getUsersQuery(peers);
+            console.log('Users in query: '+ usersQuery);
+            
         });
     return promise;
 }
@@ -103,7 +116,7 @@ function performCall(otherEasyrtcid) {
 }
 // Function exec after success get token EasyRTC
 function loginSuccess(easyrtcid) {
-    selfEasyrtcid = easyrtcid;
+    myEasyrtcId = easyrtcid;
     document.getElementById('iam').innerHTML = `Мой ID: ${easyrtc.cleanId(easyrtcid)}`; 
 
     easyrtc.joinRoom(roomName, null, joinSuccess(roomName), loginFailure);
