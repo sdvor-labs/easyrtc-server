@@ -1,3 +1,6 @@
+// System settings
+easyrtc.dontAddCloseButtons();
+// Variables
 let activeTab = 'users-menu',
 // id of client in the signals framework
     myEasyrtcId,
@@ -24,10 +27,15 @@ function my_init() {
 function getUsersQuery(peers) {
     console.log('My easyRTC id: ' + myEasyrtcId);
     peers.forEach((peer) => {
-        if(peer!=myEasyrtcId)
-            if(usersQuery.indexOf(peer) === -1)
-                if(iTalkedTo.indexOf(peer) === -1)
-                   usersQuery.push(peer);           
+            if(peer!=myEasyrtcId) {
+                if(easyrtc.idToName(peer) === 'client') {
+                    if(usersQuery.indexOf(peer) === -1) {
+                        if (iTalkedTo.indexOf(peer) === -1) {
+                            usersQuery.push(peer);
+                        }
+                    }
+                }
+            }
         });
 }
 // Function for get all users in this room
