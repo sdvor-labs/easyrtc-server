@@ -11,15 +11,12 @@
 
 ## Установка
 Для установки и корректной работы в папку, где будет находится рабочая папка проекта выполняем комманды в терминале:
-> git clone https://github.com/priologic/easyrtc
-npm install
+> $ git clone https://github.com/priologic/easyrtc && npm install
 
 После этого выполняем комманды: 
-> git clone https://gl.sdvor.com/dshevelev/nodejs-videochat.git
-cd nodejs-videochat
-npm install
+> $ git clone https://gl.sdvor.com/dshevelev/nodejs-videochat.git && cd nodejs-videochat && npm install
 
 Старт проект выполняется коммандой:
-> node server
+> $ node server
 
 Настройки подключения к базе находтся в файле mongo-express-config.js.
