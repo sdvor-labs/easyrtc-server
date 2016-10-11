@@ -64,10 +64,21 @@ html
                             div#rooms-menu-block.is-hidden
                                 div#roomList
                             div#query-menu-block.is-hidden
-                                a.panel-block(href='#')
-                                    span.panel-icon
-                                        i.fa.fa-phone
-                                    span Пользователь
+                                div.panel-block
+                                    strong Задержка перед звонком
+                                    p.control
+                                        div.notification.is-success.is-hidden#succNotif
+                                            button.delete#closeBtn(onclick='hideNotification();')
+                                            span Поздравяем! Интервал успешно изменен!
+                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(6000);') 6 секунд
+                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(30000);') 30 секунд
+                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(60000);') 1 минута
+                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(180000);') 3 минуты
+                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(300000);') 5 минут
+                                div.panel-block
+                                    strong Очередь пользователей
+                                    div#queryDiv
+                                    div#queryDivWorker
                             div#call-menu-block.is-hidden
                                 a.panel-block(href='#', onclick='hangupCall();')
                                     span.panel-icon
@@ -89,7 +100,6 @@ html
                                     span.panel-icon
                                         i.fa.fa-microphone
                                     span Включить микрофон
-
                             div.panel-block
                                 a.button.is-danger.is-outlined.is-fullwidth(href='/profile') Выйти
                     else

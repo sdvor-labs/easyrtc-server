@@ -54,3 +54,6 @@ function clickTab(name) {
     }
     
 }
+function hideNotification() {
+    document.getElementById('succNotif').classList.add('is-hidden');
+}

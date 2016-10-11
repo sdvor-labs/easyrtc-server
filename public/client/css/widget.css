@@ -48,7 +48,9 @@
     width: 100%;
     height: 94%;
 }
-
+.is-margin-bottom {
+    margin-bottom: 5px;
+}
 .self-video-box {
     background-color: #00897B;
     padding: 8px;
