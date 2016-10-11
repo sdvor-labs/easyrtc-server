@@ -31,7 +31,7 @@ function my_init() {
 // Function for get users in query
 function getUsersQuery(peers) {
     peers.forEach((peer) => {
-            //if(peer!=myEasyrtcId) {
+            if(peer!=myEasyrtcId) {
                 if(easyrtc.idToName(peer) === 'client') {
                     if(usersQuery.indexOf(peer) === -1) {
                         if (iTalkedTo.indexOf(peer) === -1) {
@@ -43,9 +43,37 @@ function getUsersQuery(peers) {
                         workerQuery.push(peer);
                     }
                 }
-            //}
+            }
         });
     buildQueryButtons();
+}
+// tag inner constructor
+function uiButtonBuilder(funcName, item, iconName, buttonText, targetDiv) {
+    let promise = new Promise((reject, resolve) => {
+        let link = document.createElement('a');
+        link.className = link.className.concat('panel-block');
+        if(funcName) {
+            link.onclick = function(item) {
+                return function() {
+                    if(funcName === 'call'){
+                        performCall(item);
+                    } else {
+                        queryRebuid(item);
+                    } 
+                };
+            }(item);
+        }
+        let span = document.createElement('span');
+        span.className = span.className.concat('panel-icon');
+        link.appendChild(span);
+        let icon = document.createElement('i');
+        icon.className = icon.className.concat(`fa fa-${iconName}`);
+        span.appendChild(icon);
+        let label = document.createTextNode(buttonText);
+        link.appendChild(label);
+        targetDiv.appendChild(link);
+    });
+    return promise;
 }
 // Function for get all users in this room
 function getUserRoom(roomName) {
@@ -55,27 +83,8 @@ function getUserRoom(roomName) {
                 otherClientDiv = document.getElementById('otherClients');
             // Iterate peers array
             peers.forEach((peer) => {
-                    // Create button
-                    let button = document.createElement('a');
-                    button.className = button.className.concat('panel-block');
-                    button.onclick = function(peer) {
-                        return function() {
-                            performCall(peer);
-                        };
-                    }(peer);
-                    // Add span
-                    let span = document.createElement('span');
-                    span.className = span.className.concat('panel-icon');
-                    button.appendChild(span);
-                    // Add icon
-                    let icon = document.createElement('i');
-                    icon.className = icon.className.concat('fa fa-user');
-                    span.appendChild(icon);
-                    // Add label to button
-                    let label  = document.createTextNode(easyrtc.idToName(peer));
-                    button.appendChild(label);
-                    // Inner button                    
-                    otherClientDiv.appendChild(button);
+                    // Create buttons
+                    uiButtonBuilder('call', peer, 'user', easyrtc.idToName(peer), otherClientDiv).then();
                 });
             // users in query
             getUsersQuery(peers);            
@@ -133,6 +142,7 @@ function joinSuccess(roomName) {
 }
 // Call action
 function performCall(otherEasyrtcid) {
+    console.log('Perform call: ', otherEasyrtcid);
     // End all call
     easyrtc.hangupAll();
     // Save callser id
@@ -203,32 +213,11 @@ function queryRebuid(peer) {
 }
 // promise for worker query button
 function workerQueryButton() {
-    console.log(workerQuery);
     let promise = new Promise((reject, resolve) => {
             let queryDiv = document.getElementById('queryDivWorker');
             queryDiv.innerHTML = '';
             workerQuery.forEach((peer) => {
-                    // add button
-                    let link = document.createElement('a');
-                    link.className = link.className.concat('panel-block');
-                    link.onclick = function(peer) {
-                        return function() {
-                            queryRebuid(peer);
-                        };
-                    }(peer);
-                    // add span
-                    let span = document.createElement('span');
-                    span.className = span.className.concat('panel-icon');
-                    link.appendChild(span);
-                    // add icon to span
-                    let icon = document.createElement('i');
-                    icon.className = icon.className.concat('fa fa-plus');
-                    span.appendChild(icon);
-                    // add label to link/button
-                    let label = document.createTextNode(`Добавить сотрудника: (${easyrtc.idToName(peer)})`);
-                    link.appendChild(label);
-                    // add all to page
-                    queryDiv.appendChild(link);
+                    uiButtonBuilder('rebuild', peer, 'plus', `Добавить сотрудника ${easyrtc.idToName(peer)} в очередь`, queryDiv).then();
                 });
         });
     return promise;
@@ -239,27 +228,7 @@ function clientQueryButton() {
             let queryDiv = document.getElementById('queryDiv');
             queryDiv.innerHTML = '';
             usersQuery.forEach((peer) => {
-                // Add button/link
-                let link = document.createElement('a');
-                link.className = link.className.concat('panel-block');
-                link.onclick = function(peer) {
-                        return function() {
-                            queryRebuid(peer);
-                        };
-                }(peer);
-                // Add span for icon
-                let span = document.createElement('span');
-                span.className = span.className.concat('panel-icon');
-                link.appendChild(span);
-                // Add icon to span
-                let icon = document.createElement('i');
-                icon.className = icon.className.concat('fa fa-arrow-up');
-                span.appendChild(icon);
-                // Add label to button/link
-                let label = document.createTextNode(`Клиент вверх (${peer})`);
-                link.appendChild(label);
-                // Add all to page
-                queryDiv.appendChild(link);    
+                uiButtonBuilder('rebuild', peer, 'arrow-up', `Передвинуть клиента ${peer} наверх`, queryDiv).then();
             });
         });
     return promise;
