@@ -47,11 +47,11 @@ function getUsersQuery(peers) {
         });
     buildQueryButtons();
 }
-// tag inner constructor
-function uiButtonBuilder(funcName, item, iconName, buttonText, targetDiv) {
-    let promise = new Promise((reject, resolve) => {
-        let link = document.createElement('a');
-        link.className = link.className.concat('panel-block');
+// type ui button
+function uiLinkTypeBuilder(type, funcName, item) {
+    let link = document.createElement('a');
+    link.className = link.className.concat('panel-block');
+    if(type === 'button') {
         if(funcName) {
             link.onclick = function(item) {
                 return function() {
@@ -63,16 +63,47 @@ function uiButtonBuilder(funcName, item, iconName, buttonText, targetDiv) {
                 };
             }(item);
         }
-        let span = document.createElement('span');
+    } else {
+        link.href = `./${item}`;
+    }
+    return link;
+}
+// tag inner constructor
+function uiButtonBuilder(funcName, item, iconName, buttonText, targetDiv) {
+    let promise = new Promise((reject, resolve) => {
+        let link = uiLinkTypeBuilder('button', funcName, item),
+            span = document.createElement('span'),
+            icon = document.createElement('i'),
+            label = document.createTextNode(buttonText);
+            
         span.className = span.className.concat('panel-icon');
         link.appendChild(span);
-        let icon = document.createElement('i');
+        
         icon.className = icon.className.concat(`fa fa-${iconName}`);
         span.appendChild(icon);
-        let label = document.createTextNode(buttonText);
+        
         link.appendChild(label);
         targetDiv.appendChild(link);
     });
+    return promise;
+}
+function uiLinkBuilder(item, iconName, linkText, targetDiv) {
+    let promise = new Promise((reject, resolve)=>{
+            let link = uiLinkTypeBuilder('link', null, item),
+                span = document.createElement('span'),
+                icon = document.createElement('i'),
+                label = document.createTextNode(`${linkText} ${item}`);
+                
+            span.className = span.className.concat('panel-icon');
+            link.appendChild(span);
+            
+            icon.className = icon.className.concat(`fa fa-${iconName}`);
+            span.appendChild(icon);
+            
+            link.appendChild(label);
+            targetDiv.appendChild(link);
+            
+        });
     return promise;
 }
 // Function for get all users in this room
@@ -101,23 +132,7 @@ function getAllRooms() {
                 function(roomList) {
                     let roomListDiv = document.getElementById('roomList');
                     for(let roomName in roomList) {
-                        // Add hyperlink
-                        let link = document.createElement('a');
-                        link.className = link.className.concat('panel-block');
-                        link.href = `./${roomName}`;
-                        // Add span
-                        let span = document.createElement('span');
-                        span.className = span.className.concat('panel-icon');
-                        link.appendChild(span);
-                        // Add icon
-                        let icon = document.createElement('i');
-                        icon.className = icon.className.concat('fa fa-link');
-                        span.appendChild(icon);
-                        // Add label
-                        let label = document.createTextNode(`Перейти в ${roomName}`);
-                        link.appendChild(label);
-                        // Inner button
-                        roomListDiv.appendChild(link);
+                        uiLinkBuilder(roomName,'link', 'Перейти в', roomListDiv).then();
                     }    
                 },
                 // if error
