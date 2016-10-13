@@ -21,7 +21,7 @@ router.get('/users', function(req, res) {
     });
 });
 // route return all rooms (GET https://localhost:8080/api/rooms)
-route.get('/rooms', function(req, res) {
+router.get('/rooms', function(req, res) {
         Room.find({}, function(err, rooms) {
             res.json(rooms);    
         });
