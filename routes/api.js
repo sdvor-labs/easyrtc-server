@@ -4,10 +4,11 @@ let express = require('express'),
     config = require('../config'),
     token_check = require('../middleware/token_check'),
     utils = require('../utils'),
-    User = require('../models/user');
+    User = require('../models/user'),
+    Room = rqeuire('../models/room');
 
 // route to show a random message (GET http://localhost:8080/api/)
-router.use(utils.unless_route('/authenticate/', token_check.token_check));
+router.use(utils.unless_route('/authenticate', token_check.token_check));
 
 router.get('/', function(req, res) {
     res.json({ message: 'Welcome to the coolest API on earth!' });
@@ -19,8 +20,14 @@ router.get('/users', function(req, res) {
         res.json(users);
     });
 });
+// route return all rooms (GET https://localhost:8080/api/rooms)
+route.get('/rooms', function(req, res) {
+        Room.find({}, function(err, rooms) {
+            res.json(rooms);    
+        });
+    });
 
-
+// auth function
 router.post('/authenticate', function(req, res) {
 
     // find the user
