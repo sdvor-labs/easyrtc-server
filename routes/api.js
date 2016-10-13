@@ -5,7 +5,7 @@ let express = require('express'),
     token_check = require('../middleware/token_check'),
     utils = require('../utils'),
     User = require('../models/user'),
-    Room = rqeuire('../models/room');
+    Room = require('../models/room');
 
 // route to show a random message (GET http://localhost:8080/api/)
 router.use(utils.unless_route('/authenticate', token_check.token_check));
