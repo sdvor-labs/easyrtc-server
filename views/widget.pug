@@ -17,6 +17,19 @@ html
             script(type='text/javascript', src='/client/js/videochat-worker.js')
             script(type='text/javascript', src='/client/js/ui.js')
     body(onload=onload)
+        if(userType === 'worker')
+            div.modal#modalCall
+                div.modal-background
+                    div.modal-card
+                        header.modal-card-head
+                            p.modal-card-title Ожидается звонок пользователю
+                        section.modal-card-body
+                            span Внимание! Cкоро будет осуществлен звонок пользователю!
+                        footer.modal-card-foot
+                            a.button.is-primary(onclick='pleaseCall();') Позвонить
+                            a.button.is-danger(onclick='notCall();') Не звонить
+                    
+                    
         div#if-not-posible.is-hidden
             div.card.is-fullwidth.is-fullheight
                 div.card-image
@@ -51,6 +64,8 @@ html
                 div.column.sidebar#sidebar(name=userType)
                     div.box.self-video-box
                         video.easyrtcMirror.is-fullwidth#selfVideo(autoplay='autoplay', muted='muted', volume='0')
+                        if(userType === 'worker')
+                            div#appState(name='notNeedOpen')
                     if(userType === 'worker')
                         nav.panel
                             p.panel-heading.has-text-centered#iam Идет соединение

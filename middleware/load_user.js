@@ -8,7 +8,6 @@ function loadUser(req, res, next) {
         }, function (err, user) {
             if (user) {
                 req.user = user;
-                console.log(user.token);
                 next();
             } else {
                 req.user = undefined;

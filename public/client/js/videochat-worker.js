@@ -224,7 +224,6 @@ function queryRebuid(peer) {
         usersQuery.slice(usersQuery.indexOf(peer),1);
         usersQuery.unshift(peer);
     }
-    console.log(usersQuery);
 }
 // promise for worker query button
 function workerQueryButton() {
@@ -255,6 +254,23 @@ function buildQueryButtons() {
     // Add worker query byutton
     workerQueryButton().then();
 }
+// worker call modal answer
+//// do not call 
+function notCall() {
+    let tmp = usersQuery[0];
+    usersQuery.splice(usersQuery.indexOf(tmp), 1);
+    usersQuery.push(tmp);
+    document.getElementById('modalCall').classList.remove('is-active');
+    document.getElementById('appState').setAttribute('name', 'notNeedOpen');
+}
+//// call
+function pleaseCall(){
+    performCall(usersQuery[0]);
+    iTalkedTo.push(usersQuery[0]);
+    usersQuery.splice(usersQuery.indexOf(usersQuery[0]), 1);
+    document.getElementById('modalCall').classList.remove('is-active');
+    document.getElementById('appState').setAttribute('name', 'notNeedOpen');
+}
 // worker call to user automatic
 function queryCall() {
     if(easyrtc.getConnectionCount() === 0) {
@@ -262,9 +278,8 @@ function queryCall() {
         if(usersQuery.length !== 0) {
             if(iTalkedTo.indexOf(usersQuery[0]) === -1)
                 if(easyrtc.getConnectStatus(usersQuery[0]) === 'not connected') {
-                    performCall(usersQuery[0]);
-                    iTalkedTo.push(usersQuery[0]);
-                    usersQuery.splice(usersQuery.indexOf(usersQuery[0]), 1);
+                    document.getElementById('modalCall').classList.add('is-active');
+                    document.getElementById('appState').setAttribute('name', 'needOpen');
                 } else {
                     iTalkedTo.push(usersQuery[0]);
                     usersQuery.splice(usersQuery.indexOf(usersQuery[0]), 1);
