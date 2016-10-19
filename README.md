@@ -14,7 +14,7 @@ To install and run correctly in the folder where is located the working project 
 > $ git clone https://github.com/priologic/easyrtc && npm install
 
 Then execute the command:
-> $ git clone https://gl.sdvor.com/dshevelev/nodejs-videochat.git && cd nodejs-videochat && npm install
+> $ git clone https://github.com/neuromantic-js/easyrtc-server.git && cd easyrtc-server && npm install
 
 To run project execute:
 > $ node server
