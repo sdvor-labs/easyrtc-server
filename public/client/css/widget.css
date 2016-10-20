@@ -1,3 +1,6 @@
+.is-choosen {
+    border: solid 2px black !important;
+}
 .is-hidden {
     display: none;   
 }
@@ -25,6 +28,9 @@
     overflow-x: hidden;
     overflow-y: hiden;
     background-color: #F5F5F5;
+}
+.is-margin-top-persent {
+    margin-top: 15%;
 }
 .is-margin-top {
     margin-top: 5px;

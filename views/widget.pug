@@ -20,7 +20,7 @@ html
         if(userType === 'worker')
             div.modal#modalCall
                 div.modal-background
-                    div.modal-card
+                    div.modal-card.is-margin-top-persent
                         header.modal-card-head
                             p.modal-card-title Ожидается звонок пользователю
                         section.modal-card-body
@@ -28,8 +28,19 @@ html
                         footer.modal-card-foot
                             a.button.is-primary(onclick='pleaseCall();') Позвонить
                             a.button.is-danger(onclick='notCall();') Не звонить
-                    
-                    
+        else
+            div.modal.is-active#modalCall
+                div.modal-background
+                    div.is-margin-top-persent.modal-card
+                        header.modal-card-head
+                            p.modal-card-title Связаться с вами по видеосвязи?
+                        section.modal-card-body
+                            div.columns
+                                div.column.is-fullwidth#questionDiv
+                            div.columns#capchaDiv
+                        footer.modal-card-foot
+                            a.button.is-primary(onclick='pleaseCall();') Да, позвонить мне
+                            a.button.is-danger(onclick='notCall();') Нет, не надо мне звонить
         div#if-not-posible.is-hidden
             div.card.is-fullwidth.is-fullheight
                 div.card-image

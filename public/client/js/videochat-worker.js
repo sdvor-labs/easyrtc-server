@@ -70,7 +70,7 @@ function uiLinkTypeBuilder(type, funcName, item) {
 }
 // tag inner constructor
 function uiButtonBuilder(funcName, item, iconName, buttonText, targetDiv) {
-    let promise = new Promise((reject, resolve) => {
+    let promise = new Promise((resolve, reject) => {
         let link = uiLinkTypeBuilder('button', funcName, item),
             span = document.createElement('span'),
             icon = document.createElement('i'),
@@ -88,7 +88,7 @@ function uiButtonBuilder(funcName, item, iconName, buttonText, targetDiv) {
     return promise;
 }
 function uiLinkBuilder(item, iconName, linkText, targetDiv) {
-    let promise = new Promise((reject, resolve)=>{
+    let promise = new Promise((resolve, reject)=>{
             let link = uiLinkTypeBuilder('link', null, item),
                 span = document.createElement('span'),
                 icon = document.createElement('i'),
@@ -227,7 +227,7 @@ function queryRebuid(peer) {
 }
 // promise for worker query button
 function workerQueryButton() {
-    let promise = new Promise((reject, resolve) => {
+    let promise = new Promise((resolve, reject) => {
             let queryDiv = document.getElementById('queryDivWorker');
             queryDiv.innerHTML = '';
             workerQuery.forEach((peer) => {
@@ -238,7 +238,7 @@ function workerQueryButton() {
 }
 // promise for button rebuild query menu
 function clientQueryButton() {
-    let promise = new Promise((reject, resolve) => {
+    let promise = new Promise((resolve, reject) => {
             let queryDiv = document.getElementById('queryDiv');
             queryDiv.innerHTML = '';
             usersQuery.forEach((peer) => {
