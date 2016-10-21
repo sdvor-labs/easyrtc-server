@@ -57,9 +57,7 @@ function answerToRus(word) {
 }
 // Draw questuin
 function drawQuestion(answer) {
-    console.log(answer, answerToRus(answer));
     let promise = new Promise(function(resolve, reject) {
-        console.log(answer, answerToRus(answer));
         document.getElementById('questionDiv').appendChild(document.createTextNode(`Для того, чтобы подкюлчитьс к сервису выберите "${answerToRus(answer)}" и надмите "Да, позвонить мне"`));
     });
     return promise;
