@@ -1,40 +1,47 @@
-// hasWebRTC is undefined
-// if .getUserMedia() (and its variants) is not available
-function abilityToPerform() {
-    let hasWebRTC = navigator.getUserMedia ||
-                      navigator.webkitGetUserMedia ||
-                      navigator.mozGetUserMedia ||
-                      navigator.msGetUserMedia;
-    if(hasWebRTC){
-        return true;
-    } else {
-        return false;
-    }
-}
 // Function new version clientInput
-function testClientInput() {
-    
-}
-// Call this function, when onload body
 function clientInit() {
-    if(abilityToPerform()) {
-        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-        document.getElementById('if-possible').classList.remove('is-hidden');
-        my_init();
-        testingGadget();
+    let ua = navigator.userAgent,
+        userBrowser = {
+            OS: detection().operationSystem(ua),
+            browser: detection().browserName(ua),
+            deviceType: detection().deviceType(ua),
+            webrtc: detection().availableWebRTC(ua)
+        };
+    if(userBrowser.deviceType === 'desktop') {
+        console.log('Block for desktop browser');
+        if(detection().notSupported.indexOf(userBrowser.browser) === -1){
+            if(detection().legacyBrowser.indexOf(userBrowser.browser) === -1) {
+                if(userBrowser.webrtc === true){
+                    detection().avaliableMicrophone().then((res) => {
+                            if(res === true) {
+                                detection().availableWebCamera().then((rc) => {
+                                        if(rc === true) {
+                                            let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+                                            document.getElementById('if-possible').classList.remove('is-hidden');
+                                            my_init();
+                                        } else {
+                                            alert('Ваша web-камера не доступна для работы');
+                                        }
+                                    });
+                            } else {
+                                alert('Ваш микрофон не доступен для использования');
+                            }
+                        });
+                } else {
+                    alert('Ваш браузер не поддерживает WebRTC');
+                }
+            } else {
+                alert('Ваш барузер устарел');    
+            }
+        } else {
+            alert('Ваш браузер не поддерживается')
+        }
     } else {
-        document.getElementById('if-not-possible').classList.remove('is-hidden');
-        alert('This browser is not fully or partially WebRTC-capable');
+        alert('Не доступен для мобильных бразеров');
     }
 }
-
-function testingGadget() {
-    console.log('=============================Testing gadget=====================================');
-    let ua = navigator.userAgent;
-    detectBrowser().uaInLog(ua);
-}
-
-function detectBrowser() {
+// Function for detection devices on client side
+function detection() {
     return {
         // Detect device type
         deviceType: function (ua) {
