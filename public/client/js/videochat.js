@@ -124,6 +124,7 @@ function buildCapcha() {
 function my_init() {
     //buildCapcha().then();
     setDefaultClientData().then((res) => {
+        document.getElementById('modalCall').classList.add('is-active');
         buildCapcha().then();
     });
 }

@@ -29,7 +29,7 @@ html
                             a.button.is-primary(onclick='pleaseCall();') Позвонить
                             a.button.is-danger(onclick='notCall();') Не звонить
         else
-            div.modal.is-active#modalCall
+            div.modal#modalCall
                 div.modal-background
                     div.is-margin-top-persent.modal-card
                         header.modal-card-head
@@ -41,8 +41,9 @@ html
                         footer.modal-card-foot
                             a.button.is-primary(onclick='pleaseCall();') Да, позвонить мне
                             a.button.is-danger(onclick='notCall();') Нет, не надо мне звонить
+
         div#if-not-posible.is-hidden
-            div.card.is-fullwidth.is-fullheight
+            div.card.is-fullwidth.is-fullheight.is-hidden#softwareError
                 div.card-image
                     figure.image.is-2by1
                         img(src='/images/old-browser.png' alt='Uuups!')
@@ -62,6 +63,47 @@ html
                                 a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Скачать Google Chrome
                             div.column
                                 a.button.is-fullwidth(href='#') Обратная связь
+            div.card.is-fullwidth.is-fullheight.is-hidden#hardwareError
+                div.card-image
+                    figure.image.is-2by1
+                        img(src='/images/hardware-error.png' alt='Uuups!')
+                div.card-content
+                    div.media
+                        div.media-left
+                            figure.image.is-32x32
+                                image(src='/images/error-icon.png', alt='Error')
+                        div.media-content
+                            p.title.is-5 Извините, но возникли неполадки с вашим обрудованием!
+                            p.subtitle.is-6 Проверьте подключение web-камеры и микрофона
+                    div.content
+                        span Нам не удалось получить доступ к вашему микрофону и/или web-камере. Проверьте настройки системы и их подключение.
+                        br
+                        div.columns.is-mobile
+                            div.column
+                                a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Скачать Google Chrome
+                            div.column
+                                a.button.is-fullwidth(href='#') Обратная связь
+            div.card.is-fullwidth.is-fullheight.is-hidden#deviceError
+                div.card-image
+                    figure.image.is-2by1
+                        img(src='/images/device-error.png' alt='Uuups!')
+                div.card-content
+                    div.media
+                        div.media-left
+                            figure.image.is-32x32
+                                image(src='/images/error-icon.png', alt='Error')
+                        div.media-content
+                            p.title.is-5 Извините, но мобильные устройства временно не поддерживаются
+                            p.subtitle.is-6 Не поддерживаемый класс устройств
+                    div.content
+                        span Мы еще разрабатываем мобильную версию сервиса. Пока просим воспользоваться декстопной!
+                        br
+                        div.columns.is-mobile
+                            div.column
+                                a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Скачать Google Chrome
+                            div.column
+                                a.button.is-fullwidth(href='#') Обратная связь
+                                
         div#if-possible.is-hidden
             nav.nav.is-darken
                 div.nav-left
