@@ -20,7 +20,8 @@ let activeTab = 'users-menu',
 // List with user query
     usersQuery = [];
 // Main functoin connecting client
-function my_init() {
+function clientInit() {
+    document.getElementById('if-possible').classList.remove('is-hidden');
     // Set resolution
     easyrtc.setVideoDims(640,480);
     // Conntection to EasyRTC App

@@ -12,7 +12,7 @@ function clientInit() {
         // For desktop device
         if(detection().notSupported.indexOf(userInformation.userBrowser) === -1) {
             // Check on legacy browser
-            if(detection().legacyBrowser.indexOf() === -1){
+            if(detection().legacyBrowser.indexOf(userInformation.userBrowser) === -1){
                 // Check version browser
                 if(userInformation.userBrowser === 'GoogleChrome' && Number(userInformation.browserVersion) < 17 ||
                     userInformation.userBrowser === 'Firefox' && Number(userInformation.browserVersion) < 18 ||
