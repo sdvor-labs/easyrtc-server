@@ -29,7 +29,7 @@ function checkAnswer(id) {
     if(clientData.trueAnswer === notificationColors[id]) {
         clientData.needCall = true;
     } else {
-        clientData.needCall = false
+        clientData.needCall = false;
     }
 }
 // Function to translate bulma class to russian
@@ -41,18 +41,12 @@ function answerToRus(word) {
         checker = word;
     // Create text on button
     switch(checker) {
-        case 'none':
-            return 'Без цвета';
-        case 'is-primary':
-            return 'Бирюзовый';
-        case 'is-success':
-            return 'Зеленый';            
-        case 'is-warning':
-            return 'Желтый';
-        case 'is-danger':
-            return 'Красный';
-        case 'is-info':
-            return 'Синий';   
+        case 'none': return 'Без цвета';
+        case 'is-primary': return 'Бирюзовый';
+        case 'is-success': return 'Зеленый';            
+        case 'is-warning': return 'Желтый';
+        case 'is-danger': return 'Красный';
+        case 'is-info':return 'Синий';   
     }
 }
 // Draw questuin
@@ -79,7 +73,7 @@ function buildCapchaButtons(targetDiv, item) {
         tmpLink.onclick = function(item) {
             return function() {
                 checkAnswer(item);
-            }
+            };
         }(item);
         label = document.createTextNode(answerToRus(item));
         // Insert elements
@@ -94,7 +88,7 @@ function buildCapchaButtons(targetDiv, item) {
 function buildCapcha() {
     let promise = new Promise((resolve, reject) => {
         // Declarate variables
-        let max = notificationColors.length,
+        let max = notificationColors.length-1,
             randArray = [],
             tmp = null;
         // Add variable to random array

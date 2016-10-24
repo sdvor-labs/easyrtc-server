@@ -8,11 +8,14 @@ html
         link(rel='stylesheet', href='/client/css/widget.css')
         link(rel="stylesheet", type="text/css", href="/easyrtc/easyrtc.css")
         // Load utils scripts
-        script(type='text/javascript' src='/client/js/utils.js')
         script(src="/socket.io/socket.io.js")
         script(type="text/javascript", src="/easyrtc/easyrtc.js")
         if(userType === 'client')
             script(type='text/javascript', src='/client/js/videochat.js')
+            if(needCheck === 'need')
+                script(type='text/javascript' src='/client/js/utilsWithCheck.js')
+            else
+                script(type='text/javascript' src='/client/js/utils.js')
         else if(userType === 'worker')
             script(type='text/javascript', src='/client/js/videochat-worker.js')
             script(type='text/javascript', src='/client/js/ui.js')
@@ -34,6 +37,7 @@ html
                     div.is-margin-top-persent.modal-card
                         header.modal-card-head
                             p.modal-card-title Связаться с вами по видеосвязи?
+                            p #{needCheck}
                         section.modal-card-body
                             div.columns
                                 div.column.is-fullwidth#questionDiv

@@ -7,6 +7,7 @@ let express = require('express'),
     User = require('../models/user');
 /* GET about listing. */
 router.get('/:room_name', load_user, function (req, res) {
+    console.log('REQ:', req.param('need_check'));
     Room.findOne({'name': req.params.room_name}, function (err, findedRoom) {
         if (err) {
             throw err;
@@ -21,7 +22,7 @@ router.get('/:room_name', load_user, function (req, res) {
                 }
                 else {
                     onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'room_id': '%s'});", "client", findedRoom.id));
-                    userType = 'client'
+                    userType = 'client';
                 }
                 if (findedRoom.visiability == 'private')
                     if (req.user)
@@ -29,7 +30,8 @@ router.get('/:room_name', load_user, function (req, res) {
                             roomLabel: findedRoom.label,
                             roomName: req.params.room_name,
                             onload: onloadText,
-                            userType: userType
+                            userType: userType,
+                            needCheck: req.param('need_check') || 'not-need'
                         });
                     else
                         res.redirect('/login');
@@ -38,7 +40,8 @@ router.get('/:room_name', load_user, function (req, res) {
                         roomLabel: findedRoom.label,
                         roomName: req.params.room_name,
                         onload: onloadText,
-                        userType: userType
+                        userType: userType,
+                        needCheck: req.param('need_check') || 'not-need'
                     });
             } else {
                 res.render('error-room');
@@ -46,6 +49,7 @@ router.get('/:room_name', load_user, function (req, res) {
         }
     });
 });
+// add view with token
 router.get('/:room_name/:token', function(req, res) {
     User.findOne({token: req.params.token}, function(err, findedUser){
             if(err) {
@@ -56,13 +60,14 @@ router.get('/:room_name/:token', function(req, res) {
                             throw err;
                         }else{
                             let userType = 'worker';
-                            let onloadText =util.format("%s clientInit();");;
+                            let onloadText = util.format("%s clientInit();");
                             onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'user_id': '%s', 'room_id': '%s'});", findedUser.username, findedUser.id, findedRoom.id));
                             res.render('widget', {
                                 roomLabel: findedRoom.label,
                                 roomName: req.params.room_name,
                                 onload: onloadText,
-                                userType: userType
+                                userType: userType,
+                                needChack: 'not-need'
                             });        
                         }
                     });
