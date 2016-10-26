@@ -1,0 +1,50 @@
+extends profile-layout
+
+block content
+    if(isSaved !== null)
+        if(isSaved === true)
+            article.message.is-success
+                div.message-body
+                    strong Поздравляем,
+                    span   комната создана!
+        else
+            article.message.is-danger
+                div.message-body
+                    strong Ошибка,
+                    span  по какой-то причине комната не была создана (возможно комната с таким именем уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+    div.box
+        div.columns
+            div.column.is-fullwidth
+                h3.title.is-3 Создние комнаты
+        div.columns
+            div.column.is-fullwidth
+                form(method='post')
+                    div.columns
+                        div.column.is-12
+                            p.control
+                                label.label(for='name') Имя комнаты в БД (англ.)
+                                input.input#name(name='name', type='text', placeholder='testroom' required)
+                    div.columns
+                        div.column.is-12
+                            p.control
+                                label.label(for='label') Название комнаты (рус.)
+                                input.input#label(name='label', type='text', placeholder='Тестовая комната', required)
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='visiability') Видимость комнаты
+                                span.select.is-fullwidth
+                                    select#visiability(name='visiability')
+                                        option#private(name='private') Внутренняя
+                                        option#public(name='public') Внешняя
+                        div.column
+                            p.control
+                                label.label(for='company') Компания
+                                span.select.is-fullwidth
+                                    select#company(name='company')
+                                        each item in companies
+                                            option(id=item.name, name=item.name) #{item.name}
+                    p.control
+                    p.control
+                        button.button.is-primary Создать
+                        a.button.is-link(href='/profile') Отмена

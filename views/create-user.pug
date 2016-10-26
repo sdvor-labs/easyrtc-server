@@ -1,0 +1,79 @@
+extends profile-layout
+
+block content
+    if(isSaved !== null)
+        if(isSaved === true)
+            article.message.is-success
+                div.message-body
+                    strong Поздравляем,
+                    span   пользователь зарегистрирован!
+        else
+            article.message.is-danger
+                div.message-body
+                    strong Ошибка,
+                    span  по какой-то причине пользователь не был создан (возможно пользовательс таким логином уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+    div.box
+        div.columns
+            div.column.is-fullwidth
+                h3.title.is-3 Регистрация пользователя (менеджера)
+        div.columns
+            div.column.is-fullwidth
+                form(method='post')
+                    div.columns
+                        div.column.is-12
+                            p.control
+                                label.label(for='username') Логин
+                                input.input#username(name='username', type='text', placeholder='testuser' required)
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='lastname') Фамилия
+                                input.input#lastname(name='lastname', type='text', placeholder='Шариков')
+                        div.column
+                            p.control
+                                label.label(for='name') Имя
+                                input.input#name(name='name', type='text', placeholder='Полиграф')
+                        div.column
+                            p.control
+                                label.label(for='surname') Отчество
+                                input.input#surname(name='surname', placeholder='Полиграфович')
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='password') Пароль
+                                input.input#password(name='password', type='password', placeholder='testuser123', required)
+                        div.column
+                            p.control
+                                label.label(for='password1') Повторите пароль
+                                input.input#password1(name='password1', type='password', placeholder='testuser123', required)
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='location') Располжение
+                                input.input#location(name='location', type='text', placeholder='ул. Пречистенка, 24 (Чистый переулок 1)', required)
+                        div.column
+                            p.control
+                                label.label(for='mobile') Сотовый телефон
+                                input.input#mobile(name='mobile', type='text', placeholder='9999464629', required)
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='user_type') Тип пользователя
+                                span.select.is-fullwidth
+                                    select#user_type(name='user_type')
+                                        each item in types
+                                            option(id=item.name) #{item.name}
+                        div.column
+                            p.control
+                                label.label(for='company') Компания
+                                span.select.is-fullwidth
+                                    select#company(name='company')
+                                        each item in companies
+                                            option(id=item.name, name=item.name) #{item.name}
+                    div.columns
+                        div.column
+                            p.control
+                                textarea.textarea#additional_info(name='additional_info', placeholder='Дополнительная информация о сотреднике')
+                    p.control
+                        button.button.is-primary Создать
+                        a.button.is-link(href='/profile') Отмена

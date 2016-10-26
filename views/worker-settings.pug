@@ -1,50 +1,43 @@
-extends layout
+extends profile-layout
 
 
 block content
-    section.section
-        div.container
-        div.columns.is-mobile
-            div.column.is-4.is-offset-4.box
-                if(isSaved === true)
-                    div.notification.is-success
-                        span
-                            strong Поздравляем!
-                            span  Изменения созранены!
-                else if(isSaved === false)
-                    div.notification.is-danger
-                        span
-                            strong Ошибка!
-                            span  Изменения не сохранены =(                        
-                div.columns
-                    div.column.has-text-centered
-                        h3.title.is-3 Изменения настроек пользователя #{user.username}
-                div.columns
-                    div.column
-                    div.column
-                        img(src='/images/default-user.png')
-                    div.column
-                div.columns
-                    div.column
-                        form(method='post')
-                            div.columns
-                                div.column
-                                    p.control
-                                        label(for='user-name') Имя пользователя
-                                        input.input#user-name(type='text',name='name', value=user.name, required)
-                                div.column
-                                    p.control
-                                        label(for='user-surname') Отчество пользователя
-                                        input.input#user-surname(type='text', name='surname', value=user.surname, required)
-                            div.columns
-                                div.column.is-12
-                                    p.control
-                                        label(for='user-lastname') Фамилия пользователя
-                                        input.input#user-lastname(type='text', name='lastname', value=user.lastname, required)
-                            div.columns
-                                div.column
-                                    p.control.is-fullwidth
-                                        button.button.is-success.is-fullwidth(type='submit') Сохранить
-                                div.column
-                                    p.control.is-fullwidth
-                                        a.button.is-info.is-fullwidth(href='../profile') Назад
+    if(isSaved !== null)
+        if(isSaved === true)
+            article.message.is-success
+                div.message-body
+                    strong Поздравляем!
+                    span  Ваши данные успешно записаны.
+        else
+            article.message.is-danger
+                div.message-body
+                    strong Ошибка!
+                    span Мы не смогли записать ваши данные. Попробуйте позже еще раз чуть позже. При повторении ошибки обратитесь к администратору.
+    div.box
+        div.columns
+            div.column.is-fullwidth
+                h3.title.is-3 Изменение личных данных
+        div.columns
+            div.column.id-fullwidth
+                form(method='post')
+                    div.columns
+                        div.column
+                            p.control
+                                label(for='user-name') Имя пользователя
+                                input.input#user-name(type='text',name='name', value=user.name, required)
+                        div.column
+                            p.control
+                                label(for='user-surname') Отчество пользователя
+                                input.input#user-surname(type='text', name='surname', value=user.surname, required)
+                    div.columns
+                        div.column.is-fullwidth
+                            p.control
+                                label(for='user-lastname') Фамилия пользователя
+                                input.input#user-lastname(type='text', name='lastname', value=user.lastname, required)
+                    div.columns
+                        div.column
+                            p.control.is-fullwidth
+                                button.button.is-success.is-fullwidth(type='submit') Сохранить
+                        div.column
+                            p.control.is-fullwidth
+                                a.button.is-info.is-fullwidth(href='../profile') Назад

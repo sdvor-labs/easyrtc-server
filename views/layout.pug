@@ -1,10 +1,11 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/bulma.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
+    block head
+      title= title
+      link(rel='stylesheet', href='/stylesheets/bulma.css')
+      link(rel='stylesheet', href='/stylesheets/style.css')
+      link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
   body
     section.hero.is-light.is-medium
         // Hero navigation

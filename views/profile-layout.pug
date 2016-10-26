@@ -1,0 +1,94 @@
+extends layout
+
+append head
+    script(type='text/javascript', src='/client/js/ui.js')
+    
+block content
+    section.section
+        div.container
+            div.columns
+                
+                div.column.is-one-quarter
+                    aside.menu
+                        p.menu-label Профиль пользователя
+                        ul.menu-list
+                            li
+                                if(isActive === 'profile')
+                                        a.is-active(href='/profile') Мой профиль
+                                else
+                                    a(href='/profile') Мой профиль
+                            li
+                                if(isActive === 'settings')
+                                    a.is-active(href='/profile/settings') Настройки
+                                else
+                                    a(href='/profile/settings') Найстройки
+                        p.menu-label Модерация
+                            ul.menu-list
+                                li
+                                    a(onclick='toggleList("createList")') Создать
+                                    if(isActive === 'create-company' || isActive === 'create-room' || isActive === 'create-user')
+                                        ul#createList
+                                            li
+                                                if(isActive === 'create-company')
+                                                    a.is-active(href='/profile/create-company') Компаню
+                                                else
+                                                    a(href='/profile/create-company') Компанию
+                                            li
+                                                if(isActive === 'create-room')
+                                                    a.is-active(href='/prosile/create-room') Комнату
+                                                else
+                                                    a(href='/profile/create-room') Комнату
+                                            li
+                                                if(isActive === 'create-user')
+                                                    a.is-active(href='/profile/create-user') Пользователя
+                                                else
+                                                    a(href='/profile/create-user') Пользователя
+                                    else
+                                        ul#createList.is-hidden
+                                            li
+                                                if(isActive === 'create-company')
+                                                    a.is-active(href='/profile/create-company') Компаню
+                                                else
+                                                    a(href='/profile/create-company') Компанию
+                                            li
+                                                if(isActive === 'create-room')
+                                                    a.is-active(href='/prosile/create-room') Комнату
+                                                else
+                                                    a(href='/profile/create-room') Комнату
+                                            li
+                                                if(isActive === 'create-user')
+                                                    a.is-active(href='/profile/create-user') Пользователя
+                                                else
+                                                    a(href='/profile/create-user') Пользователя
+                                li
+                                    a(onclick='toggleList("editList");') Редактировать
+                                    if(isActive === 'edit-companies' || isActive === 'edit-rooms')
+                                        ul#editList
+                                            li
+                                                if(isActive === 'edit-companies')
+                                                    a.is-active(href='/profie/companies') Компанию
+                                                else
+                                                    a(href='/profile/companies') Компанию
+                                            li
+                                                if(isActive == 'edit-rooms')
+                                                    a.is-active(href='/profile/rooms') Комнату
+                                                else
+                                                    a(href='/profile/rooms') Комнату
+                                    else
+                                        ul#editList.is-hidden
+                                            li
+                                                if(isActivate === 'edit-companies')
+                                                    a.is-active(href='/profie/companies') Компанию
+                                                else
+                                                    a(href='/profile/companies') Компанию
+                                            li
+                                                if(isActive == 'edit-rooms')
+                                                    a.is-active(href='/profile/rooms') Комнату
+                                                else
+                                                    a(href='/profile/rooms') Комнату
+                        p.menu-label Действия
+                            ul.menu-list
+                                li
+                                    a(href='/logout') Выйти
+                div.column
+                    block content

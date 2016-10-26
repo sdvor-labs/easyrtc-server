@@ -1,0 +1,10 @@
+extends profile-layout
+
+block content
+    each item in companies
+        div.box
+            div.columns
+                div.column
+                    h5.title.is-5 #{item.name}
+                div.column.has-text-centered
+                    a.button.is-info.is-fullwidth(href=`/profile/companies/${item._id}`) Изменить

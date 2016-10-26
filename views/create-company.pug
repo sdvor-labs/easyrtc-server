@@ -1,0 +1,33 @@
+extends profile-layout
+
+block content
+    if(isSaved !== null)
+        if(isSaved === true)
+            article.message.is-success
+                div.message-body
+                    strong Поздравляем,
+                    span   компания создана!
+        else
+            article.message.is-danger
+                div.message-body
+                    strong Ошибка,
+                    span  по какой-то причине компания не была создана (возможно компания с таким именем уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+    div.box
+        div.columns
+            div.column.is-fullwidth
+                h3.title.is-3 Создние компании
+        div.columns
+            div.column.is-fullwidth
+                form(method='post')
+                    p.control
+                        label.label(for='name') Наименование компании
+                        input.input#name(name='name', type='text', placeholder='ООО "Рога и копыта"' required)
+                    p.control
+                        label.label(for='address') Адресс компании
+                        input.input#address(name='address', type='text', placeholder='Россия, Санкт-Петербург, 3-я улица Строителей, дом № 25', required)
+                    p.control
+                        label.label(for='site') Сайт компании
+                        input.input#site(name='site', type='text', placeholder='http://linux.org.ru', required)
+                    p.control
+                        button.button.is-primary Создать
+                        a.button.is-link(href='/profile') Отмена

@@ -170,7 +170,7 @@ function findUsers() {
                                                             });
                                                             defauleUser.save(function(err) {
                                                                     if(err) {
-                                                                        throw err;
+                                                                        console.log('Default user not created, error: ', err);
                                                                     } else {
                                                                         console.log('Default user created!');
                                                                         resolve(true);

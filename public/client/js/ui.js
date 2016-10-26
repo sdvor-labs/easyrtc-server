@@ -39,7 +39,7 @@ function clickTab(name) {
             activeThisTab(name);
             ['users', 'rooms', 'query'].forEach((item) => {
                     hideTab(`${item}-menu-block`);
-                })
+                });
             break;
         case 'query-menu':
             if(activeTab !== 'all-menu')
@@ -47,13 +47,22 @@ function clickTab(name) {
             activeThisTab(name);
             ['users', 'rooms', 'call'].forEach((item) => {
                     hideTab(`${item}-menu-block`);
-                })
+                });
             break;
         default:
-            alert('Произошла ошибка, '+ name);
+            alert(`Произошла ошибка, ${name}`);
+            break;
     }
     
 }
 function hideNotification() {
     document.getElementById('succNotif').classList.add('is-hidden');
+}
+function toggleList(e) {
+    let tmpElement = document.getElementById(e);
+    if(tmpElement.classList.contains('is-hidden') === true) {
+        tmpElement.classList.remove('is-hidden');
+    } else {
+        tmpElement.classList.add('is-hidden');
+    }
 }
