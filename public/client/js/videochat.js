@@ -126,7 +126,17 @@ function my_init() {
 function joinSuccess(roomName) {
     // Wait connection
     setTimeout(function() {
-            console.log('JoinRomm is success!');
+            let emptyRoom = true,
+                usersInRoom = easyrtc.getRoomOccupantsAsArray(roomName);
+            usersInRoom.forEach((e) => {
+                if(easyrtc.idToName(e) !== 'client') {
+                    emptyRoom = false;
+                }
+                if(e === usersInRoom[usersInRoom.length-1] && emptyRoom == true) {
+                    document.getElementById('emptyRoom').classList.add('is-active');
+                }
+            });
+            
         }, 100);
 }
 // Close user chat
@@ -174,6 +184,7 @@ function loginFailure(errorCode, message) {
 function connectMe(answer) {
     let promise = new Promise((reject, resolve) => {
         if(answer) {
+            roomName = document.getElementById('roomname').getAttribute('name');
             // Set resolution
             easyrtc.setVideoDims(640,480);
             // Conntection to EasyRTC App

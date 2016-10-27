@@ -37,7 +37,6 @@ html
                     div.is-margin-top-persent.modal-card
                         header.modal-card-head
                             p.modal-card-title Связаться с вами по видеосвязи?
-                            p #{needCheck}
                         section.modal-card-body
                             div.columns
                                 div.column.is-fullwidth#questionDiv
@@ -45,6 +44,19 @@ html
                         footer.modal-card-foot
                             a.button.is-primary(onclick='pleaseCall();') Да, позвонить мне
                             a.button.is-danger(onclick='notCall();') Нет, не надо мне звонить
+            div.modal#emptyRoom
+                div.modal-background
+                    div.is-margin-top-persent.modal-card
+                        header.modal-card-head
+                            p.modal-card-title Данная комната пуста
+                        section.modal-card-body
+                            div.columns
+                                div.column.is-fullwidth
+                                    span Извините, но на данный момент ни одного менеджера нет на месте. Вы можете отпраивть нам email на
+                                    a(href='mailto: example@test.ru') электронную почту
+                                    span  и мы свяжемся с вами как только будет возможность. Извините за недобства =)
+                            div.columns#capchaDiv
+                        footer.modal-card-foot
 
         div#if-not-posible.is-hidden
             div.card.is-fullwidth.is-fullheight.is-hidden#softwareError
