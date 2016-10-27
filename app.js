@@ -32,7 +32,8 @@ var User = require('./models/user'),
     UserStatus = require('./models/user_status'),
     UserType = require('./models/user_type'),
     UserRtcToken = require('./models/user_rtc_token'),
-    Room = require('./models/room');
+    Room = require('./models/room'),
+    logEntry = require('./models/log_entry');
 // Set process name
 process.title = 'node-easyrtc';
 // Create express application

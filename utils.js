@@ -6,9 +6,8 @@ let User = require('./models/user'),
     config = require('./config'),
     Room = require('./models/room'),
     jwt = require('jsonwebtoken'),
-    async = require('asyncawait/async'),
-    await = require('asyncawait/await');
-var Promise = require('bluebird');
+    logEntry = require('./models/log_entry');
+//var Promise = require('bluebird');
 
 // Create default room, user_status, user_type if it
 // don't created
@@ -267,5 +266,22 @@ let unless_route = function(path, middleware) {
     };
 };
 
+let appLogger = function(type ,action, description) {
+    console.log('<LOGGER>: Adding entry to log');
+    let logEntryToCreate = logEntry({
+            type_error: type, 
+            date: Date.now(),
+            action: action,
+            description: description
+        });
+    logEntryToCreate.save(function(err) {
+            if(err) {
+                console.log('<LOGGER>: WARNING!!!! Server app can not create log entry in database!');
+            } else {
+                console.log('<LOGGER>: Log entry added.');
+            }
+        });
+};
 
-module.exports = {utils, unless_route};
+
+module.exports = {utils, unless_route, appLogger};
