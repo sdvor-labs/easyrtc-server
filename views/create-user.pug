@@ -4,11 +4,13 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
+                div.message-header Протщрваиеот успешно создан
                 div.message-body
                     strong Поздравляем,
                     span   пользователь зарегистрирован!
         else
             article.message.is-danger
+                div.message-header Ошибка при создании пользователя
                 div.message-body
                     strong Ошибка,
                     span  по какой-то причине пользователь не был создан (возможно пользовательс таким логином уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.

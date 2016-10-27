@@ -5,11 +5,13 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
+                div.message-header Успех
                 div.message-body
                     strong Поздравляем!
                     span  Ваши данные успешно записаны.
         else
             article.message.is-danger
+                div.message-header Ошибка
                 div.message-body
                     strong Ошибка!
                     span Мы не смогли записать ваши данные. Попробуйте позже еще раз чуть позже. При повторении ошибки обратитесь к администратору.

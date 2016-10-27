@@ -38,7 +38,7 @@ router.get('/', load_user, function(req, res) {
                                         });
                                 }
                             });
-                    };
+                    }
                 }
             });
         } else {
@@ -566,7 +566,106 @@ router.get('/companies', load_user,function(req, res) {
             res.redirect('/login');
         }
     });
-
+//// Get single room
+router.get('/companies/:company_id', load_user, function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            Room.find({}, function(err, findedRooms){
+                                    if(err) {
+                                        res.render('error', {
+                                            error: err
+                                            });                                        
+                                    } else {
+                                        Company.findOne({
+                                                _id: req.params.company_id
+                                            }, function(err, company) {
+                                                    if(err) {
+                                                        res.render('error', {
+                                                                error: err
+                                                            });
+                                                    } else {
+                                                        res.render('edit-company', {
+                                                                    user: user,
+                                                                    rooms: findedRooms,
+                                                                    company: company,
+                                                                    isSaved: null,
+                                                                    isLogin: true,
+                                                                    isActive: 'edit-companies'});
+                                                    }
+                                                });
+                                    }
+                            });
+                        }
+            });
+        } else {
+            res.render('/login');
+        }
+    });
+//// Post single room
+router.post('/companies/:company_id', load_user, function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            Room.find({}, function(err, findedRooms){
+                                    if(err) {
+                                        res.render('error', {
+                                            error: err
+                                            });                                        
+                                    } else {
+                                        Company.findOne({
+                                                _id: req.params.company_id
+                                            }, function(err, company) {
+                                                    if(err) {
+                                                        res.render('error', {
+                                                                error: err
+                                                            });
+                                                    } else {
+                                                        company.name = req.body.name;
+                                                        company.address = req.body.address;
+                                                        company.site = req.body.site;
+                                                        company.save(function(err) {
+                                                                if(err) {
+                                                                    res.render('edit-company', {
+                                                                            user: user,
+                                                                            rooms: findedRooms,
+                                                                            company: company,
+                                                                            isSaved: false,
+                                                                            isLogin: true,
+                                                                            isActive: 'edit-companies'
+                                                                        });
+                                                                } else {
+                                                                    res.render('edit-company', {
+                                                                            user: user, rooms: findedRooms,
+                                                                            company: company,
+                                                                            isSaved: true,
+                                                                            isLogin: true,
+                                                                            isActive: 'edit-companies'
+                                                                        });   
+                                                                }
+                                                            });
+                                                    }
+                                                });
+                                    }
+                            });
+                        }
+            });
+        } else {
+            res.render('/login');
+        }
+    });
 // Rooms
 router.get('/rooms', load_user,function(req, res) {
         if(req.user) {
@@ -597,5 +696,125 @@ router.get('/rooms', load_user,function(req, res) {
             res.redirect('/login');
         }
     });
-
+//// Get single room
+router.get('/rooms/:room_name', load_user,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            Room.find({}, function(err, findedRooms){
+                                    if(err) {
+                                        res.render('error', {
+                                            error: err
+                                            });                                        
+                                    } else {
+                                        let editingRoom = null;
+                                        findedRooms.forEach((e) => {
+                                                if(e.name === req.params.room_name) {
+                                                    editingRoom = e;
+                                                }
+                                            });
+                                        Company.find({}, function(err, companies) {
+                                                if(err) {
+                                                    res.render('error', {
+                                                            error: err
+                                                        });
+                                                } else {
+                                                    res.render('edit-room', {
+                                                                user: user,
+                                                                rooms: findedRooms,
+                                                                room: editingRoom,
+                                                                companies: companies,
+                                                                isSaved: null,
+                                                                isLogin: true,
+                                                                isActive: 'edit-rooms'});
+                                                }
+                                            });
+                                    }
+                            });
+                        }
+            });                       
+        } else {
+            res.redirect('/login');
+        }
+    });
+//// Post singe room
+router.post('/rooms/:room_name', load_user,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            Room.find({}, function(err, findedRooms){
+                                    if(err) {
+                                        res.render('error', {
+                                            error: err
+                                            });                                        
+                                    } else {
+                                        let editingRoom = null;
+                                        findedRooms.forEach((e) => {
+                                                if(e.name === req.params.room_name) {
+                                                    editingRoom = e;
+                                                }
+                                            });
+                                        Company.find({}, function(err, companies) {
+                                                if(err) {
+                                                    res.render('error', {
+                                                            error: err
+                                                        });
+                                                } else {
+                                                    editingRoom.name = req.body.name;
+                                                    editingRoom.label = req.body.label;
+                                                    editingRoom.visiability = req.body.visiability;
+                                                    Company.findOne({
+                                                            name: req.body.company
+                                                        }, function(err, findedCompany) {
+                                                                if(err) {
+                                                                    res.render('error', {
+                                                                            error: err
+                                                                        });
+                                                                } else {
+                                                                    editingRoom.company = findedCompany;
+                                                                    editingRoom.save(function(err) {
+                                                                            if(err) {
+                                                                                res.render('edit-room', {
+                                                                                            user: user,
+                                                                                            rooms: findedRooms,
+                                                                                            room: editingRoom,
+                                                                                            companies: companies,
+                                                                                            isSaved: false,
+                                                                                            isLogin: true,
+                                                                                            isActive: 'edit-rooms'});
+                                                                            } else {
+                                                                                res.render('edit-room', {
+                                                                                            user: user,
+                                                                                            rooms: findedRooms,
+                                                                                            room: editingRoom,
+                                                                                            companies: companies,
+                                                                                            isSaved: true,
+                                                                                            isLogin: true,
+                                                                                            isActive: 'edit-rooms'});
+                                                                            }
+                                                                        });
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                    }
+                            });
+                        }
+            });                       
+        } else {
+            res.redirect('/login');
+        }
+    });
 module.exports = router;

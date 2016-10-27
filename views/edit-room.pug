@@ -1,0 +1,59 @@
+extends profile-layout
+
+block content
+    if(isSaved !== null)
+        if(isSaved === true)
+            article.message.is-success
+                div.message-header Изменения комнаты #{room.label} успешно сохранены
+                div.message-body
+                    strong Поздравляем!
+                    span  Изменения в комнате #{room.name} (#{room.label}) успешно созранены!
+        else
+            article.message.is-danger
+                div.message-header Ошибка при сохранении изменений в #{room.label}
+                div.message-body
+                    strong Ошибка!
+                    span  Во время сохранений изменений в комнате #{room.name} (#{room.label}) возникли какие-то проблемы. Попробуйте чуть позже или обратитесь к администратору.
+    div.box
+        div.columns
+            div.column.is-fullwidth
+                h3.title.is-3 Редактирование комнаты: #{room.label}
+        div.columns
+            div.column.is-fullwidth
+                form(method='post')
+                    div.columns
+                        div.column.is-fullwidth
+                            p.control
+                                label.label(for='name') Имя комнаты в БД (анг.)
+                                input.input#name(name='name', type='text', placeholder='testroom', value=room.name)
+                    div.columns
+                        div.column.is-fullwidth
+                            p.control
+                                label.label(for='label') Наименование комнаты (рус.)
+                                input.input#label(name='label', type='text', placeholder='Тестовая комната', value=room.label)
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='visiability') Область видимоси
+                                span.select.is-fullwidth
+                                    select#visiability(name='visiability')
+                                        if(room.visiability === 'private')
+                                            option(value='private', selcted) Внутренняя
+                                            option(value='public') Внешняя
+                                        else
+                                            option(value='private') Внутреняя
+                                            option(value='public', selected) Внешняя
+                        div.column
+                            each c in companies
+                                label.label(for='company') Компания
+                                span.select.is-fullwidth
+                                    select#company(name='company')
+                                        if(room.company.toString() === c._id.toString())
+                                            option(value=c.name, selected) #{c.name}
+                                        else
+                                            option(value=c.name) #{c.name}
+                    div.columns
+                        div.column.is-fullwidth
+                            p.control
+                                button.button.is-primary Сохранить
+                                a.button.is-link(href='/profile') Назад

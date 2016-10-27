@@ -4,11 +4,13 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
+                div.message-header Комната успешно создана
                 div.message-body
                     strong Поздравляем,
                     span   комната создана!
         else
             article.message.is-danger
+                div.messate-header Ошибка при создании комнаты
                 div.message-body
                     strong Ошибка,
                     span  по какой-то причине комната не была создана (возможно комната с таким именем уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
