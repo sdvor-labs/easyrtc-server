@@ -1,3 +1,9 @@
+/**
+ * @file mongo-confit
+ * @description MongoDB settings for localhost
+ * @todo Delete this file
+ * @author Dmitry Shevelev
+ */
 'use strict';
 
 var mongo;

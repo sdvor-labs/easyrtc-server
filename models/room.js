@@ -1,9 +1,6 @@
-// grab the things we need
 let mongoose = require('mongoose'),
         Schema = mongoose.Schema;
 
-// Create schema for chat-rooms
-// main attributes: name (string), visiability (string)
 let roomSchema = new Schema({
         name: {
             type: String,
@@ -22,9 +19,8 @@ let roomSchema = new Schema({
         },
         company: [{type: Schema.Types.ObjectId, ref: 'Company'}]
     });
-// the schema is unless so far
-// we need to create a model using it
+
 let Room =  mongoose.model('Room', roomSchema);
-// make this avaliable to our users in our Node applications
+
 module.exports = Room;
 

@@ -1,16 +1,14 @@
 {
   "name": "easyrtc-server",
-  "version": "0.0.1",
+  "version": "0.9",
   "private": true,
-  "author": "Dmitry 'NeuromanticJS' Shevelev",
+  "author": "Dmitry  Shevelev, Nikita Kotov",
   "description": "Server for corporate video and audio calls",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "nodejs ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
-    "async": "^2.0.1",
-    "asyncawait": "^1.0.6",
     "body-parser": "^1.0.2",
     "cookie-parser": "~1.0.1",
     "debug": "~0.7.4",

@@ -7,7 +7,7 @@ let express = require('express'),
     UserType = require('../models/user_type'),
     UserStatus = require('../models/user_status'),
     router = express.Router(),
-    utils = require('./utils.js');
+    utils = require('../utils');
 //router.use(token_check.token_check);
 router.get('/', load_user, function(req, res) {
     if(req.user) {

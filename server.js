@@ -1,10 +1,7 @@
 #!/usr/bin/nodejs
-//var debug = require('debug')('my-application');
-//Load models
 let Room = require('./models/room.js'),
-    logEntry = require('./models/log_entry');
-// Main server application variables
-let app = require('./app'),
+    logEntry = require('./models/log_entry'),
+    app = require('./app'),
     fs = require('fs'),
     http = require('http'),
     UserRtcToken = require('./models/user_rtc_token'),
@@ -17,13 +14,11 @@ let app = require('./app'),
     },
     socketIo = require('socket.io'),
     easyrtc = require('../'),
-    utils = require('./utils.js');
-// Create http & https servers
-let httpServer = http.createServer(app).listen(3000),
-    httpsServer = https.createServer(credentials, app).listen(8080);
-
+    utils = require('./utils.js'),
+    httpServer = http.createServer(app).listen(3000),
+    httpsServer = https.createServer(credentials, app).listen(8080),
 // Start socket.io so it attaches itself to Express server
-let socketServer = socketIo.listen(httpsServer, {'log level': 1}, function() {
+    socketServer = socketIo.listen(httpsServer, {'log level': 1}, function() {
         utils.appLogger('run', 'Start cocket-server', `Success starting socketIo server`);
     });
 

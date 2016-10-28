@@ -1,6 +1,6 @@
 let express = require('express'),
     router = express.Router(),
-    utils = require('../utils.js');
+    utils = require('../utils');
 
 /* GET users listing. */
 router.get('/', function(req, res) {

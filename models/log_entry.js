@@ -8,6 +8,6 @@ let logEntrySchema = new Schema({
     description: String
 });
 
-var logEntry= mongoose.model('LogEntry', logEntrySchema);
+let logEntry= mongoose.model('LogEntry', logEntrySchema);
 
 module.exports = logEntry;

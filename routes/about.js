@@ -1,7 +1,8 @@
 let express = require('express'),
     router = express.Router(),
     Room = require('../models/room.js'),
-    load_user = require('../middleware/load_user');
+    load_user = require('../middleware/load_user'),
+    utils = require('../utils');
 
 /* GET about listing. */
 router.get('/', load_user,function(req, res) {

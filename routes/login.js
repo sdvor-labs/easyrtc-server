@@ -5,7 +5,7 @@ let express = require('express'),
     config = require('../config'),
     load_user = require('../middleware/load_user');
     router = express.Router(),
-    utils = require('./utils.js');
+    utils = require('../utils');
 /* GET login method */
 router.get('/', load_user, function(req, res) {
     if (!req.user) {

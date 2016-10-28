@@ -1,6 +1,6 @@
 let mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
-
+	
 let companySchema = new Schema({
 	name: String,
 	address: String,
@@ -8,6 +8,6 @@ let companySchema = new Schema({
 	additional_info: String
 });
 
-var Company = mongoose.model('Company', companySchema);
+let Company = mongoose.model('Company', companySchema);
 
 module.exports = Company;

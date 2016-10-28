@@ -2,8 +2,7 @@ let express = require('express'),
     router = express.Router(),
     Room = require('../models/room.js'),
     load_user = require('../middleware/load_user'),
-    utils = require('./utils.js');
-//    utils = require('../utils');
+    utils = require('../utils');
 /* GET home page. */
 router.get('/', load_user, function(req, res) {
   if(req.user) {
