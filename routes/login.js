@@ -29,7 +29,7 @@ router.post('/', function(req, res){
     User.findOne({
         username: req.body.login
     }, function(err, user) {
-        if(err) {
+        if(!err) {
             if (!user) {
                 result = 'Unsuccessful';
             }
