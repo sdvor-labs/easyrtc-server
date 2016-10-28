@@ -34,6 +34,7 @@ easyrtc.events.on("easyrtcAuth", function (socket, easyrtcid, msg, socketCallbac
     easyrtc.events.defaultListeners.easyrtcAuth(socket, easyrtcid, msg, socketCallback, function (err, connectionObj) {
         if (err || !msg.msgData || !msg.msgData.credential || !connectionObj) {
             callback(err, connectionObj);
+            utils.appLogger('error', 'EasyRTC connect', `Fail, when app try auth  user on EasyRTC server (${connectionObj}). Error message: ${err}.`);
             return;
         }
         connectionObj.setField("credential", msg.msgData.credential, {"isShared": false});

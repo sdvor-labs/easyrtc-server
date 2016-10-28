@@ -9,12 +9,13 @@ let express = require('express'),
     morgan = require('morgan'),
     jwt = require('jsonwebtoken'),
     bodyParser = require('body-parser'),
-    config = require('./config');
+    config = require('./config'),
+    utils = require('./utils.js');
 // Mongo-express
-let mongoExpress = require('mongo-express/lib/middleware'),
+    mongoExpress = require('mongo-express/lib/middleware'),
     mongoExpressConfig = require('./mongo_express_config');
 // Load routes
-let routes = require('./routes/index'),
+    routes = require('./routes/index'),
     users = require('./routes/users'),
     about = require('./routes/about'),
     profile = require('./routes/profile'),
@@ -24,10 +25,10 @@ let routes = require('./routes/index'),
     api = require('./routes/api'),
     login = require('./routes/login');
 // Load Mongoose ODM
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 mongoose.connect('mongodb://10.0.16.101/newDB');
 // Load models
-var User = require('./models/user'),
+let User = require('./models/user'),
     Company = require('./models/company'),
     UserStatus = require('./models/user_status'),
     UserType = require('./models/user_type'),
@@ -41,9 +42,6 @@ let app = express();
 // TODO: move to config
 app.locals.secret = config.secret;
 /* end of variables declaration block */
-
-
-
 /* express app routes, modules etc. */
 // Sessions enable
 app.use(cookieParser());
@@ -72,12 +70,12 @@ app.use('/logout', logout);
 app.use('/widgets-and-code', code);
 /* end of express app routes, modules etc. */
 // For first run
-let utils = require('./utils.js');
 utils.utils('firstRun').then((resRun) => {
         console.log('First run function: ', resRun); 
     });
 /// Catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
+    utils.appLogger('error', 'ERROR 404', `Error 404 (Not found). Error message: ${err}.`);        
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
@@ -88,6 +86,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
+        utils.appLogger('error', `ERROR ${err.status}`, `Error 404 (${err.message}). Error message: ${err}.`);
         res.render('error', {
             message: err.message,
             error: err
@@ -98,6 +97,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
+    utils.appLogger('error', `ERROR ${err.status}`, `Error 404 (${err.message}). Error message: ${err}.`);
     res.render('error', {
         message: err.message,
         error: {}

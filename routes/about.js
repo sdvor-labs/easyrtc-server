@@ -9,6 +9,7 @@ router.get('/', load_user,function(req, res) {
     Room.find({}, function(err, roomsList){
       if(err) {
         res.render('about', { rooms: 'Null' });
+        utils.appLogger('fail', 'Fail opening room', `Fail, when user try open rooms. Error message: ${err}.`);
       } else {
         res.render('about', {
                               rooms: roomsList,
@@ -18,6 +19,7 @@ router.get('/', load_user,function(req, res) {
   } else {
     Room.find({visiability: 'public'}, function(err, roomList) {
       if(err){
+        utils.appLogger('fail', 'Fail opening room', `Fail, when user try open rooms. Error message: ${err}.`);
         res.render('about', {rooms: 'Null'});
       } else {
         res.render('about', {
