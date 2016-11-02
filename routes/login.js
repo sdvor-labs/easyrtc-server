@@ -1,24 +1,19 @@
 let express = require('express'),
     User = require('../models/user'),
     jwt = require('jsonwebtoken'),
-    Room = require('../models/room'),
     config = require('../config'),
-    load_user = require('../middleware/load_user');
+    load_user = require('../middleware/load_user'),
+    load_menu = require('../middleware/load_menu'),
+    load_rooms = require('../middleware/load_rooms'),
     router = express.Router(),
     utils = require('../utils');
 /* GET login method */
-router.get('/', load_user, function(req, res) {
+router.get('/', load_user, load_menu, load_rooms, function(req, res) {
     if (!req.user) {
-        Room.find({visiability: 'public'}, function(err, rooms) {
-                if(err) {
-                    utils.appLogger('fail', 'Fail finding document (room)', `Fail, when app try finding list documents type ROOM with visiability 'public'. Error message: ${err}.`);
-                    res.render('error', err);
-                } else {
-                    res.render('login', {
-                                            rooms: rooms,
-                                            isLogin: false});
-                }
-            });
+        res.render('login', {
+                    menuItems: req.menuItems,
+                    rooms: req.rooms,
+                    isLogin: false});
     } else {
         res.redirect('./profile');
     }

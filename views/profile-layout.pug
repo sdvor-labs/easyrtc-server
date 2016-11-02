@@ -43,6 +43,12 @@ block content
                                                         a.is-active(href='/profile/create-user') Пользователя
                                                     else
                                                         a(href='/profile/create-user') Пользователя
+                                                li
+                                                    if(isActive === 'create-page')
+                                                        a.is-active(href='/profile/create-page') Страницу
+                                                    else
+                                                        a(href='/profile/create-page') Страницу
+
                                         else
                                             ul#createList.is-hidden
                                                 li
@@ -52,7 +58,7 @@ block content
                                                         a(href='/profile/create-company') Компанию
                                                 li
                                                     if(isActive === 'create-room')
-                                                        a.is-active(href='/prosile/create-room') Комнату
+                                                        a.is-active(href='/profile/create-room') Комнату
                                                     else
                                                         a(href='/profile/create-room') Комнату
                                                 li
@@ -60,6 +66,11 @@ block content
                                                         a.is-active(href='/profile/create-user') Пользователя
                                                     else
                                                         a(href='/profile/create-user') Пользователя
+                                                li
+                                                    if(isActive === 'create-page')
+                                                        a.is-active(href='/profile/create-page') Страницу
+                                                    else
+                                                        a(href='/profile/create-page') Страницу
                                     li
                                         a(onclick='toggleList("editList");') Редактировать
                                         if(isActive === 'edit-companies' || isActive === 'edit-rooms')
@@ -74,6 +85,11 @@ block content
                                                         a.is-active(href='/profile/rooms') Комнату
                                                     else
                                                         a(href='/profile/rooms') Комнату
+                                                li
+                                                    if(isActive == 'edit-pages')
+                                                        a.is-active(href='/profile/pages') Комнату
+                                                    else
+                                                        a(href='/profile/pages') Комнату
                                         else
                                             ul#editList.is-hidden
                                                 li
@@ -86,6 +102,11 @@ block content
                                                         a.is-active(href='/profile/rooms') Комнату
                                                     else
                                                         a(href='/profile/rooms') Комнату
+                                                li
+                                                    if(isActive == 'edit-pages')
+                                                        a.is-active(href='/profile/pages') Комнату
+                                                    else
+                                                        a(href='/profile/pages') Комнату
                         p.menu-label Действия
                             ul.menu-list
                                 li
