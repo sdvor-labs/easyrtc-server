@@ -73,7 +73,7 @@ block content
                                                         a(href='/profile/create-page') Страницу
                                     li
                                         a(onclick='toggleList("editList");') Редактировать
-                                        if(isActive === 'edit-companies' || isActive === 'edit-rooms')
+                                        if(isActive === 'edit-companies' || isActive === 'edit-rooms' || isActive === 'edit-page')
                                             ul#editList
                                                 li
                                                     if(isActive === 'edit-companies')
@@ -81,15 +81,15 @@ block content
                                                     else
                                                         a(href='/profile/companies') Компанию
                                                 li
-                                                    if(isActive == 'edit-rooms')
+                                                    if(isActive === 'edit-rooms')
                                                         a.is-active(href='/profile/rooms') Комнату
                                                     else
                                                         a(href='/profile/rooms') Комнату
                                                 li
-                                                    if(isActive == 'edit-pages')
-                                                        a.is-active(href='/profile/pages') Комнату
+                                                    if(isActive === 'edit-page')
+                                                        a.is-active(href='/profile/pages') Страницу
                                                     else
-                                                        a(href='/profile/pages') Комнату
+                                                        a(href='/profile/pages') Страницу
                                         else
                                             ul#editList.is-hidden
                                                 li
@@ -98,15 +98,15 @@ block content
                                                     else
                                                         a(href='/profile/companies') Компанию
                                                 li
-                                                    if(isActive == 'edit-rooms')
+                                                    if(isActive === 'edit-rooms')
                                                         a.is-active(href='/profile/rooms') Комнату
                                                     else
                                                         a(href='/profile/rooms') Комнату
                                                 li
-                                                    if(isActive == 'edit-pages')
-                                                        a.is-active(href='/profile/pages') Комнату
+                                                    if(isActive === 'edit-page')
+                                                        a.is-active(href='/profile/pages') Страницу
                                                     else
-                                                        a(href='/profile/pages') Комнату
+                                                        a(href='/profile/pages') Страницу
                         p.menu-label Действия
                             ul.menu-list
                                 li

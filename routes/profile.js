@@ -821,7 +821,7 @@ router.post('/rooms/:room_name', load_user, load_menu, load_rooms,function(req, 
             res.redirect('/login');
         }
     });
-/* Crate page */
+/* Create page */
 router.get('/create-page', load_user, load_menu, load_rooms,function(req, res) {
         if(req.user) {
             User.findOne({
@@ -924,4 +924,146 @@ router.post('/create-page', load_user, load_menu, load_rooms,function(req, res) 
             res.redirect('/login');
         }
     });
+/* All pages */
+router.get('/pages', load_user, load_menu, load_rooms,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.params.token}). Error message: ${err}.`);
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            Page.find({}, function(err, pages) {
+                                    if(err) {
+                                        utils.appLogger('fail', 'Fail finding documents (pages)', `Fail, when app try finding all documents with type PAGES. Error message: ${err}.`);
+                                        res.render('error', {
+                                            error: err
+                                        });
+                                    } else {
+                                        if(user.admin === true) {
+                                            res.render('pages', {
+                                                    menuItems: req.menuItems,
+                                                    user: user,
+                                                    rooms: req.rooms,
+                                                    pages: pages,
+                                                    isSaved: null,
+                                                    isLogin: true,
+                                                    isActive: 'edit-page'
+                                            });
+                                        } else {
+                                            res.redirect('/profile');
+                                        }
+                                    }
+                                });
+                        }
+                    });
+        } else {
+            res.redirect('/login');
+        }
+    });
+/* Edit page */
+router.get('/pages/:page_name', load_user, load_menu, load_rooms,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.params.token}). Error message: ${err}.`);
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            if(user.admin === true) {
+                                Page.findOne({
+                                    name: req.params.page_name
+                                }, function(err, thisPage) {
+                                        if(err) {
+                                            utils.appLogger('fail', 'Fail finding document (page)', `Fail, when app try finding document type USER with page (${req.params.page_name}). Error message: ${err}.`);
+                                            res.render('error', {
+                                                            error: err
+                                                        });
+                                        } else {
+                                            res.render('edit-page', {
+                                                            menuItems: req.menuItems,
+                                                            user: user,
+                                                            rooms: req.rooms,
+                                                            page: thisPage,
+                                                            isSaved: null,
+                                                            isLogin: true,
+                                                            isActive: 'edit-page'
+                                                        });
+                                        }
+                                });
+                            } else {
+                                res.redirect('/profile');
+                            }
+                        }
+                    });
+        } else {
+            res.redirect('/login');
+        }
+    });
+/* Edit page */
+router.post('/pages/:page_name', load_user, load_menu, load_rooms,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.params.token}). Error message: ${err}.`);
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            if(user.admin === true) {
+                                Page.findOne({
+                                    name: req.params.page_name
+                                }, function(err, thisPage) {
+                                        if(err) {
+                                            utils.appLogger('fail', 'Fail finding document (page)', `Fail, when app try finding document type PAGE with name (${req.params.page_name}). Error message: ${err}.`);
+                                            res.render('error', {
+                                                            error: err
+                                                        });
+                                        } else {
+                                            thisPage.name = req.body.name;
+                                            thisPage.title = req.body.title;
+                                            thisPage.subtitle = req.body.subtitle;
+                                            thisPage.text = req.body.text;
+                                            
+                                            thisPage.save(function(err){
+                                                    let isSaved = false;
+                                                
+                                                    if(err) {
+                                                        utils.appLogger('fail', 'Fail saved document (page)', `Fail, when app try finding document type Page with name (${req.params.page_name}). Error message: ${err}.`);
+                                                    } else {
+                                                        utils.appLogger('success', 'Success saved document (page)', `Success saving document type Page with name (${req.params.page_name}).`);
+                                                        isSaved = true;
+                                                    }
+                                                    
+                                                    res.render('edit-page', {
+                                                            menuItems: req.menuItems,
+                                                            user: user,
+                                                            rooms: req.rooms,
+                                                            page: thisPage,
+                                                            isSaved: isSaved,
+                                                            isLogin: true,
+                                                            isActive: 'edit-page'
+                                                        });
+                                                    
+                                                });
+                                        }
+                                });
+                            } else {
+                                res.redirect('/profile');
+                            }
+                        }
+                    });
+        } else {
+            res.redirect('/login');
+        }
+    });
+
 module.exports = router;

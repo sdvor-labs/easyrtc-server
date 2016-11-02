@@ -1,0 +1,38 @@
+extends profile-layout
+
+block content
+    if(isSaved !== null)
+        if(isSaved === true)
+            article.message.is-success
+                div.message-header Страница успешно сохранена
+                div.message-body
+                    strong Поздравляем,
+                    span   ваши изменения успешно сохранены!
+        else
+            article.message.is-danger
+                div.message-header Изменения не сохранены =(
+                div.message-body
+                    strong Ошибка,
+                    span  по какой-то причине страница не была сохранена. Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+    div.box
+        div.columns
+            div.column.is-fullwidth
+                h3.title.is-3 Редактирование страницы
+        div.columns
+            div.column.is-fullwidth
+                form(method='post')
+                    p.control
+                        label.label(for='name') Наименование страницы
+                        input.input#name(name='name', type='text', placeholder='war-word', value=page.name, required)
+                    p.control
+                        label.label(for='title') Заголовок страницы
+                        input.input#title(name='title', type='text', placeholder='Нападение инопланетян', value=page.title, required)
+                    p.control
+                        label.label(for='subtitle') Подзаголовок
+                        input.input#title(name='subtitle', type='text', placeholder='По роману Г.Уэлса "Война миров"', value=page.subtitle, required)
+                    p.control
+                        label.label(for='text') Содержание страницы
+                        textarea.textarea#text(name='text', placeholder='Текст содержания страницы', required) #{page.text}
+                    p.control
+                        button.button.is-primary Сохранить
+                        a.button.is-link(href='/profile') Отмена
