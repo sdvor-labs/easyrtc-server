@@ -57,7 +57,28 @@ html
                                     span  и мы свяжемся с вами как только будет возможность. Извините за недобства =)
                             div.columns#capchaDiv
                         footer.modal-card-foot
-
+            div.modal#notCalled
+                div.modal-background
+                    div.is-margin-top-persent.modal-card
+                        header.modal-card-head
+                            p.modal-card-title Ожидайте звонка
+                        section.modal-card-body
+                            div.columns
+                                div.column.is-fullwidth
+                                    p Извините, но все менеджеры пока заняты. Оставайтесь на связи и мы вам перезвоним в ближайшее время
+                            div.columns#capchaDiv
+                        footer.modal-card-foot
+            div.modal#haveCalled
+                div.modal-background
+                    div.is-margin-top-persent.modal-card
+                        header.modal-card-head
+                            p.modal-card-title Спасибо за звонок
+                        section.modal-card-body
+                            div.columns
+                                div.column.is-fullwidth
+                                    p Надеемся мы смогли вам помочь!
+                            div.columns#capchaDiv
+                        footer.modal-card-foot
         div#if-not-posible.is-hidden
             div.card.is-fullwidth.is-fullheight.is-hidden#softwareError
                 div.card-image
