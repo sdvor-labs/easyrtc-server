@@ -15,8 +15,8 @@ let Room = require('./models/room.js'),
     socketIo = require('socket.io'),
     easyrtc = require('../'),
     utils = require('./utils.js'),
-    httpServer = http.createServer(app).listen(3000),
-    httpsServer = https.createServer(credentials, app).listen(8080),
+    httpServer = http.createServer(app).listen(3030),
+    httpsServer = https.createServer(credentials, app).listen(5000),
 // Start socket.io so it attaches itself to Express server
     socketServer = socketIo.listen(httpsServer, {'log level': 1}, function() {
         utils.appLogger('run', 'Start cocket-server', `Success starting socketIo server`);
@@ -150,11 +150,11 @@ let myEasyrtcApp = function (err, appObj) {
 };
 
 // Listen http & https servers on different ports
-httpServer.listen(3000, '10.0.46.83', function () {
+httpServer.listen(3030, '77.244.221.70', function () {
     utils.appLogger('run', 'Starting HTTP server', 'Run http server & listener');
-    console.log('<SERVER>: Listening on http://10.0.46.83:3000');
+    console.log('<SERVER>: Listening on http://videochat.sdvor.com:3030');
 });
-httpsServer.listen(8080, '10.0.46.83', function () {
+httpsServer.listen(5000, '77.244.221.70', function () {
     utils.appLogger('run','Starting HTTPS server', 'Run http server & listener');
-    console.log('<SERVER>: Listening on https://10.0.46.83:8080')
+    console.log('<SERVER>: Listening on https://videochat.sdvor.com:5000')
 });

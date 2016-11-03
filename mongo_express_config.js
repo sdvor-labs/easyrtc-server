@@ -34,13 +34,13 @@ if (process.env.VCAP_SERVICES) {
    * @property {string} username - login owner database
    */ 
   mongo = {
-    db:       'newDB',
-    host:     '10.0.16.101',
-    password: 'test',
+    db:       'test',
+    host:     'localhost',
+    password: '3pm9skn5',
     port:     27017,
     ssl:      false,
-    url:      'mongodb://localhost:27017/newDB',
-    username: 'test',
+    url:      'mongodb://localhost:27017/test',
+    username: 'testvideo',
   };
 }
 /* exports all settings */
@@ -108,8 +108,8 @@ module.exports = {
    */
   useBasicAuth: process.env.ME_CONFIG_BASICAUTH_USERNAME !== '',
   basicAuth: {
-    username: process.env.ME_CONFIG_BASICAUTH_USERNAME || 'admin',
-    password: process.env.ME_CONFIG_BASICAUTH_PASSWORD || 'pass',
+    username: process.env.ME_CONFIG_BASICAUTH_USERNAME || 'neuromanticsd',
+    password: process.env.ME_CONFIG_BASICAUTH_PASSWORD || '351skl9vcr',
   },
   options: {
     /* Display startup text on console */
