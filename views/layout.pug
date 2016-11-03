@@ -42,7 +42,7 @@ html
                     ul#rooms
                         each room in rooms
                             li(class='room-' + room.id)
-                                a(href='/widget/' + room.name) #{room.label}
+                                a(href='/widget/' + room.name, target="_blank") #{room.label}
                         if(isLogin)
                             li
                                 a(href='/profile') Мой профиль
