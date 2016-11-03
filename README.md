@@ -1,3 +1,6 @@
+The project allows to organize video chat connection between the client and the manager via corporative web-site and WebRTC 
+[Текст ссылки](адрес://ссылки.здесь "Заголовок ссылки")
+
 # Install
 ## Software Requirements
 To work correctly you need:
