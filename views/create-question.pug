@@ -1,0 +1,56 @@
+extends profile-layout
+
+block content
+    if(isSaved !== null)
+        if(isSaved === true)
+            article.message.is-success
+                div.message-header Вопрос был успешно создан
+                div.message-body
+                    strong Поздравляем,
+                    span   вопрос создан!
+        else
+            article.message.is-danger
+                div.message-header Вопрос не получилось создать =(
+                div.message-body
+                    strong Ошибка,
+                    span  по какой-то причине вопрос не был создан (возможно такой вопрос уже кто-то создал). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+    div.box
+        div.columns
+            div.column.is-fullwidth
+                h3.title.is-3 Создание вопроса 
+        div.columns
+            div.column.is-fullwidth
+                form(method='post')
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='pollsType') Определите категорию опроса
+                                span.select.is-fullwidth
+                                    select#pollsType(name='pollsType')
+                                        option(value='worker') Для сотрудников
+                                        option(value='costumer') Для клиентов
+                        div.column
+                            p.control
+                                label.label(for='questionText') Текст вопроса
+                                input.input#questionText(name='questionText', type='text', placeholder='Как пройти вечером в библиотеку?', required)
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='answerOne') Ответ 1
+                                input.input#answerOne(name='answerOne', type='text', placeholder='Да', required)
+                        div.column
+                            p.control
+                                label.label(for='answerTwo') Ответ 2
+                                input.input#answerTwo(name='answerOne', type='text', placeholder='Нет', required)
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='answerThree') Ответ 3
+                                input.input#answerThree(name='answerThree', type='text', placeholder='Не знаю', required)
+                        div.column
+                            p.control
+                                label.label(for='answerFore') Ответ 4
+                                input.input#answerFore(name='answerFore', type='text', placeholder='Не скажу', required)
+                    p.control
+                        button.button.is-primary Создать
+                        a.button.is-link(href='/profile') Отмена

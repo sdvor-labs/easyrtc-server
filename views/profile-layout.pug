@@ -26,7 +26,7 @@ block content
                                 ul.menu-list
                                     li
                                         a(onclick='toggleList("createList")') Создать
-                                        if(isActive === 'create-company' || isActive === 'create-room' || isActive === 'create-user')
+                                        if(isActive === 'create-company' || isActive === 'create-room' || isActive === 'create-user' || isActive === 'create-question' || isActive === 'create-page')
                                             ul#createList
                                                 li
                                                     if(isActive === 'create-company')
@@ -48,6 +48,11 @@ block content
                                                         a.is-active(href='/profile/create-page') Страницу
                                                     else
                                                         a(href='/profile/create-page') Страницу
+                                                li
+                                                    if(isActive === 'create-question')
+                                                        a.is-active(href='/profile/create-question') Вопрос
+                                                    else
+                                                        a(href='/profile/create-question') Вопрос
 
                                         else
                                             ul#createList.is-hidden
@@ -71,9 +76,14 @@ block content
                                                         a.is-active(href='/profile/create-page') Страницу
                                                     else
                                                         a(href='/profile/create-page') Страницу
+                                                li
+                                                    if(isActive === 'create-question')
+                                                        a.is-active(href='/profile/create-question') Вопрос
+                                                    else
+                                                        a(href='/profile/create-question') Вопрос
                                     li
                                         a(onclick='toggleList("editList");') Редактировать
-                                        if(isActive === 'edit-companies' || isActive === 'edit-rooms' || isActive === 'edit-page')
+                                        if(isActive === 'edit-companies' || isActive === 'edit-rooms' || isActive === 'edit-page' || isActive === 'edit-question')
                                             ul#editList
                                                 li
                                                     if(isActive === 'edit-companies')
@@ -90,6 +100,11 @@ block content
                                                         a.is-active(href='/profile/pages') Страницу
                                                     else
                                                         a(href='/profile/pages') Страницу
+                                                li
+                                                    if(isActive === 'edit-question')
+                                                        a.is-active(href='/profile/questions') Вопрос
+                                                    else
+                                                        a(href='/profile/questions') Вопрос
                                         else
                                             ul#editList.is-hidden
                                                 li
@@ -107,6 +122,11 @@ block content
                                                         a.is-active(href='/profile/pages') Страницу
                                                     else
                                                         a(href='/profile/pages') Страницу
+                                                li
+                                                    if(isActive === 'edit-question')
+                                                        a.is-active(href='/profile/questions') Вопрос
+                                                    else
+                                                        a(href='/profile/questions') Вопрос
                         p.menu-label Действия
                             ul.menu-list
                                 li

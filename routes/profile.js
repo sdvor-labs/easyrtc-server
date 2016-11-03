@@ -821,6 +821,37 @@ router.post('/rooms/:room_name', load_user, load_menu, load_rooms,function(req, 
             res.redirect('/login');
         }
     });
+/* Create question */
+router.get('/create-question', load_user, load_menu, load_rooms,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.params.token}). Error message: ${err}.`);
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            if(user.admin === true) {
+                                res.render('create-question', {
+                                        menuItems: req.menuItems,
+                                        user: user,
+                                        rooms: req.rooms,
+                                        isSaved: null,
+                                        isLogin: true,
+                                        isActive: 'create-question'
+                                    });
+                            } else {
+                                res.redirect('/profile');
+                            }
+                        }
+                    });
+        } else {
+            res.redirect('/login');
+        }
+    });
+
 /* Create page */
 router.get('/create-page', load_user, load_menu, load_rooms,function(req, res) {
         if(req.user) {
@@ -851,6 +882,58 @@ router.get('/create-page', load_user, load_menu, load_rooms,function(req, res) {
             res.redirect('/login');
         }
     });
+router.post('/create-question', load_user, load_menu, load_rooms,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.params.token}). Error message: ${err}.`);
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            if(user.admin === true) {
+                                let tmpQuestion = question({
+                                        pollsType: req.body.pollsType,
+                                        date: Date.now(),
+                                        questionText: req.body.questionText,
+                                        answerOne: req.body.answerOne,
+                                        answerTwo: req.body.answerTwo,
+                                        answerThree: req.body.answerThree,
+                                        answerFore: req.body.answerFore
+                                    });
+                                tmpQuestion.save(function(err) {
+                                        isSaved = false;
+                                        
+                                        if(err) {
+                                            utils.appLogger('fail', 'Fail save document (question)', `Fail, when app try save document type QUESTION (${tmpQuestion}). Error message: ${err}.`);
+                                        } else {
+                                            utils.appLogger('success', 'Success save document (question)', `Succes saved document type QUESTION (${tmpQuestion}).`);
+                                            isSaved = true;
+                                        }
+                                                                                
+                                                                        
+                                        res.render('create-question', {
+                                                        menuItems: req.menuItems,
+                                                        user: user,
+                                                        rooms: req.rooms,
+                                                        isSaved: isSaved,
+                                                        isLogin: true,
+                                                        isActive: 'create-question'
+                                        });
+                                    });
+                            } else {
+                                res.redirect('/profile');
+                            }
+                        }
+                    });
+        } else {
+            res.redirect('/login');
+        }
+    });
+
+// Create pages
 router.post('/create-page', load_user, load_menu, load_rooms,function(req, res) {
         if(req.user) {
             User.findOne({
@@ -924,6 +1007,46 @@ router.post('/create-page', load_user, load_menu, load_rooms,function(req, res) 
             res.redirect('/login');
         }
     });
+/* All questions */
+router.get('/questions', load_user, load_menu, load_rooms,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.params.token}). Error message: ${err}.`);
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            question.find({}, function(err, questions) {
+                                    if(err) {
+                                        utils.appLogger('fail', 'Fail finding documents (questoin)', `Fail, when app try finding all documents with type QUESTION. Error message: ${err}.`);
+                                        res.render('error', {
+                                            error: err
+                                        });
+                                    } else {
+                                        if(user.admin === true) {
+                                            res.render('questions', {
+                                                    menuItems: req.menuItems,
+                                                    user: user,
+                                                    rooms: req.rooms,
+                                                    questions: questions,
+                                                    isSaved: null,
+                                                    isLogin: true,
+                                                    isActive: 'edit-question'
+                                            });
+                                        } else {
+                                            res.redirect('/profile');
+                                        }
+                                    }
+                                });
+                        }
+                    });
+        } else {
+            res.redirect('/login');
+        }
+    });
 /* All pages */
 router.get('/pages', load_user, load_menu, load_rooms,function(req, res) {
         if(req.user) {
@@ -964,6 +1087,110 @@ router.get('/pages', load_user, load_menu, load_rooms,function(req, res) {
             res.redirect('/login');
         }
     });
+/* Edit question */
+router.get('/questions/:question_id', load_user, load_menu, load_rooms,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.params.token}). Error message: ${err}.`);
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            if(user.admin === true) {
+                                question.findOne({
+                                    _id: req.params.question_id
+                                }, function(err, thisQuestion) {
+                                        if(err) {
+                                            utils.appLogger('fail', 'Fail finding document (question)', `Fail, when app try finding document type QUESTION with ID (${req.params.question_id}). Error message: ${err}.`);
+                                            res.render('error', {
+                                                            error: err
+                                                        });
+                                        } else {
+                                            res.render('edit-question', {
+                                                            menuItems: req.menuItems,
+                                                            user: user,
+                                                            rooms: req.rooms,
+                                                            question: thisQuestion,
+                                                            isSaved: null,
+                                                            isLogin: true,
+                                                            isActive: 'edit-question'
+                                                        });
+                                        }
+                                });
+                            } else {
+                                res.redirect('/profile');
+                            }
+                        }
+                    });
+        } else {
+            res.redirect('/login');
+        }
+    });
+router.post('/questions/:question_id', load_user, load_menu, load_rooms,function(req, res) {
+        if(req.user) {
+            User.findOne({
+                    token: req.cookies.token
+                }, function(err, user) {
+                        if(err) {
+                            utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.params.token}). Error message: ${err}.`);
+                            res.render('error', {
+                                error: err
+                                });
+                        } else {
+                            if(user.admin === true) {
+                                question.findOne({
+                                    _id: req.params.question_id
+                                }, function(err, thisQuestion) {
+                                        if(err) {
+                                            utils.appLogger('fail', 'Fail finding document (question)', `Fail, when app try finding document type QUESTION with ID (${req.params.question_id}). Error message: ${err}.`);
+                                            res.render('error', {
+                                                            error: err
+                                                        });
+                                        } else {
+                                            thisQuestion.pollsType = req.body.pollsType;
+                                            thisQuestion.date = Date.now();
+                                            thisQuestion.questionText = req.body.questionText;
+                                            thisQuestion.answerOne = req.body.answerOne;
+                                            thisQuestion.answerTwo = req.body.answerTwo;
+                                            thisQuestion.answerThree = req.body.answerThree;
+                                            thisQuestion.answerFore = req.body.answerFore;
+                                            
+                                            thisQuestion.save(function(err) {
+                                                    let isSaved = false;
+                                                    
+                                                    if(err) {
+                                                        utils.appLogger('fail', 'Fail saved document (question)', `Fail, when app try finding document type QUESTION with ID (${req.params.question_id}). Error message: ${err}.`);
+                                                    } else {
+                                                        utils.appLogger('success', 'Success saved document (page)', `Success saving document type QUESTION with ID (${req.params.question_id}).`);
+                                                        isSaved = true;
+                                                    }
+                                                    
+                                                    res.render('edit-question', {
+                                                            menuItems: req.menuItems,
+                                                            user: user,
+                                                            rooms: req.rooms,
+                                                            question: thisQuestion,
+                                                            isSaved: isSaved,
+                                                            isLogin: true,
+                                                            isActive: 'edit-question'
+                                                        });
+                                                    
+                                                });
+                                        }
+                                });
+                            } else {
+                                res.redirect('/profile');
+                            }
+                        }
+                    });
+        } else {
+            res.redirect('/login');
+        }
+    });
+
 /* Edit page */
 router.get('/pages/:page_name', load_user, load_menu, load_rooms,function(req, res) {
         if(req.user) {

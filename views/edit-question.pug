@@ -1,0 +1,68 @@
+extends profile-layout
+
+block content
+    if(isSaved !== null)
+        if(isSaved === true)
+            article.message.is-success
+                div.message-header Изменения успешно сохранены
+                div.message-body
+                    strong Поздравляем,
+                    span   вопрос сохранен!
+        else
+            article.message.is-danger
+                div.message-header Вопрос не получилось Сохранить=(
+                div.message-body
+                    strong Ошибка,
+                    span  по какой-то причине измененив в вопросе #{question._id} не были сохранены. Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+    div.box
+        div.columns
+            div.column.is-fullwidth
+                h3.title.is-3 Редактирование вопроса
+        div.columns
+            div.column.is-fullwidth
+                form(method='post')
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='pollsType') Определите категорию опроса
+                                if(question.pollsType === 'worker')
+                                    span.select.is-fullwidth
+                                        select#pollsType(name='pollsType')
+                                            option(value='worker', selected) Для сотрудников
+                                            option(value='costumer') Для клиентов
+                                else if(question.pollsType === 'costumer')
+                                    span.select.is-fullwidth
+                                        select#pollsType(name='pollsType')
+                                            option(value='worker') Для сотрудников
+                                            option(value='costumer', selected) Для клиентов
+                                else
+                                    span.select.is-fullwidth
+                                        select#pollsType(name='pollsType')
+                                            option(value=question.pollsType, selected) #{question.pollsType} 
+                                            option(value='worker') Для сотрудников
+                                            option(value='costumer') Для клиентов
+                        div.column
+                            p.control
+                                label.label(for='questionText') Текст вопроса
+                                input.input#questionText(name='questionText', type='text', placeholder='Как пройти вечером в библиотеку?', value=question.questionText, required)
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='answerOne') Ответ 1
+                                input.input#answerOne(name='answerOne', type='text', placeholder='Да', value=question.answerOne, required)
+                        div.column
+                            p.control
+                                label.label(for='answerTwo') Ответ 2
+                                input.input#answerTwo(name='answerOne', type='text', placeholder='Нет', value=question.answerTwo,required)
+                    div.columns
+                        div.column
+                            p.control
+                                label.label(for='answerThree') Ответ 3
+                                input.input#answerThree(name='answerThree', type='text', placeholder='Не знаю', value=question.answerThree,required)
+                        div.column
+                            p.control
+                                label.label(for='answerFore') Ответ 4
+                                input.input#answerFore(name='answerFore', type='text', placeholder='Не скажу', value=question.answerFore,required)
+                    p.control
+                        button.button.is-primary Сохранить
+                        a.button.is-link(href='/profile') Отмена

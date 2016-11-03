@@ -1,0 +1,11 @@
+extends profile-layout
+
+block content
+    each question in questions
+        div.box
+            div.columns
+                div.column
+                    h5.title.is-5 #{question.questionText}
+                    h6.title.is-6 #{question.pollsType}
+                div.column.has-text-centered
+                    a.button.is-info.is-fullwidth(href=`/profile/questions/${question._id}`) Изменить

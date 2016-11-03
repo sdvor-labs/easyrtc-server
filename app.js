@@ -29,15 +29,6 @@ let express = require('express'),
 let mongoose = require('mongoose');
 mongoose.connect('mongodb://10.0.16.101/newDB');
 /* Require models */
-let User = require('./models/user'),
-    Company = require('./models/company'),
-    UserStatus = require('./models/user_status'),
-    UserType = require('./models/user_type'),
-    UserRtcToken = require('./models/user_rtc_token'),
-    Room = require('./models/room'),
-    logEntry = require('./models/log_entry'),
-    Page = require('./models/page'),
-    menuItem = require('./models/menu_item');
 /* Set title EasyRTC server*/
 process.title = 'node-easyrtc';
 /* Create express application */

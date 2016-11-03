@@ -7,7 +7,10 @@ let User = require('./models/user'),
     config = require('./config'),
     Room = require('./models/room'),
     jwt = require('jsonwebtoken'),
+    logEntryCall = require('./models/log_calls'),
     logEntry = require('./models/log_entry'),
+    logAnswers = require('./models/log_answers'),
+    question = require('./models/question'),
     Page = require('./models/page');
 //var Promise = require('bluebird');
 
@@ -174,7 +177,6 @@ function findMenuItems() {
         });
     return promise;
 }
-
 ///// Find all user types
 function findUserType() {
     let promise = new Promise((resolve, reject) => {
@@ -201,7 +203,6 @@ function findUserType() {
     });
     return promise;
 }
-
 ///// Find all users
 function findUsers() {
     let promise = new Promise((resolve, reject) => {
@@ -263,7 +264,100 @@ function findUsers() {
     });
     return promise;
 }
-
+function testingCallLog() {
+    let promise = new Promise((resolve, reject) => {
+                    logEntryCall.find({}, function(err, lst) {
+                            if(err) {
+                                throw err;
+                            } else {
+                                if(lst.length === 0) {
+                                    let tmp = logEntryCall({
+                                            callStart: Date.now(),
+                                            callDuratuion: null,
+                                            callEnd: Date.now(),
+                                            employeeToken: null,
+                                            customerToken: null
+                                        });
+                                    tmp.save(function(err) {
+                                        if(err) {
+                                            throw err;
+                                        } else {
+                                            console.log('Добавлена тестовая запись в журнал звонков');
+                                            resolve(true);
+                                        }
+                                    });
+                                } else {
+                                    resolve(false);
+                                }
+                            }
+                        });
+        });
+    return promise;
+}
+/* Function for testing answer journal */
+function testingAnswerJournal() {
+    let promise = new Promise((resolve, reject) => {
+                    logAnswers.find({}, function(err, lst) {
+                            if(err) {
+                                throw err;
+                            } else {
+                                if(lst.length === 0) {
+                                    let tmp = logAnswers({
+                                            pollsType: 'testing',
+                                            date: Date.now(),
+                                            answersToPolls: ['Tisting answer!'],
+                                            employeeRtcToken: null,
+                                            custometRtcToken: null                                    
+                                        });
+                                    tmp.save(function(err) {
+                                        if(err) {
+                                            throw err;
+                                        } else {
+                                            console.log('Добавлена тестовая запись в журнал ответов на опоросы');
+                                            resolve(true);
+                                        }
+                                    });
+                                } else {
+                                    resolve(false);
+                                }
+                            }
+                        });
+        });
+    return promise;
+}
+/* Function for testing answer journal */
+function testingQuestions() {
+    let promise = new Promise((resolve, reject) => {
+                    question.find({}, function(err, lst) {
+                            if(err) {
+                                throw err;
+                            } else {
+                                if(lst.length === 0) {
+                                    let tmp = question({
+                                            pollsType: 'testing',
+                                            date: Date.now(),
+                                            questionText: 'Вы видите текст тестового вопроса?',
+                                            answerOne: 'Да',
+                                            answerTwo: 'Нет',
+                                            answerThree: 'Не знаю',
+                                            answerFore: 'Не скажу'
+                                        });
+                                    tmp.save(function(err) {
+                                        if(err) {
+                                            throw err;
+                                        } else {
+                                            console.log('Добавлена тестовая запись в список вопросов');
+                                            resolve(true);
+                                        }
+                                    });
+                                } else {
+                                    resolve(false);
+                                }
+                            }
+                        });
+        });
+    return promise;
+}
 function doFirstRun() {
     let promise = new Promise((resolve, reject) => {
         findCompany().then((resCompany) => {
@@ -280,7 +374,16 @@ function doFirstRun() {
                                                         console.log('Need to create default page: ', resPages);
                                                         findMenuItems().then((resMenuItem) => {
                                                                 console.log('Need to create default menu item: ', resMenuItem);
-                                                                resolve(true);
+                                                                testingCallLog().then((resTestingLog) => {
+                                                                        console.log('Testing call log (create testing entry): ', resTestingLog);
+                                                                        testingAnswerJournal().then((resTestAnswer) => {
+                                                                                console.log('Testing answer log (create testing entry): ', resTestAnswer);
+                                                                                testingQuestions().then((resTestingQuestion) => {
+                                                                                        console.log('Testing question list (create testing entry): ', resTestingQuestion);
+                                                                                        resolve(true);
+                                                                                    });
+                                                                            });
+                                                                    });
                                                             });
                                                 });
                                             });
