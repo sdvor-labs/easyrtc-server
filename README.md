@@ -1,5 +1,5 @@
-The project allows to organize video chat connection between the client and the manager via corporative web-site and WebRTC 
-[Текст ссылки](адрес://ссылки.здесь "Заголовок ссылки")
+The project allows to organize video chat connection between the client and the manager via corporative web-site and  
+[WebRTC](https://webrtc.org/ "WebRTC official site"). Application develop on #NodeJS
 
 # Install
 ## Software Requirements
