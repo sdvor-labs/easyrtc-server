@@ -1,33 +1,42 @@
 let express = require('express'),
     router = express.Router(),
-    Room = require('../models/room.js'),
+    Page = require('../models/page'),
     load_user = require('../middleware/load_user'),
+    load_menu = require('../middleware/load_menu'),
+    load_rooms = require('../middleware/load_rooms'),
     utils = require('../utils');
 /* GET home page. */
-router.get('/', load_user, function(req, res) {
+router.get('/', load_user, load_menu, load_rooms, function(req, res) {
   if(req.user) {
-    Room.find({}, function(err, roomsList){
-        if(err) {
-          utils.appLogger('fail', 'Fail finding documents (room)', `Fail, when app try finding list all documents with type ROOMS. Error message: ${err}.`);
-          res.render('index', { rooms: 'Null' });
-        } else {
-          res.render('index', {
-                                rooms: roomsList,
-                                isLogin: true });
-        }
-      });
+    Page.findOne({
+              name: 'index'
+            }, function(err, findedPage){
+                if(err) {
+                  utils.appLogger('fail', 'Fail finding document (page)', `Fail, when app try finding page (index). Error message: ${err}`);
+                } else {
+                  res.render('page', {
+                                        rooms: req.rooms,
+                                        isLogin: true,
+                                        pageContent: findedPage,
+                                        menuItems: req.menuItems
+                                      });
+                  }
+              });
   } else {
-    Room.find({visiability: 'public'}, function(err, roomList) {
-        if(err){
-          utils.appLogger('fail', 'Fail finding documents (room)', `Fail, when app try finding list all documents with type ROOMS. Error message: ${err}.`);
-          res.render('index', {rooms: 'Null'});
-        } else {
-          res.render('index', {
-                                rooms: roomList,
-                                isLogin: false
-                              }); 
-        }
-      });
+    Page.findOne({
+        name: 'index'
+      }, function(err, findedPage){
+                if(err) {
+                  utils.appLogger('fail', 'Fail finding document (page)', `Fail, when app try finding page (index). Error message: ${err}`);
+                } else {
+                  res.render('page', {
+                      rooms: req.rooms,
+                      isLogin: true,
+                      pageContent: findedPage,
+                      menuItems: req.menuItems
+                    });
+                }
+          });
   }
 });
 // Export route

@@ -1,0 +1,38 @@
+extends profile-layout
+
+block content
+    if(isSaved !== null)
+        if(isSaved === true)
+            article.message.is-success
+                div.message-header Страница успешно создана
+                div.message-body
+                    strong Поздравляем,
+                    span   страница создана!
+        else
+            article.message.is-danger
+                div.message-header Страницу не получилось создать =(
+                div.message-body
+                    strong Ошибка,
+                    span  по какой-то причине страница не была создана (возможно страница с таким именем уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+    div.box
+        div.columns
+            div.column.is-fullwidth
+                h3.title.is-3 Создние страницы
+        div.columns
+            div.column.is-fullwidth
+                form(method='post')
+                    p.control
+                        label.label(for='name') Наименование страницы
+                        input.input#name(name='name', type='text', placeholder='war-word' required)
+                    p.control
+                        label.label(for='title') Заголовок страницы
+                        input.input#title(name='title', type='text', placeholder='Нападение инопланетян', required)
+                    p.control
+                        label.label(for='subtitle') Подзаголовок
+                        input.input#title(name='subtitle', type='text', placeholder='По роману Г.Уэлса "Война миров"', required)
+                    p.control
+                        label.label(for='text') Содержание страницы
+                        textarea.textarea#text(name='text', placeholder='Текст содержания страницы', required)
+                    p.control
+                        button.button.is-primary Создать
+                        a.button.is-link(href='/profile') Отмена

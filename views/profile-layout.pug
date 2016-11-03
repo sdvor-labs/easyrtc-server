@@ -43,6 +43,12 @@ block content
                                                         a.is-active(href='/profile/create-user') Пользователя
                                                     else
                                                         a(href='/profile/create-user') Пользователя
+                                                li
+                                                    if(isActive === 'create-page')
+                                                        a.is-active(href='/profile/create-page') Страницу
+                                                    else
+                                                        a(href='/profile/create-page') Страницу
+
                                         else
                                             ul#createList.is-hidden
                                                 li
@@ -52,7 +58,7 @@ block content
                                                         a(href='/profile/create-company') Компанию
                                                 li
                                                     if(isActive === 'create-room')
-                                                        a.is-active(href='/prosile/create-room') Комнату
+                                                        a.is-active(href='/profile/create-room') Комнату
                                                     else
                                                         a(href='/profile/create-room') Комнату
                                                 li
@@ -60,9 +66,14 @@ block content
                                                         a.is-active(href='/profile/create-user') Пользователя
                                                     else
                                                         a(href='/profile/create-user') Пользователя
+                                                li
+                                                    if(isActive === 'create-page')
+                                                        a.is-active(href='/profile/create-page') Страницу
+                                                    else
+                                                        a(href='/profile/create-page') Страницу
                                     li
                                         a(onclick='toggleList("editList");') Редактировать
-                                        if(isActive === 'edit-companies' || isActive === 'edit-rooms')
+                                        if(isActive === 'edit-companies' || isActive === 'edit-rooms' || isActive === 'edit-page')
                                             ul#editList
                                                 li
                                                     if(isActive === 'edit-companies')
@@ -70,10 +81,15 @@ block content
                                                     else
                                                         a(href='/profile/companies') Компанию
                                                 li
-                                                    if(isActive == 'edit-rooms')
+                                                    if(isActive === 'edit-rooms')
                                                         a.is-active(href='/profile/rooms') Комнату
                                                     else
                                                         a(href='/profile/rooms') Комнату
+                                                li
+                                                    if(isActive === 'edit-page')
+                                                        a.is-active(href='/profile/pages') Страницу
+                                                    else
+                                                        a(href='/profile/pages') Страницу
                                         else
                                             ul#editList.is-hidden
                                                 li
@@ -82,10 +98,15 @@ block content
                                                     else
                                                         a(href='/profile/companies') Компанию
                                                 li
-                                                    if(isActive == 'edit-rooms')
+                                                    if(isActive === 'edit-rooms')
                                                         a.is-active(href='/profile/rooms') Комнату
                                                     else
                                                         a(href='/profile/rooms') Комнату
+                                                li
+                                                    if(isActive === 'edit-page')
+                                                        a.is-active(href='/profile/pages') Страницу
+                                                    else
+                                                        a(href='/profile/pages') Страницу
                         p.menu-label Действия
                             ul.menu-list
                                 li

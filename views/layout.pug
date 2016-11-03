@@ -20,11 +20,13 @@ html
                         span
                         span
                     div.nav-right.nav-menu
-                        a.nav-item(href='/') Главная
-                        a.nav-item(href='http://sdvor.com') Наш сайт
-                        a.nav-item(href='/about') О сервисе
+                        each item in menuItems
+                          if(item.name === 'index')
+                            a.nav-item(href='/') #{item.label}
+                          else
+                            a.nav-item(href='/pages/' + item.name) #{item.label}
                         span.nav-item
-                            a.button.is-dark.is-inverted(href='https://github.com/neuromantic-js/easyrtc-server')
+                            a.button.is-dark.is-inverted(href='https://github.com/sdvor-labs/easyrtc-server')
                                 span.icon
                                     i.fa.fa-github
                                 span GitHub
@@ -40,7 +42,7 @@ html
                     ul#rooms
                         each room in rooms
                             li(class='room-' + room.id)
-                                a(href='/widget/' + room.name) #{room.label}
+                                a(href='/widget/' + room.name, target="_blank") #{room.label}
                         if(isLogin)
                             li
                                 a(href='/profile') Мой профиль

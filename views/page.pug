@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    section.section
+        div.container
+            div.heading
+                h1.title #{pageContent.title}
+                h2.subtitle #{pageContent.subtitle}
+                div.content
+                    p !{pageContent.text}

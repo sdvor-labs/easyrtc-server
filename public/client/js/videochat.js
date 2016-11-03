@@ -9,6 +9,7 @@ function setDefaultClientData() {
             clientData.muteVideo = true;
             clientData.needCall = false;
             clientData.trueAnswer = null;
+            clientData.iHaveCalled = false;
             resolve(true);
         });
     return promise;
@@ -134,6 +135,8 @@ function joinSuccess(roomName) {
                 }
                 if(e === usersInRoom[usersInRoom.length-1] && emptyRoom == true) {
                     document.getElementById('emptyRoom').classList.add('is-active');
+                } else {
+                    document.getElementById('notCalled').classList.add('is-active');
                 }
             });
             
@@ -189,8 +192,6 @@ function connectMe(answer) {
             easyrtc.setVideoDims(640,480);
             // Conntection to EasyRTC App
             easyrtc.easyApp('easyrtc.videochat', 'selfVideo', ['callerVideo'], loginSuccess, loginFailure);
-            // Get roomname
-            roomName = document.getElementById('roomname').getAttribute('name');
         }else{
             alert('Звока не будет!');
         }
@@ -223,3 +224,17 @@ function toggleModal(toState) {
     });
     return promise;
 }
+// observe disconnett
+let timerHaveCalled = setInterval(() => {
+        if(easyrtc.getConnectionCount() === 0) {
+            if (clientData.iHaveCalled === true) {
+                document.getElementById('haveCalled').classList.add('is-active');
+                easyrtc.disconnect()
+            }
+        } else {
+            document.getElementById('notCalled').classList.remove('is-active');
+            if(clientData.iHaveCalled === false) {
+                clientData.iHaveCalled = true;
+            }
+        }
+    }, 500);

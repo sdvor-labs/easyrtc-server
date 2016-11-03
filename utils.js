@@ -3,10 +3,12 @@ let User = require('./models/user'),
     Company = require('./models/company'),
     UserStatus = require('./models/user_status'),
     UserType = require('./models/user_type'),
+    menuItem = require('./models/menu_item'),
     config = require('./config'),
     Room = require('./models/room'),
     jwt = require('jsonwebtoken'),
-    logEntry = require('./models/log_entry');
+    logEntry = require('./models/log_entry'),
+    Page = require('./models/page');
 //var Promise = require('bluebird');
 
 // Create default room, user_status, user_type if it
@@ -101,6 +103,75 @@ function findUserStatus() {
                 }
             });
     });
+    return promise;
+}
+
+// Find all pages
+function findPages() {
+    let promise = new Promise((resolve, reject) => {
+            Page.find({}, function(err, lst) {
+                    if(!err) {
+                        if(lst.length === 0) {
+                            let tmp = Page({
+                                    name: 'index',
+                                    title: 'Сервис видеочата компании',
+                                    subtitle: 'Подзаголовок страницы',
+                                    text: 'текст'
+                                });
+                            tmp.save(function(err) {
+                                if(err){
+                                    throw err;
+                                }else{
+                                    console.log('Добавлена главная страница');
+                                    resolve(true);
+                                }
+                            });
+                        }else {
+                            resolve(false);   
+                        }
+                    } else {
+                        throw err;
+                    }
+                });
+        });
+    return promise;
+}
+///// Find all menus
+function findMenuItems() {
+    let promise = new Promise((resolve, reject) => {
+            menuItem.find({}, function(err, lst) {
+                    if(err) {
+                        throw err;
+                    } else {
+                        if(lst.length === 0) {
+                            Page.findOne({
+                                    name: 'index',
+                                }, function(err, findedPage) {
+                                        if(err) {
+                                            throw err;
+                                        } else {
+                                            let tmp = menuItem({
+                                                name: 'index',
+                                                label: 'Главная',
+                                                visiability: true,
+                                                page: findedPage
+                                            });
+                                            tmp.save(function(err) {
+                                                if(err) {
+                                                    throw err;
+                                                } else {
+                                                    console.log('Добавлен пункт меню для главной страницы');
+                                                    resolve(true);
+                                                }
+                                            });
+                                        }
+                                    });
+                        } else {
+                            resolve(false);
+                        }
+                    }
+                });
+        });
     return promise;
 }
 
@@ -205,7 +276,13 @@ function doFirstRun() {
                                         console.log('Need to create user types: ', resTypes);                      
                                         findUsers().then((resUser) => {
                                                 console.log('Need to create default user: ', resUser);
-                                                resolve(true);
+                                                findPages().then((resPages) => {
+                                                        console.log('Need to create default page: ', resPages);
+                                                        findMenuItems().then((resMenuItem) => {
+                                                                console.log('Need to create default menu item: ', resMenuItem);
+                                                                resolve(true);
+                                                            });
+                                                });
                                             });
                                     });
                             });
