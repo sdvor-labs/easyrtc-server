@@ -118,7 +118,7 @@ let express = require('express'),
  * @requires mogoose
  */
 let mongoose = require('mongoose');
-mongoose.connect('mongodb://10.0.16.101/newDB');
+mongoose.connect('mongodb://testvideo:3pm9skn5@localhost:27017/test');
 /**
  * External file with model for users (workers)
  * @external user
