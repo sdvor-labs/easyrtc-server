@@ -24,7 +24,8 @@ let express = require('express'),
     code = require('./routes/code'),
     api = require('./routes/api'),
     login = require('./routes/login'),
-    pages = require('./routes/pages');
+    pages = require('./routes/pages'),
+    journals = require('./routes/journals');
 
 let mongoose = require('mongoose');
 mongoose.connect('mongodb://10.0.16.101/newDB');
@@ -33,6 +34,7 @@ mongoose.connect('mongodb://10.0.16.101/newDB');
 process.title = 'node-easyrtc';
 /* Create express application */
 let app = express();
+
 /* @todo move to config */
 app.locals.secret = config.secret;
 /* Session enable */
@@ -57,6 +59,7 @@ app.use('/profile', profile);
 app.use('/logout', logout);
 app.use('/widgets-and-code', code);
 app.use('/pages', pages);
+app.use('/journals', journals);
 /**
  * @function
  * @name utils

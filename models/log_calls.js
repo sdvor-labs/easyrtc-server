@@ -1,11 +1,11 @@
 let mongoose = require('mongoose'),
         Schema = mongoose.Schema,
         logEntryCallSchema = new Schema({
-                callStart: Date,
-                callDuratuion: String,
-                callEnd: Date,
+                callStart: String,
+                callEnd: String,
                 employeeToken: String,
-                customerToken: String
+                customerToken: String,
+                description: String
             }),
         logEntryCall =  mongoose.model('logEntryCall', logEntryCallSchema);
 

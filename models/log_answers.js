@@ -5,7 +5,8 @@ let mongoose = require('mongoose'),
                 date: Date,
                 answersToPolls: [],
                 employeeRtcToken: String,
-                custometRtcToken: String
+                custometRtcToken: String,
+                comments: String
             }),
         logAnswers =  mongoose.model('logAnswers', logAnswersSchema);
 

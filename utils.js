@@ -273,10 +273,10 @@ function testingCallLog() {
                                 if(lst.length === 0) {
                                     let tmp = logEntryCall({
                                             callStart: Date.now(),
-                                            callDuratuion: null,
                                             callEnd: Date.now(),
-                                            employeeToken: null,
-                                            customerToken: null
+                                            employeeToken: 'Без сотрудника',
+                                            customerToken: 'Без клиента',
+                                            description: 'Тестовая запись'
                                         });
                                     tmp.save(function(err) {
                                         if(err) {
@@ -306,8 +306,9 @@ function testingAnswerJournal() {
                                             pollsType: 'testing',
                                             date: Date.now(),
                                             answersToPolls: ['Tisting answer!'],
-                                            employeeRtcToken: null,
-                                            custometRtcToken: null                                    
+                                            employeeRtcToken: "123",
+                                            custometRtcToken: "231" ,
+                                            comments: 'Тестовая запись' 
                                         });
                                     tmp.save(function(err) {
                                         if(err) {
