@@ -10,6 +10,8 @@ function setDefaultClientData() {
             clientData.needCall = false;
             clientData.trueAnswer = null;
             clientData.iHaveCalled = false;
+            clientData.iHaveAnswered = false;
+            clientData.withUser = 'worker';
             resolve(true);
         });
     return promise;
@@ -228,8 +230,12 @@ function toggleModal(toState) {
 let timerHaveCalled = setInterval(() => {
         if(easyrtc.getConnectionCount() === 0) {
             if (clientData.iHaveCalled === true) {
-                document.getElementById('haveCalled').classList.add('is-active');
-                easyrtc.disconnect()
+                if(clientData.iHaveAnswered === false) {
+                    document.getElementById('haveCalled').classList.add('is-active');
+                    easyrtc.disconnect();
+                } else {
+                    document.getElementById('haveAnswered').classList.add('is-active');
+                }
             }
         } else {
             document.getElementById('notCalled').classList.remove('is-active');
@@ -238,3 +244,70 @@ let timerHaveCalled = setInterval(() => {
             }
         }
     }, 500);
+
+// POLLS LOGS
+// answer button
+function clickAnswerButton(elm) {
+    let  groupElement = elm.getAttribute('element-group'),
+        tmp = null;
+    ['answerOne', 'answerTwo', 'answerThree', 'answerFore'].forEach( e => {
+            tmp = `${e}-${groupElement}`;
+            console.log(tmp);
+            if(elm.id === tmp) {
+                if(elm.classList.contains('is-choosen')) {
+                    elm.classList.remove('is-choosen');
+                } else {
+                    elm.classList.add('is-choosen');
+                }
+            } else {
+                if(document.getElementById(tmp)) {
+                    if(document.getElementById(tmp).classList.contains('is-choosen')){
+                        document.getElementById(tmp).classList.remove('is-choosen');
+                    }
+                }
+            }
+        });
+    
+}
+// new functional for polls
+function answerPolls() {
+    let tmpLst = document.getElementsByClassName('is-choosen'),
+        max = tmpLst.length,
+        i = 0,
+        answersToPolls = [];
+    while(max > i) {
+        answersToPolls.push(tmpLst[i].text);
+        i++;
+    }
+    
+    let answObj = {
+        pollsType: 'client',
+        date: Date.now(),
+        answersToPolls: answersToPolls,
+        employeeRtcToken: clientData.myEasyrtcId,
+        custometRtcToken: clientData.withUser,
+        comments:document.getElementById('comments').value
+    };
+    let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/answers/add");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(answObj));
+    document.getElementById('haveCalled').classList.remove('is-active');
+    clientData.iHaveAnswered = true;
+}
+function notAnswerPolls() {
+    let answObj = {
+        pollsType: 'clietn',
+        date: Date.now(),
+        answersToPolls: [],
+        employeeRtcToken: clientData.myEasyrtcId,
+        custometRtcToken: clientData.withUser,
+        comments: 'Отказался отвечать'
+    };
+    let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/answers/add");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(answObj));
+    document.getElementById('haveCalled').classList.remove('is-active');
+    clientData.iHaveAnswered = true;
+}

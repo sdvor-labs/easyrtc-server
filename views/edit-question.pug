@@ -29,18 +29,18 @@ block content
                                     span.select.is-fullwidth
                                         select#pollsType(name='pollsType')
                                             option(value='worker', selected) Для сотрудников
-                                            option(value='costumer') Для клиентов
+                                            option(value='client') Для клиентов
                                 else if(question.pollsType === 'costumer')
                                     span.select.is-fullwidth
                                         select#pollsType(name='pollsType')
                                             option(value='worker') Для сотрудников
-                                            option(value='costumer', selected) Для клиентов
+                                            option(value='client', selected) Для клиентов
                                 else
                                     span.select.is-fullwidth
                                         select#pollsType(name='pollsType')
                                             option(value=question.pollsType, selected) #{question.pollsType} 
                                             option(value='worker') Для сотрудников
-                                            option(value='costumer') Для клиентов
+                                            option(value='client') Для клиентов
                         div.column
                             p.control
                                 label.label(for='questionText') Текст вопроса

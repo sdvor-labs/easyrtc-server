@@ -5,6 +5,7 @@ let express = require('express'),
     utils = require('../utils'),
     Room = require('../models/room'),
     load_user = require('../middleware/load_user'),
+    Question = require('../models/question'),
     User = require('../models/user');
 /* GET about listing. */
 router.get('/:room_name', load_user, function (req, res) {
@@ -39,13 +40,22 @@ router.get('/:room_name', load_user, function (req, res) {
                     } else {
                         res.redirect('/login');
                     }
-                } else { 
-                    res.render('widget', {
-                        roomLabel: findedRoom.label,
-                        roomName: req.params.room_name,
-                        onload: onloadText,
-                        userType: userType,
-                        needCheck: req.param('need_check') || 'not-need'
+                } else {
+                    Question.find({
+                            pollsType: userType
+                        }, function(err, questions) {
+                            if(err) {
+                                utils.appLogger('fail', 'Fail finding documents (questions)', `Fail, when app try finding document type QUESTIONS. Error message: ${err}.`);
+                            } else {
+                                res.render('widget', {
+                                    myQuestions: questions,
+                                    roomLabel: findedRoom.label,
+                                    roomName: req.params.room_name,
+                                    onload: onloadText,
+                                    userType: userType,
+                                    needCheck: req.param('need_check') || 'not-need'
+                                });   
+                            }
                     });
                 }
             } else {

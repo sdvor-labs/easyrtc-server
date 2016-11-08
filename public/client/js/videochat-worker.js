@@ -13,6 +13,9 @@ let activeTab = 'users-menu',
     userQueryInterval = 6000,
 // Calling interval
     callInterval = 6000,
+// Call attr
+    callStart = null,
+    callEnd = null,
 //  List with talked user
     iTalkedTo = [],
 // List width workers in room
@@ -164,8 +167,10 @@ function performCall(otherEasyrtcid) {
     // Save callser id
     withUser = otherEasyrtcid;
     // Function/ callback for success or fail
-    let successCB = function() {},
-        failureCB = function() {};
+    let successCB = () => {
+            callStart = Date.now();
+        },
+        failureCB = () => {};
     // API function call
     easyrtc.call(otherEasyrtcid, successCB, failureCB);
 }
@@ -185,6 +190,9 @@ function loginFailure(errorCode, message) {
 // Close all chat
 function hangupCall() {
     easyrtc.hangup(withUser);
+    callEnd = Date.now();
+    addCallEntry();
+    getQuestions();
 }
 // Mute video function
 function muteMyVideo(){ 
@@ -291,6 +299,88 @@ function queryCall() {
     } else {
         console.log('You are calling');
     }
+}
+// answer button
+function clickAnswerButton(elm) {
+    let  groupElement = elm.getAttribute('element-group'),
+        tmp = null;
+    ['answerOne', 'answerTwo', 'answerThree', 'answerFore'].forEach( e => {
+            tmp = `${e}-${groupElement}`;
+            if(elm.id === tmp) {
+                if(elm.classList.contains('is-choosen')) {
+                    elm.classList.remove('is-choosen');
+                    console.log(elm.getAttribute('question-text'));
+                } else {
+                    elm.classList.add('is-choosen');
+                    console.log(elm.getAttribute('question-text'));
+                }
+            } else {
+                if(document.getElementById(tmp).classList.contains('is-choosen')){
+                    document.getElementById(tmp).classList.remove('is-choosen');
+                }
+            }
+        });
+    
+}
+function getQuestions() {
+    callInterval = 60000;
+    document.getElementById('modalAnswers').classList.add('is-active');
+}
+// new functional for polls
+function answerPolls() {
+    let tmpLst = document.getElementsByClassName('is-choosen'),
+        max = tmpLst.length,
+        i = 0,
+        answersToPolls = [];
+    while(max > i) {
+        answersToPolls.push(tmpLst[i].text);
+        i++;
+    }
+    
+    let answObj = {
+        pollsType: 'worker',
+        date: Date.now(),
+        answersToPolls: answersToPolls,
+        employeeRtcToken: myEasyrtcId,
+        custometRtcToken: withUser,
+        comments:document.getElementById('comments').value
+    };
+    let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/answers/add");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(answObj));
+    document.getElementById('modalAnswers').classList.remove('is-active');
+    callInterval = 6000;
+}
+function notAnswerPolls() {
+    let answObj = {
+        pollsType: 'worker',
+        date: Date.now(),
+        answersToPolls: [],
+        employeeRtcToken: myEasyrtcId,
+        custometRtcToken: withUser,
+        comments: 'Отказался отвечать'
+    };
+    let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/answers/add");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(answObj));
+    document.getElementById('modalAnswers').classList.remove('is-active');
+    callInterval = 6000;
+}
+function addCallEntry() {
+    let tmpEntry = {
+            callStart: callStart,
+            callEnd: callEnd,
+            employeeToken: myEasyrtcId,
+            customerToken: withUser,
+            description: 'Звонок завершен удачно'
+        };
+    let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/calls/add");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(tmpEntry));
+    document.getElementById('modalAnswers').classList.remove('is-active');
 }
 //repreat function...
 let timerUsersUpdate = setInterval(() => {

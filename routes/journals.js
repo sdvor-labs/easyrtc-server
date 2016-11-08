@@ -26,13 +26,15 @@ router.get('/answers/add', (req, res) => {
     });    
 });
 router.post('/answers/add', (req, res) => {
+    console.log(req);
     if(Object.keys(req.body).length !== 0) {
         let tmpEntry = logAnswers({
                 pollsType: req.body.pollsType,
                 date: Date.now(),
                 answersToPolls: req.body.answersToPolls,
                 employeeRtcToken: req.body.employeeRtcToken,
-                custometRtcToken: req.body.custometRtcToken
+                custometRtcToken: req.body.custometRtcToken,
+                comments: req.body.comments
             });
         tmpEntry.save((err) => {
                 if(err) {

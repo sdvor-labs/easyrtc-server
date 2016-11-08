@@ -31,6 +31,35 @@ html
                         footer.modal-card-foot
                             a.button.is-primary(onclick='pleaseCall();') Позвонить
                             a.button.is-danger(onclick='notCall();') Не звонить
+            div.modal#modalAnswers
+                div.modal-background
+                    div.modal-card.is-margin-top-persent
+                        header.modal-card-head
+                            p.modal-card-title Оценка сервиса
+                        section.modal-card-body
+                            p
+                                h4.title.is-4 Просим уделить еще пару минут своего времени и оценить качество сервиса!
+                                each question in myQuestions
+                                    h5.title.is-5 #{question.questionText}
+                                    div.columns
+                                        if(question.answerOne !== 'none')
+                                            div.column
+                                                a.button.is-success(id='answerOne-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerOne}
+                                        if(question.answerTwo !== 'none')
+                                            div.column
+                                                a.button.is-primary(id='answerTwo-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerTwo}
+                                        if(question.answerThree !== 'none')
+                                            div.column
+                                                a.button.is-warning(id='answerThree-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerThree}
+                                        if(question.answerFore !== 'none')
+                                            div.column
+                                                a.button.is-danger(id='answerFore-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerFore}
+                            p.control
+                                input.input#comments(name='comments', type='text', placeholder='Текст вашего комментария')
+                                
+                        footer.modal-card-foot
+                            a.button.is-primary(onclick='answerPolls();') Ответить
+                            a.button.is-danger(onclick='notAnswerPolls();') Закрыть
         else
             div.modal#modalCall
                 div.modal-background
@@ -74,11 +103,38 @@ html
                         header.modal-card-head
                             p.modal-card-title Спасибо за звонок
                         section.modal-card-body
-                            div.columns
-                                div.column.is-fullwidth
-                                    p Надеемся мы смогли вам помочь!
-                            div.columns#capchaDiv
+                            p
+                                h4.title.is-4 Просим уделить еще пару минут своего времени и оценить качество сервиса!
+                                each question in myQuestions
+                                    h5.title.is-5 #{question.questionText}
+                                    div.columns
+                                        if(question.answerOne !== 'none')
+                                            div.column
+                                                a.button.is-success(id='answerOne-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerOne}
+                                        if(question.answerTwo !== 'none')
+                                            div.column
+                                                a.button.is-primary(id='answerTwo-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerTwo}
+                                        if(question.answerThree !== 'none')
+                                            div.column
+                                                a.button.is-warning(id='answerThree-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerThree}
+                                        if(question.answerFore !== 'none')
+                                            div.column
+                                                a.button.is-danger(id='answerFore-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerFore}
+                            p.control
+                                input.input#comments(name='comments', type='text', placeholder='Текст вашего комментария')
+                                
                         footer.modal-card-foot
+                            a.button.is-primary(onclick='answerPolls();') Ответить
+                            a.button.is-danger(onclick='notAnswerPolls();') Закрыть
+            div.modal#haveAnswered
+                div.modal-background
+                    div.is-margin-top-persent.modal-card
+                        header.modal-card-head
+                            p.modal-card-title Спасибо за звонок
+                        section.modal-card-body
+                            p
+                                h4.title.is-4 Спасибо за звоное, теперь можете закрыть окно!
+                            
         div#if-not-posible.is-hidden
             div.card.is-fullwidth.is-fullheight.is-hidden#softwareError
                 div.card-image
@@ -208,10 +264,6 @@ html
                     else
                          nav.panel
                             p.panel-heading.has-text-centered#iam Идет соединение
-                            a.panel-block(href='#', onclick='hangupCall();')
-                                span.panel-icon
-                                    i.fa.fa-phone
-                                span Положить трубку
                             a.panel-block#cameraOff(href='#', onclick='muteMyVideo();')
                                 span.panel-icon
                                     i.fa.fa-ban

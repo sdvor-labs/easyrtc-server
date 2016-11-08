@@ -8,7 +8,7 @@ let mongoose = require('mongoose'),
             answerTwo: String,
             answerThree: String,
             answerFore: String
-        })
+        }),
         question =  mongoose.model('question', questionSchema);
 
 module.exports = question;
