@@ -12,6 +12,14 @@ function setDefaultClientData() {
             clientData.iHaveCalled = false;
             clientData.iHaveAnswered = false;
             clientData.withUser = 'worker';
+            if(clientData.username = document.getElementById('username').getAttribute('info') === 'anonymous') {
+                clientData.clientInfo = false;
+            } else {
+                clientData.clientInfo = true;
+            }
+            clientData.username = document.getElementById('username').getAttribute('info');
+            clientData.userfio = document.getElementById('userfio').getAttribute('info');
+            clientData.city = document.getElementById('city').getAttribute('info');
             resolve(true);
         });
     return promise;
@@ -178,6 +186,21 @@ function muteMyMicrophone(){
 // Function exec after success get token EasyRTC
 function loginSuccess(easyrtcid) {
     clientData.myEasyrtcId = easyrtcid;
+    let objToAdd = {
+            clientInfo: clientData.clientInfo,
+            username: clientData.username, 
+            userfio: clientData.userfio, 
+            city: clientData.city,
+            easyRtcToken: clientData.myEasyrtcId
+        };
+    console.log(objToAdd);
+    let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/connections/add");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(objToAdd));
+    document.getElementById('haveCalled').classList.remove('is-active');
+    clientData.iHaveAnswered = true;
+    
     document.getElementById('iam').innerHTML = `Мой ID: ${easyrtc.cleanId(clientData.myEasyrtcId)}`; 
     easyrtc.joinRoom(roomName, null, joinSuccess(roomName), loginFailure);
 }

@@ -5,7 +5,7 @@ let activeTab = 'users-menu',
 // id of client in the signals framework
     myEasyrtcId,
 // id of interlocutor
-    withUser,
+    withUser = null,
 // User settings
     muteVideo = true,
     muteMicrophone = false,
@@ -381,6 +381,43 @@ function addCallEntry() {
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(tmpEntry));
     document.getElementById('modalAnswers').classList.remove('is-active');
+}
+// open user info modal
+function openInfo() {
+    document.getElementById('modalInfo').classList.add('is-active');
+    getUserInfo();
+}
+function closeInfo() {
+    document.getElementById('modalInfo').classList.remove('is-active');
+}
+
+function getUserInfo() {
+    let tmp = withUser,
+        xhr = new XMLHttpRequest();
+    if(withUser !== null) {
+        xhr.open('GET', `https://10.0.46.83:8080/api/userentry/${tmp}`, true);
+        xhr.send();
+        xhr.onreadystatechange = function() {
+          if (this.readyState != 4) return;
+    
+          if (this.status != 200) {
+            alert( 'ошибка: ' + (this.status ? this.statusText : 'запрос не удался') );
+            return;
+          } else {
+            showInWindow(this.responseText);
+          }
+        };
+    } else {
+        alert('Вы еще не говорили ни с одним пользователем');
+    }
+}
+function showInWindow(string){
+    let tmp = JSON.parse(string);
+    ['userfio', 'city', 'username'].forEach(e => {
+        document.getElementById(e).innerHTML = '';
+        document.getElementById(e).innerHTML = tmp[e];
+    });
+    
 }
 //repreat function...
 let timerUsersUpdate = setInterval(() => {

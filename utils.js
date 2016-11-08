@@ -11,6 +11,7 @@ let User = require('./models/user'),
     logEntry = require('./models/log_entry'),
     logAnswers = require('./models/log_answers'),
     question = require('./models/question'),
+    EntryConnect = require('./models/log_connect'),
     Page = require('./models/page');
 //var Promise = require('bluebird');
 
@@ -359,6 +360,40 @@ function testingQuestions() {
         });
     return promise;
 }
+/* Function for test jiurnals connection */
+function testConnectionJournal() {
+    let promise = new Promise((resolve, reject) => {
+            EntryConnect.find({}, function(err, lst) {
+                    if(err) {
+                        throw err;
+                    } else {
+                        if(lst.length === 0) {
+                            let tmpEntry = EntryConnect({
+                                    clientInfo: true,
+                                    username: 'anonymous',
+                                    userfio: 'Анонимный Пользователь',
+                                    city: 'Без города',
+                                    easyRtcToken: 'none',
+                                    date: Date.now()
+                                });
+                            tmpEntry.save(function(err) {
+                                    if(err){
+                                        console.log(err);
+                                        resolve(false);
+                                    } else {
+                                        console.log('Добавлена тестовая запись в журнал соединений');
+                                        resolve(true);
+                                    }
+                                });
+                        } else {
+                            resolve(false);
+                        }
+                    }
+                });
+        });
+    return promise;
+}
+/* Function for first run */
 function doFirstRun() {
     let promise = new Promise((resolve, reject) => {
         findCompany().then((resCompany) => {
@@ -381,7 +416,10 @@ function doFirstRun() {
                                                                                 console.log('Testing answer log (create testing entry): ', resTestAnswer);
                                                                                 testingQuestions().then((resTestingQuestion) => {
                                                                                         console.log('Testing question list (create testing entry): ', resTestingQuestion);
-                                                                                        resolve(true);
+                                                                                        testConnectionJournal().then((resTest) => {
+                                                                                            console.log('Testing connection list (create testing entry): ', resTest);
+                                                                                            resolve(true);    
+                                                                                        });
                                                                                     });
                                                                             });
                                                                     });

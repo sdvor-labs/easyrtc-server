@@ -21,6 +21,18 @@ html
             script(type='text/javascript', src='/client/js/ui.js')
     body(onload=onload)
         if(userType === 'worker')
+            div.modal#modalInfo
+                div.modal-background
+                    div.modal-card.is-margin-top-persent
+                        header.modal-card-head
+                            p.modal-card-title Информация о пользователе
+                        section.modal-card-body
+                            div#userInfo
+                                div#userfio Анонимный Пользователь
+                                div#city Не известно
+                                div#username Аноним
+                        footer.modal-card-foot
+                            a.button.is-primary(onclick='closeInfo();') Закрыть
             div.modal#modalCall
                 div.modal-background
                     div.modal-card.is-margin-top-persent
@@ -241,6 +253,10 @@ html
                                     div#queryDiv
                                     div#queryDivWorker
                             div#call-menu-block.is-hidden
+                                a.panel-block(href='#', onclick='openInfo();')
+                                    span.panel-icon
+                                        i.fa.fa-info
+                                    span Информация о пользователе
                                 a.panel-block(href='#', onclick='hangupCall();')
                                     span.panel-icon
                                         i.fa.fa-phone
@@ -264,6 +280,12 @@ html
                     else
                          nav.panel
                             p.panel-heading.has-text-centered#iam Идет соединение
+                                div#clientData
+                                    span
+                                        div#userfio(info=clientData.userfio) #{clientData.userfio},
+                                        div#city(info=clientData.city) #{clientData.city} /
+                                        div#username(info=clientData.username) #{clientData.username}
+                                        
                             a.panel-block#cameraOff(href='#', onclick='muteMyVideo();')
                                 span.panel-icon
                                     i.fa.fa-ban

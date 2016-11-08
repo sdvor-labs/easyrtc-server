@@ -5,6 +5,7 @@ let express = require('express'),
     token_check = require('../middleware/token_check'),
     utils = require('../utils'),
     User = require('../models/user'),
+    EntryConnect = require('../models/log_connect'),
     Room = require('../models/room');
 
 // route to show a random message (GET http://localhost:8080/api/)
@@ -26,7 +27,21 @@ router.get('/rooms', function(req, res) {
             res.json(rooms);    
         });
     });
-
+router.get('/userentry/:rtc_token', (req, res) => {
+    EntryConnect.findOne({
+            easyRtcToken: req.params.rtc_token
+        }, (err, entry) => {
+            if(err) {
+                utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type lOG_CONNECT with token- ${req.body.easyRtcToken}. Error message: ${err}.`);
+                res.json({
+                        success: false,
+                        message: 'Fail create token'
+                    });
+            } else {
+                res.json(entry);
+            }
+        });    
+});
 // auth function
 router.post('/authenticate', function(req, res) {
     // find the user

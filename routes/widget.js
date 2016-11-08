@@ -9,6 +9,20 @@ let express = require('express'),
     User = require('../models/user');
 /* GET about listing. */
 router.get('/:room_name', load_user, function (req, res) {
+    let clientData = {};
+    
+    if(req.param('clientInfo')) {
+        clientData.clientInfo = true;
+        clientData.username = req.param('username');
+        clientData.userfio = req.param('fio');
+        clientData.city = req.param('city');
+    } else {
+        clientData.clientInfo = false;
+        clientData.username = 'anonymous';
+        clientData.userfio = 'Анонимный Пользователь';
+        clientData.city =req.param('city');
+    }
+    
     Room.findOne({'name': req.params.room_name}, function (err, findedRoom) {
         if (err) {
             utils.appLogger('fail', 'Fail finding document (room)', `Fail, when app try finding document type ROOM (${req.params.room_name}). Error message: ${err}.`);
@@ -48,6 +62,7 @@ router.get('/:room_name', load_user, function (req, res) {
                                 utils.appLogger('fail', 'Fail finding documents (questions)', `Fail, when app try finding document type QUESTIONS. Error message: ${err}.`);
                             } else {
                                 res.render('widget', {
+                                    clientData: clientData,
                                     myQuestions: questions,
                                     roomLabel: findedRoom.label,
                                     roomName: req.params.room_name,
