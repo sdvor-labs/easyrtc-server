@@ -9,7 +9,9 @@ let express = require('express'),
     UserStatus = require('../models/user_status'),
     Page = require('../models/page'),
     menuItem = require('../models/menu_item'),
+    question = require('../models/question'),
     router = express.Router(),
+    
     utils = require('../utils');
 //router.use(token_check.token_check);
 router.get('/', load_user, load_menu, load_rooms,function(req, res) {
