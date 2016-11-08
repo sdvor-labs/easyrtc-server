@@ -74,7 +74,6 @@ function buildCapchaButtons(targetDiv, item) {
         let tmpDiv = null,
             tmpLink  = null,
             label = null;
-            
         tmpDiv = document.createElement('div');
         tmpDiv.className = tmpDiv.className.concat('column is-4 has-text-centered');
         // Craeete button
@@ -199,7 +198,6 @@ function loginSuccess(easyrtcid) {
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(objToAdd));
     document.getElementById('haveCalled').classList.remove('is-active');
-    clientData.iHaveAnswered = true;
     
     document.getElementById('iam').innerHTML = `Мой ID: ${easyrtc.cleanId(clientData.myEasyrtcId)}`; 
     easyrtc.joinRoom(roomName, null, joinSuccess(roomName), loginFailure);
