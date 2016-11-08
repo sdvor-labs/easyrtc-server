@@ -28,8 +28,8 @@ let express = require('express'),
     journals = require('./routes/journals');
 
 let mongoose = require('mongoose');
-mongoose.connect('mongodb://10.0.16.101/newDB');
-/* Require models */
+//mongoose.connect('mongodb://10.0.16.101/newDB');
+mongoose.connect('mongodb://testvideo:3pm9skn5@localhost:27017/test');
 /* Set title EasyRTC server*/
 process.title = 'node-easyrtc';
 /* Create express application */
