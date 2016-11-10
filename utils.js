@@ -13,7 +13,6 @@ let User = require('./models/user'),
     question = require('./models/question'),
     EntryConnect = require('./models/log_connect'),
     Page = require('./models/page');
-//var Promise = require('bluebird');
 
 // Create default room, user_status, user_type if it
 // don't created

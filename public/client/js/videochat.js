@@ -264,7 +264,25 @@ let timerHaveCalled = setInterval(() => {
                 clientData.iHaveCalled = true;
             }
         }
-    }, 500);
+    }, 500),
+    userCount = null,
+    wokkerCount = null,
+    timerUserCount = setInterval(() => {
+            if (document.getElementById('notCalled').classList.contains('is-active') === true) {
+                userCount = 0;
+                workerCount = 0;
+                easyrtc.getRoomOccupantsAsArray(roomName).forEach(i => {
+                        if (easyrtc.idToName(i) === 'client') {
+                            userCount = userCount + 1;
+                        } else {
+                            workerCount = workerCount + 1;
+                        }
+                    });
+                document.getElementById('userCount').innerHTML = '';
+                let newValue = document.createTextNode(`Пользователей в комнате ${userCount}. ${(userCount/workerCount) * 5} минут - составит примерное время ожидания.`);
+                document.getElementById('userCount').appendChild(newValue);
+            }
+        });
 
 // POLLS LOGS
 // answer button
@@ -316,6 +334,7 @@ function answerPolls() {
     document.getElementById('haveCalled').classList.remove('is-active');
     clientData.iHaveAnswered = true;
 }
+// Function for close window without answer on polls
 function notAnswerPolls() {
     let answObj = {
         pollsType: 'clietn',

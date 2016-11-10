@@ -6,3 +6,5 @@ out
 out/*
 ./komodotolls
 Express-EasyRTC.komodoproject
+server.js
+app.js
