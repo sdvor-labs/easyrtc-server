@@ -346,7 +346,7 @@ function answerPolls() {
         comments:document.getElementById('comments').value
     };
     let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/answers/add");
+    xmlhttp.open("POST", "https://videochat.sdvor.com/journals/answers/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(answObj));
     document.getElementById('modalAnswers').classList.remove('is-active');
@@ -362,7 +362,7 @@ function notAnswerPolls() {
         comments: 'Отказался отвечать'
     };
     let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/answers/add");
+    xmlhttp.open("POST", "https://videochat.sdvor.com/journals/answers/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(answObj));
     document.getElementById('modalAnswers').classList.remove('is-active');
@@ -377,7 +377,7 @@ function addCallEntry() {
             description: 'Звонок завершен удачно'
         };
     let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/calls/add");
+    xmlhttp.open("POST", "https://videochat.sdvor.com/journals/calls/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(tmpEntry));
     document.getElementById('modalAnswers').classList.remove('is-active');
@@ -395,7 +395,7 @@ function getUserInfo() {
     let tmp = withUser,
         xhr = new XMLHttpRequest();
     if(withUser !== null) {
-        xhr.open('GET', `https://10.0.46.83:8080/api/userentry/${tmp}`, true);
+        xhr.open('GET', `https://videochat.sdvor.com/journals/userentry/${tmp}`, true);
         xhr.send();
         xhr.onreadystatechange = function() {
           if (this.readyState != 4) return;
