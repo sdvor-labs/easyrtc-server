@@ -41,8 +41,8 @@ html
                         section.modal-card-body
                             span Внимание! Cкоро будет осуществлен звонок пользователю!
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='pleaseCall();') Позвонить
-                            a.button.is-danger(onclick='notCall();') Не звонить
+                            a.button.is-primary(onclick='pleaseCall();') Соединить
+                            a.button.is-danger(onclick='notCall();') Отложить
             div.modal#modalAnswers
                 div.modal-background
                     div.modal-card.is-margin-top-persent
@@ -94,7 +94,7 @@ html
                             div.columns
                                 div.column.is-fullwidth
                                     span Извините, но на данный момент ни одного менеджера нет на месте. Вы можете отпраивть нам email на
-                                    a(href='mailto: example@test.ru') электронную почту
+                                    a(href='mailto: example@test.ru')  электронную почту
                                     span  и мы свяжемся с вами как только будет возможность. Извините за недобства =)
                             div.columns#capchaDiv
                         footer.modal-card-foot
@@ -107,6 +107,8 @@ html
                             div.columns
                                 div.column.is-fullwidth
                                     p Извините, но все менеджеры пока заняты. Оставайтесь на связи и мы вам перезвоним в ближайшее время
+                            div.columns
+                                div.column.is-fullwidth#userCount
                             div.columns#capchaDiv
                         footer.modal-card-foot
             div.modal#haveCalled
@@ -145,7 +147,7 @@ html
                             p.modal-card-title Спасибо за звонок
                         section.modal-card-body
                             p
-                                h4.title.is-4 Спасибо за звоное, теперь можете закрыть окно!
+                                h4.title.is-4 Спасибо за звонок, теперь можете закрыть окно!
                             
         div#if-not-posible.is-hidden
             div.card.is-fullwidth.is-fullheight.is-hidden#softwareError
