@@ -14,6 +14,21 @@ router.get('/', (req, res) => {
         "message": "Welcome to the journal API"
         });
 });
+router.get('/userentry/:rtc_token', (req, res) => {
+    EntryConnect.findOne({
+            easyRtcToken: req.params.rtc_token
+        }, (err, entry) => {
+            if(err) {
+                utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type lOG_CONNECT with token- ${req.body.easyRtcToken}. Error message: ${err}.`);
+                res.json({
+                        success: false,
+                        message: 'Fail create token'
+                    });
+            } else {
+                res.json(entry);
+            }
+        });    
+});
 /* Connection journal */
 router.get('/connections/', (req, res) => {
     res.json({
