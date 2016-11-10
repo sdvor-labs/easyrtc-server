@@ -149,7 +149,7 @@ function joinSuccess(roomName) {
                 }
             });
             
-        }, 100);
+        }, 200);
 }
 // Close user chat
 function hangupCall() {
