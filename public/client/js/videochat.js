@@ -194,7 +194,7 @@ function loginSuccess(easyrtcid) {
         };
     console.log(objToAdd);
     let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/connections/add");
+    xmlhttp.open("POST", "https://videochat.sdvor.com/journals/connections/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(objToAdd));
     document.getElementById('haveCalled').classList.remove('is-active');
@@ -328,7 +328,7 @@ function answerPolls() {
         comments:document.getElementById('comments').value
     };
     let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/answers/add");
+    xmlhttp.open("POST", "https://videochat.sdvor.com/journals/answers/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(answObj));
     document.getElementById('haveCalled').classList.remove('is-active');
@@ -345,7 +345,7 @@ function notAnswerPolls() {
         comments: 'Отказался отвечать'
     };
     let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    xmlhttp.open("POST", "https://10.0.46.83:8080/journals/answers/add");
+    xmlhttp.open("POST", "https://videochat.sdvor.com/journals/answers/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(answObj));
     document.getElementById('haveCalled').classList.remove('is-active');
