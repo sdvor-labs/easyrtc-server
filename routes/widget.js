@@ -99,12 +99,37 @@ router.get('/:room_name/:token', function(req, res) {
                             let userType = 'worker';
                             let onloadText = util.format("%s clientInit();");
                             onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'user_id': '%s', 'room_id': '%s'});", findedUser.username, findedUser.id, findedRoom.id));
-                            res.render('widget', {
-                                roomLabel: findedRoom.label,
-                                roomName: req.params.room_name,
-                                onload: onloadText,
-                                userType: userType,
-                                needChack: 'not-need'
+                            
+                            let clientData = {};
+    
+                            if(req.param('clientInfo')) {
+                                clientData.clientInfo = true;
+                                clientData.username = req.param('username');
+                                clientData.userfio = req.param('fio');
+                                clientData.city = req.param('city');
+                            } else {
+                                clientData.clientInfo = false;
+                                clientData.username = 'anonymous';
+                                clientData.userfio = 'Анонимный Пользователь';
+                                clientData.city =req.param('city');
+                            }
+    
+                            Question.find({
+                                pollsType: userType
+                            }, function(err, questions) {
+                                if(err) {
+                                    utils.appLogger('fail', 'Fail finding documents (questions)', `Fail, when app try finding document type QUESTIONS. Error message: ${err}.`);
+                                } else {
+                                    res.render('widget', {
+                                        clientData: clientData,
+                                        myQuestions: questions,
+                                        roomLabel: findedRoom.label,
+                                        roomName: req.params.room_name,
+                                        onload: onloadText,
+                                        userType: userType,
+                                        needCheck: 'not-need'
+                                    });   
+                                }
                             });        
                         }
                     });
