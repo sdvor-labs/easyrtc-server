@@ -11,7 +11,9 @@ let express = require('express'),
     menuItem = require('../models/menu_item'),
     question = require('../models/question'),
     router = express.Router(),
-    
+    logAnswers = require('../models/log_answers'),
+    logEntryCall = require('../models/log_calls'),
+    json2csv = require('json2csv'),
     utils = require('../utils');
 //router.use(token_check.token_check);
 router.get('/', load_user, load_menu, load_rooms,function(req, res) {
@@ -1294,5 +1296,279 @@ router.post('/pages/:page_name', load_user, load_menu, load_rooms,function(req, 
             res.redirect('/login');
         }
     });
+/* REPORTING */
+/* Report to answers */
+router.get('/reporting/report-polls', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                          if (user.admin === true) {
+                            let dateObject = {},
+                                date = null,
+                                dateEnd = null,
+                                filterObject = {};
+
+                            if (req.param('filterYear'))
+                                dateObject.year = parseInt(req.param('filterYear'));
+                            if (req.param('filterMonth'))
+                                dateObject.month = '' + (parseInt(req.param('filterMonth')) - 1);
+                            if (req.param('filterDay'))
+                               dateObject.day = req.param('filterDay');
+                            if (req.param('filterYearEnd'))
+                                dateObject.yearEnd = req.param('filterYearEnd');
+                            if (req.param('filterMonthEnd'))
+                                dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
+                            if (req.param('filterDayEnd'))
+                                dateObject.dayEnd = req.param('filterDayEnd');
+                            
+                            console.log(dateObject);
+                            
+                            if (Object.keys(dateObject).length === 6) {                                
+                                date = new Date(dateObject.year, dateObject.month, dateObject.day);
+                                dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
+                            }
+                            // db.reservations.find({ dateTime: { '$gte': new Date("Tue, 31 Mar 2015 02:30:00 GMT"), '$lte': new Date("Tue, 31 Mar 2015 03:30:00 GMT") }, minParty: { '$lte': 2 }, maxParty: { '$gte': 2 }, _user: { '$exists': false } })
+
+                            if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
+                                filterObject.date = {
+                                    '$gte': date,
+                                    '$lte': dateEnd
+                                    };
+                            }
+                            
+                            console.log(filterObject);
+                            
+                            logAnswers.find(filterObject, (errAnswers, answers) => {
+                                    if (errAnswers) {
+                                        utils.appLogger('fails', 'Fail finding document (log_answers)', `Fail, when app try finding all documents with type LOG_ANSWERS. Error message: ${errAnswers}`);
+                                    } else {
+                                        res.render('report-polls', {
+                                                menuItems: req.menuItems,
+                                                user: user,
+                                                rooms: req.rooms,
+                                                answers: answers,
+                                                isLogin: true,
+                                                isActive: 'report-polls',
+                                                filters: dateObject,
+                                                dateFrom: date,
+                                                dateTo: dateEnd
+                                            });
+                                    }
+                                });    
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+router.get('/downloads/answers/:date_from/:date_to', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                        
+                        if (user.admin === true) {
+                            console.log('hi');
+                            
+                            let filterObject = {};
+                            if (req.params.date_from === 'null' || req.params.date_to === 'null') {
+                                console.log(filterObject);
+                            } else {
+                                filterObject.date = {
+                                    '$gte': req.params.date_from,
+                                    '$lte': req.params.date_to
+                                };
+                            }
+                            console.log(filterObject);
+                            logAnswers.find(filterObject, (errAnswers, answers) => {
+                                    if (errAnswers) {
+                                        utils.appLogger('fails', 'Fail finding document (log_answers)', `Fail, when app try finding all documents with type LOG_ANSWERS. Error message: ${errAnswers}`);
+                                    } else {
+                                        let resultat = [],
+                                            tmp = null,
+                                            fields = ['Тип опроса', 'Дата', 'Токен сотрудника', 'Токен клиента', 'Комментарии', 'Ответы'];
+                                        answers.forEach(e => {
+                                                tmp = {
+                                                    'Тип опроса': e.pollsType,
+                                                    'Дата': e.date,
+                                                    'Токен сотрудника': e.employeeRtcToken,
+                                                    'Токен клиента': e.custometRtcToken,
+                                                    'Комментарии': e.comments,
+                                                    'Ответы': e.answersToPolls
+                                                };
+                                                resultat.push(tmp);
+                                            });
+                                        json2csv({ data: resultat, fields: fields}, function(err, csv) {
+                                           if (err) console.log(err);
+                                            console.log(csv);
+                                            res.attachment('data.csv');
+                                            res.send(csv);
+                                        });
+                                    }
+                                });
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+/* Reports to calls*/
+router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                          if (user.admin === true) {
+                            let dateObject = {},
+                                date = null,
+                                dateEnd = null,
+                                filterObject = {};
+
+                            if (req.param('filterYear'))
+                                dateObject.year = parseInt(req.param('filterYear'));
+                            if (req.param('filterMonth'))
+                                dateObject.month = '' + (parseInt(req.param('filterMonth')) - 1);
+                            if (req.param('filterDay'))
+                               dateObject.day = req.param('filterDay');
+                            if (req.param('filterYearEnd'))
+                                dateObject.yearEnd = req.param('filterYearEnd');
+                            if (req.param('filterMonthEnd'))
+                                dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
+                            if (req.param('filterDayEnd'))
+                                dateObject.dayEnd = req.param('filterDayEnd');
+                            
+                            console.log(dateObject);
+                            
+                            if (Object.keys(dateObject).length === 6) {                                
+                                date = new Date(dateObject.year, dateObject.month, dateObject.day);
+                                dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
+                            }
+                            
+                            if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
+                                filterObject.callStart = {
+                                    '$gte': date,
+                                    '$lte': dateEnd
+                                    };
+                            }
+                            
+                            console.log('Filter object ', filterObject);
+                            
+                            logEntryCall.find(filterObject, (errAnswers, calls) => {
+                                    if (errAnswers) {
+                                        utils.appLogger('fails', 'Fail finding document (log_answers)', `Fail, when app try finding all documents with type LOG_ANSWERS. Error message: ${errAnswers}`);
+                                    } else {
+                                        correctCalls = [],
+                                        tmp = null;
+                                        
+                                        calls.forEach(c => {
+                                                tmp = c;
+                                                if(c.callStart !== null && c.callStart !== undefined) {
+                                                    tmp.callStart = new Date(parseInt(c.callStart));
+                                                }
+                                                if (c.callEnd !== null && c.callEnd !== undefined) {
+                                                    tmp.callEnd = new Date(parseInt(c.callEnd));
+                                                }
+                                                correctCalls.push(tmp);
+                                            });
+                                        
+                                        console.log(correctCalls);
+                                        
+                                        res.render('report-calls', {
+                                                menuItems: req.menuItems,
+                                                user: user,
+                                                rooms: req.rooms,
+                                                calls: correctCalls,
+                                                isLogin: true,
+                                                isActive: 'report-calls',
+                                                filters: dateObject,
+                                                dateFrom: date,
+                                                dateTo: dateEnd
+                                            });
+                                    }
+                                });    
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+router.get('/downloads/report-calls/:date_from/:date_to', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                        
+                        if (user.admin === true) {
+                             let filterObject = {};
+                            if (req.params.date_from === 'null' || req.params.date_to === 'null') {
+                                console.log(filterObject);
+                            } else {
+                                filterObject.callStart = {
+                                    '$gte': req.params.date_from,
+                                    '$lte': req.params.date_to
+                                };
+                            }
+                            console.log(filterObject);
+                            logEntryCall.find(filterObject, (errCalls, calls) => {
+                                
+                                    console.log(calls);
+                                
+                                    if (errCalls) {
+                                        utils.appLogger('fails', 'Fail finding document (log_calls)', `Fail, when app try finding all documents with type LOG_CALLS. Error message: ${errAnswers}`);
+                                    } else {
+                                        let resultat = [],
+                                            tmp = null,
+                                            fields = ['Начало звонка', 'Конец звонка', 'Токен сотрудника', 'Токен клиента'];
+                                        calls.forEach(e => {
+                                                console.log(e);
+                                                tmp = {
+                                                    'Начало звонка': e.callStart,
+                                                    'Конец звонка': e.callEnd,
+                                                    'Токен сотрудника': e.employeeToken,
+                                                    'Токен клиента': e.customerToken,
+                                                };
+                                                resultat.push(tmp);
+                                            });
+                                        json2csv({ data: resultat, fields: fields}, function(err, csv) {
+                                           if (err) console.log(err);
+                                            console.log(csv);
+                                            res.attachment('calls.csv');
+                                            res.send(csv);
+                                        });
+                                    }
+                                });                           
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
 
 module.exports = router;
