@@ -25,6 +25,31 @@ block content
                             p.menu-label Модерация
                                 ul.menu-list
                                     li
+                                        a(onclick='toggleList("reportList")') Отчеты
+                                        if(isActive === 'report-calls' || isActive === 'report-polls')
+                                            ul#reportList
+                                                li
+                                                    if(isActive === 'report-calls')
+                                                        a.is-active(href = '/profile/reporting/report-calls') Отчет по звонкам
+                                                    else
+                                                        a(href = '/profile/reporting/report-calls') Отчет по звонкам
+                                                li
+                                                    if(isActive === 'report-polls')
+                                                        a.is-active(href = '/profile/reporting/report-polls') Отчет по опросам
+                                                    else
+                                                        a(href = '/profile/reporting/report-polls') Отчет по опросам
+                                        else
+                                            ul#reportList.is-hidden
+                                                li
+                                                    if(isActive === 'report-calls')
+                                                        a.is-active(href = '/profile/reporting/report-calls') Отчет по звонкам
+                                                    else
+                                                        a(href = '/profile/reporting/report-calls') Отчет по звонкам
+                                                li
+                                                    if(isActive === 'report-polls')
+                                                        a.is-active(href = '/profile/reporting/report-polls') Отчет по опросам
+                                                    else
+                                                        a(href = '/profile/reporting/report-polls') Отчет по опросам                                            
                                         a(onclick='toggleList("createList")') Создать
                                         if(isActive === 'create-company' || isActive === 'create-room' || isActive === 'create-user' || isActive === 'create-question' || isActive === 'create-page')
                                             ul#createList
