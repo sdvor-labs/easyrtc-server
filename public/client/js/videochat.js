@@ -1,4 +1,5 @@
 // Main object to work script
+
 let clientData = {},
     notificationColors = ['none', 'is-primary', 'is-info', 'is-success', 'is-warning', 'is-danger'];
 // Ser default values to new client

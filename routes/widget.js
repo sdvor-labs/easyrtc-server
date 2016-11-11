@@ -96,24 +96,25 @@ router.get('/:room_name/:token', function(req, res) {
                                     error: err
                                 });
                         }else{
-                            let userType = 'worker';
-                            let onloadText = util.format("%s clientInit();");
-                            onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'user_id': '%s', 'room_id': '%s'});", findedUser.username, findedUser.id, findedRoom.id));
-                            
                             let clientData = {};
-    
+
                             if(req.param('clientInfo')) {
                                 clientData.clientInfo = true;
                                 clientData.username = req.param('username');
-                                clientData.userfio = req.param('fio');
+                                clientData.userinfo = req.param('fio');
                                 clientData.city = req.param('city');
                             } else {
                                 clientData.clientInfo = false;
                                 clientData.username = 'anonymous';
-                                clientData.userfio = 'Анонимный Пользователь';
-                                clientData.city =req.param('city');
+                                clientData.userfio = 'Анонимный пользователь';
+                                clientData.city = req.param('city');
                             }
-    
+
+
+                            let userType = 'worker';
+                            let onloadText = util.format("%s clientInit();");
+                            onloadText = util.format(onloadText, util.format("easyrtc.setUsername('%s');easyrtc.setCredential({'user_id': '%s', 'room_id': '%s'});", findedUser.username, findedUser.id, findedRoom.id));
+
                             Question.find({
                                 pollsType: userType
                             }, function(err, questions) {
@@ -130,7 +131,7 @@ router.get('/:room_name/:token', function(req, res) {
                                         needCheck: 'not-need'
                                     });   
                                 }
-                            });        
+                            });
                         }
                     });
             }

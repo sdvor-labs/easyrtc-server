@@ -7,6 +7,8 @@ let express = require('express'),
     EntryConnect = require('../models/log_connect'),
     router = express.Router(),
     utils = require('../utils');
+
+
 /* GET root journals */
 router.get('/', (req, res) => {
     res.json({
@@ -14,6 +16,7 @@ router.get('/', (req, res) => {
         "message": "Welcome to the journal API"
         });
 });
+
 router.get('/userentry/:rtc_token', (req, res) => {
     EntryConnect.findOne({
             easyRtcToken: req.params.rtc_token
