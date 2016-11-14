@@ -8,7 +8,7 @@ let activeTab = 'users-menu',
     withUser = null,
 // User settings
     muteVideo = true,
-    muteMicrophone = false,
+    muteMicrophone = true,
 // Set interval for repaet function
     userQueryInterval = 6000,
 // Calling interval
