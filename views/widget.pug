@@ -241,12 +241,12 @@ html
                             div#query-menu-block.is-hidden
                                 div.panel-block
                                     div.notification.is-success.is-hidden#suspendEnd
-                                        button.delete(onclick-'hideNotification(this.id);')
+                                        button.delete#closeBtn(onclick='hideNotification("suspendEnd");')
                                         strong Внимание!
-                                        span 
+                                        span Завершился период в течении коготорого Вы не учавствуете в звонках пользователей!
                                     div.notification.is-success.is-hidden#succNotif
-                                            button.delete#closeBtn(onclick='hideNotification(this.id);')
-                                            span Поздравяем! Интервал успешно изменен!
+                                        button.delete#closeBtn(onclick='hideNotification("succNotif");')
+                                        span Поздравяем! Интервал успешно изменен!
                                     div.notification.is-warning.is-hidden#suspendFifteen-notif
                                         strong Перерыв на 15 минут
                                         br 
