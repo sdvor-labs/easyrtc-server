@@ -64,7 +64,7 @@ function answerToRus(word) {
 // Draw questuin
 function drawQuestion(answer) {
     let promise = new Promise(function(resolve, reject) {
-        document.getElementById('questionDiv').appendChild(document.createTextNode(`Для того, чтобы подкюлчитьс к сервису выберите "${answerToRus(answer)}" и надмите "Да, позвонить мне"`));
+        document.getElementById('questionDiv').appendChild(document.createTextNode(`Для того, чтобы подключиться к сервису выберите "${answerToRus(answer)}" и нажмите "Да, позвонить мне"`));
     });
     return promise;
 }
