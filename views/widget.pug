@@ -72,6 +72,17 @@ html
                         footer.modal-card-foot
                             a.button.is-primary(onclick='answerPolls();') Ответить
                             a.button.is-danger(onclick='notAnswerPolls();') Закрыть
+            div.modal#modalEmergencyCall
+                div.modal-background
+                    div.modal-card.is-margin-top-persent
+                        header.modal-card-head
+                            p.modal-card-title Срочный звонок
+                        section.modal-card-body
+                            p
+                                h4.title.is-4 Внимание! Вы хотите нажали кноку вызова пользователя вне очереди. Если вы нажмете "соединить" любой текущий диалог будет прерван!
+                        footer.modal-card-foot
+                            a.button.is-primary(onclick='pleaseEmergencyCall();') Соеденить
+                            a.button.is-danger(onclick='cancelEmergencyCall();') Отменить
         else
             div.modal#modalCall
                 div.modal-background
@@ -276,30 +287,32 @@ html
                                     div#queryDiv
                                     div#queryDivWorker
                             div#call-menu-block.is-hidden
-                                a.panel-block(href='#', onclick='openInfo();')
-                                    span.panel-icon
-                                        i.fa.fa-info
-                                    span Информация о пользователе
-                                a.panel-block(href='#', onclick='hangupCall();')
-                                    span.panel-icon
-                                        i.fa.fa-phone
-                                    span Положить трубку
-                                a.panel-block#cameraOff(href='#', onclick='muteMyVideo();')
-                                    span.panel-icon
-                                        i.fa.fa-ban
-                                    span Выключить камеру
-                                a.panel-block.is-hidden#cameraOn(href='#', onclick='muteMyVideo();')
-                                    span.panel-icon
-                                        i.fa.fa-video-camera
-                                    span Включить камеру
-                                a.panel-block#microphoneOff(href='#', onclick='muteMyMicrophone();')
-                                    span.panel-icon
-                                        i.fa.fa-microphone-slash
-                                    span Выключить микрофон
-                                a.panel-block.is-hidden#microphoneOn(href='#', onclick='muteMyMicrophone();')
-                                    span.panel-icon
-                                        i.fa.fa-microphone
-                                    span Включить микрофон
+                                strong Работа с пользователем
+                                p.control
+                                    a.button.is-default.is-margin-bottom.is-fullwidth(onclick='openInfo();')
+                                        span.icon
+                                            i.fa.fa-info
+                                        span Инофрмация о пользователе
+                                    a.button.is-default.is-margin-bottom.is-fullwidth(onclick='hangupCall();')
+                                        span.icon
+                                            i.fa.fa-phone
+                                        span Положить трубку
+                                    a.button.is-success.is-margin-bottom.is-fullwidth#cameraOff(onclick='muteMyVideo();')
+                                        span.icon
+                                            i.fa.fa-video-camera
+                                        span Выключить камеру
+                                    a.button.is-danger.is-margin-bottom.is-fullwidth.is-hidden#cameraOn(onclick='muteMyVideo();')
+                                        span.icon
+                                            i.fa.fa-ban
+                                        span Включить камеру
+                                    a.button.is-success.is-margin-bottom.is-fullwidth#microphoneOn(onclick='muteMyMicrophone();')
+                                        span.icon
+                                            i.fa.fa-microphone-slash
+                                        span Выключить микрофон
+                                    a.button.is-danger.is-margin-bottom.is-fullwidth.is-hidden#microphoneOff(onclick='muteMyMicrophone();')
+                                        span.icon
+                                            i.fa.fa-microphone
+                                        span Выключить микрофон
                     else
                          nav.panel
                             p.panel-heading.has-text-centered#iam Идет соединение

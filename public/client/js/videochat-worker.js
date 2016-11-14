@@ -24,6 +24,8 @@ let activeTab = 'users-menu',
     workerQuery = [],
 // Interval
     timerWorkerCall = null,
+// emergency call
+    emergencyCallUser = null,
 // List with user query
     usersQuery = [];
 // Main functoin connecting client
@@ -55,6 +57,17 @@ function getUsersQuery(peers) {
         });
     buildQueryButtons();
 }
+function performCallWithQuestion(item) {
+    emergencyCallUser = item;
+    document.getElementById('modalEmergencyCall').classList.add('is-active');
+}
+function cancelEmergencyCall() {
+    document.getElementById('modalEmergencyCall').classList.remove('is-active');
+}
+function pleaseEmergencyCall() {
+    performCall(emergencyCallUser);
+    document.getElementById('modalEmergencyCall').classList.remove('is-active');
+}
 // type ui button
 function uiLinkTypeBuilder(type, funcName, item) {
     let link = document.createElement('a');
@@ -64,7 +77,7 @@ function uiLinkTypeBuilder(type, funcName, item) {
             link.onclick = function(item) {
                 return function() {
                     if(funcName === 'call'){
-                        performCall(item);
+                        performCallWithQuestion(item);
                     } else {
                         queryRebuid(item);
                     } 
