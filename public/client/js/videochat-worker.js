@@ -13,6 +13,8 @@ let activeTab = 'users-menu',
     userQueryInterval = 6000,
 // Calling interval
     callInterval = 6000,
+    suspendTime = null;
+    suspendTimer = null;
 // Call attr
     callStart = null,
     callEnd = null,
@@ -20,6 +22,8 @@ let activeTab = 'users-menu',
     iTalkedTo = [],
 // List width workers in room
     workerQuery = [],
+// Interval
+    timerWorkerCall = null,
 // List with user query
     usersQuery = [];
 // Main functoin connecting client
@@ -224,6 +228,82 @@ function muteMyMicrophone(){
 function changeCallInterval(value) {
     callInterval = value;
     document.getElementById('succNotif').classList.remove('is-hidden');
+    clearInterval(timerWorkerCall);
+    timerWorkerCall = setInterval(() => {
+        queryCall();
+    }, callInterval);
+}
+function cancelSuspend() {
+    // Define temporary variable
+    let tmp = null;
+    // Set define variable
+    if (suspendTime === 900000) {
+        tmp = 'suspendFifteen';
+    } else if (suspendTime === 3600000) {
+        tmp = 'suspendHour';
+    } else if (suspendTime === 86400000) {
+        tmp = 'suspendDay';
+    }
+    // Set global state
+    suspendTime = null;
+    document.getElementById(tmp).classList.remove('is-hidden');
+    [`${tmp}-notif`, 'cancelSuspend'].forEach(e => {
+            document.getElementById(e).classList.add('is-hidden');
+        });
+}
+function showNotifAndButton(id) {
+    [`${id}-notif`, 'cancelSuspend'].forEach(e => {
+                console.log(e);
+                document.getElementById(e).classList.remove('is-hidden');
+            }); 
+    document.getElementById(id).classList.add('is-hidden');
+}
+//Suspend timer...
+function suspendCalls(state) {
+    if (state === 'first') {
+        clearInterval(timerWorkerCall);
+    } else {
+        clearTimeout(suspendTimer);
+    }
+    suspendTimer = setTimeout(() => {
+            document.getElementById('suspendEnd').classList.remove('is-hidden');
+            
+            let tmp = null;
+            
+            if (suspendTime === 900000) {
+                tmp = 'suspendFifteen';
+            } else if (suspendTime === 3600000) {
+                tmp = 'suspendHour';
+            } else if (suspendTime === 86400000) {
+                tmp = 'suspendDay';
+            }
+            
+            [`${tmp}-notif`, 'cancelSuspend'].forEach(e => {
+                    document.getElementById(e).classList.add('is-hidden');
+                });
+            
+            timerWorkerCall = setInterval(() => {
+                queryCall();
+            }, callInterval);
+            
+            suspendTime = null;
+            
+            clearTimeout(suspendTimer);
+        
+        }, suspendTime);
+}
+// Suspend call function
+function suspendCall(id, time) {
+    if (suspendTime === null) {
+        suspendTime = time;
+        showNotifAndButton(id);
+        suspendCalls('first');
+    } else {
+        cancelSuspend();
+        suspendTime = time;
+        showNotifAndButton(id);
+        suspendCalls('not-first');
+    }
 }
 // Rebuild query users
 function queryRebuid(peer) {
@@ -425,6 +505,7 @@ let timerUsersUpdate = setInterval(() => {
         getUserRoom(roomName).then();
     }, userQueryInterval);
 // repeat calls
-let timerWorkerCall = setInterval(() => {
+timerWorkerCall = setInterval(() => {
         queryCall();
     }, callInterval);
+

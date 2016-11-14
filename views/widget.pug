@@ -240,16 +240,37 @@ html
                                 div#roomList
                             div#query-menu-block.is-hidden
                                 div.panel-block
-                                    strong Задержка перед звонком
-                                    p.control
-                                        div.notification.is-success.is-hidden#succNotif
-                                            button.delete#closeBtn(onclick='hideNotification();')
+                                    div.notification.is-success.is-hidden#suspendEnd
+                                        button.delete(onclick-'hideNotification(this.id);')
+                                        strong Внимание!
+                                        span 
+                                    div.notification.is-success.is-hidden#succNotif
+                                            button.delete#closeBtn(onclick='hideNotification(this.id);')
                                             span Поздравяем! Интервал успешно изменен!
+                                    div.notification.is-warning.is-hidden#suspendFifteen-notif
+                                        strong Перерыв на 15 минут
+                                        br 
+                                        span Следующий звонок будет осуществлен только через 15 минут. Приятного перерыва!
+                                    div.notification.is-warning.is-hidden#suspendHour-notif
+                                        strong Перерыв на 1 час
+                                        br
+                                        span Следующий звонок будет осуществлен только через 1 час. Удачного совещения!
+                                    div.notification.is-warning.is-hidden#suspendDay-notif
+                                        strong Вы не принимаете звонки
+                                        br
+                                        span Данная задержка анлог статуса "Не беспокоить". Вам могут позвонить только ваши коллеги. Не забудьте отменить статус, как закончите свои дела!
+                                    
+                                    strong Задержка следующим перед звонком
+                                        a.button.is-success.is-fullwidth.is-margin-bottom.is-hidden#cancelSuspend(onclick='cancelSuspend();') Отменить задержку
+                                        a.button.is-info.is-fullwidth.is-margin-bottom#suspendFifteen(onclick='suspendCall(this.id, 900000);') Перерыв 15 минут
+                                        a.button.is-info.is-fullwidth.is-margin-bottom#suspendHour(onclick='suspendCall(this.id, 3600000);') Перерыв 1 час
+                                        a.button.is-info.is-fullwidth.is-margin-bottom#suspendDay(onclick='suspendCall(this.id, 86400000);') Перерыв 24 часа
+                                    strong Перерыв между звонками
+                                    p.control
                                         a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(6000);') 6 секунд
                                         a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(30000);') 30 секунд
                                         a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(60000);') 1 минута
-                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(180000);') 3 минуты
-                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(300000);') 5 минут
+                                        
                                 div.panel-block
                                     strong Очередь пользователей
                                     div#queryDiv
