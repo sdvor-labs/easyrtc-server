@@ -26,6 +26,10 @@ let activeTab = 'users-menu',
     },
 
 
+// Customer object
+    dataCustomer = {},
+
+
 // Call object
     dataCall = {
         callStart: null,
@@ -482,6 +486,7 @@ function queryCall() {
                 if(easyrtc.getConnectStatus(dataQueries.usersQuery[0]) === 'not connected') {
                     document.getElementById('modalCall').classList.add('is-active');
                     document.getElementById('appState').setAttribute('name', 'needOpen');
+                    getUserInfo('modal-call');
                 } else {
                     dataQueries.iTalkedTo.push(usersQuery[0]);
                     dataQueries.usersQuery.splice(usersQuery.indexOf(dataQueries.usersQuery[0]), 1);
@@ -609,7 +614,7 @@ function addCallEntry() {
 // open user info modal
 function openInfo() {
     document.getElementById('modalInfo').classList.add('is-active');
-    getUserInfo();
+    getUserInfo('modal-window');
 }
 
 
@@ -620,7 +625,7 @@ function closeInfo() {
 
 
 // function to get user info
-function getUserInfo() {
+function getUserInfo(state) {
     let xhr = new XMLHttpRequest();
         
     if(dataCall.withUser !== null) {
@@ -635,24 +640,44 @@ function getUserInfo() {
             alert( 'ошибка: ' + (this.status ? this.statusText : 'запрос не удался') );
             return;
           } else {
-            showInWindow(this.responseText);
+            
+            if (state === 'modal-window') {
+                showInWindow(this.responseText);    
+            } else {
+                showInCallModal(this.responseText);
+            }
+            
           }
         };
     } else {
-        alert('Вы еще не говорили ни с одним пользователем');
+        if (state === 'modal-window') {
+            alert('Вы еще не говорили ни с одним пользователем');
+        }
     }
 }
 
 
 // update & show user information in window
 function showInWindow(string){
-    let tmp = JSON.parse(string);
+    dataCustomer = JSON.parse(string);
     
     ['userfio', 'city', 'username'].forEach(e => {
         document.getElementById(e).innerHTML = '';
-        document.getElementById(e).innerHTML = tmp[e];
+        document.getElementById(e).innerHTML = dataCustomer[e];
     });
 }
+
+
+//
+function showInCallModal(string) {
+    dataCustomer = JSON.parse(string);
+    
+    ['userfio', 'city', 'username'].forEach(e => {
+            document.getElementById(`${e}-call-modal`).innerHTML = '';
+            document.getElementById(`${e}-call-modal`).innerHTML = dataCustomer[e];
+        });
+}
+
 
 
 // set timer for update user query

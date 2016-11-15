@@ -39,7 +39,17 @@ html
                         header.modal-card-head
                             p.modal-card-title Ожидается звонок пользователю
                         section.modal-card-body
-                            span Внимание! Cкоро будет осуществлен звонок пользователю!
+                            div.columns
+                                div.column
+                                    h4.title.is-4 Внимание! Cкоро будет осуществлен звонок пользователю!
+                            div.columns
+                                div.column.has-text-centered
+                                    h5.title.is-5 Информация о ползователе
+                            div.columns
+                                div.column
+                                        div#userfio-call-modal Анонимный пользователь
+                                        div#city-call-modal Не известно
+                                        div#username-call-modal Аноним
                         footer.modal-card-foot
                             a.button.is-primary(onclick='pleaseCall();') Соединить
                             a.button.is-danger(onclick='notCall();') Отложить
