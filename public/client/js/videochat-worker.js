@@ -658,7 +658,7 @@ function getUserInfo(state) {
 
 
 // update & show user information in window
-function showInWindow(string){
+function showInWindow(string) {
     dataCustomer = JSON.parse(string);
     
     ['userfio', 'city', 'username'].forEach(e => {
@@ -671,6 +671,9 @@ function showInWindow(string){
 //
 function showInCallModal(string) {
     dataCustomer = JSON.parse(string);
+    
+    console.log('UFCJ!');
+    
     
     ['userfio', 'city', 'username'].forEach(e => {
             document.getElementById(`${e}-call-modal`).innerHTML = '';
