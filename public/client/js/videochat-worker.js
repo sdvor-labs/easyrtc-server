@@ -66,7 +66,7 @@ function getUsersQuery(peers) {
                         }
                     }
                 } else {
-                    if(workerQuery.indexOf(peer) === -1) {
+                    if(dataQueries.workerQuery.indexOf(peer) === -1) {
                         dataQueries.workerQuery.push(peer);
                     }
                 }
