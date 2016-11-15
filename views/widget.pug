@@ -68,7 +68,6 @@ html
                                                 a.button.is-danger(id='answerFore-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerFore}
                             p.control
                                 input.input#comments(name='comments', type='text', placeholder='Текст вашего комментария')
-                                
                         footer.modal-card-foot
                             a.button.is-primary(onclick='answerPolls();') Ответить
                             a.button.is-danger(onclick='notAnswerPolls();') Закрыть
