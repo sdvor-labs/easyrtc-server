@@ -478,7 +478,7 @@ function queryCall() {
     if(easyrtc.getConnectionCount() === 0) {
         console.log('I am not talking', dataQueries.usersQuery.length);
         if(dataQueries.usersQuery.length !== 0) {
-            if(iTalkedTo.indexOf(dataQueries.usersQuery[0]) === -1)
+            if(dataQueries.iTalkedTo.indexOf(dataQueries.usersQuery[0]) === -1)
                 if(easyrtc.getConnectStatus(dataQueries.usersQuery[0]) === 'not connected') {
                     document.getElementById('modalCall').classList.add('is-active');
                     document.getElementById('appState').setAttribute('name', 'needOpen');
