@@ -87,20 +87,14 @@ function getUsersQuery(peers) {
 // function for emergency call modal window
 function performCallWithQuestion(item) {
     dataCall.emergencyCallUser = item;
-    document.getElementById('modalEmergencyCall').classList.add('is-active');
-}
-
-
-// cancel emergency call
-function cancelEmergencyCall() {
-    document.getElementById('modalEmergencyCall').classList.remove('is-active');
+    toggleModal('modalEmergencyCall');
 }
 
 
 // show modal for emergency call
 function pleaseEmergencyCall() {
     performCall(dataCall.emergencyCallUser);
-    document.getElementById('modalEmergencyCall').classList.remove('is-active');
+    toggleModal('modalEmergencyCall');
 }
 
 
@@ -161,6 +155,7 @@ function uiButtonBuilder(funcName, item, iconName, buttonText, targetDiv, state)
 
 // build ui link
 function uiLinkBuilder(item, iconName, linkText, targetDiv, button) {
+        // Return promise
     return new Promise((resolve, reject)=>{
                 let link = uiLinkTypeBuilder('link', null, item),
                     span = document.createElement('span'),
@@ -180,8 +175,8 @@ function uiLinkBuilder(item, iconName, linkText, targetDiv, button) {
 
 // Function for get all users in this room
 function getUserRoom() {
-    
-    let promise = new Promise((resolve, reject) => {
+        // Return promise
+    return new Promise((resolve, reject) => {
                         // Get all peers in room
             let peers = easyrtc.getRoomOccupantsAsArray(dataWidget.roomName) || [],
                 otherClientDiv = document.getElementById('otherClients');
@@ -193,14 +188,13 @@ function getUserRoom() {
             // users in query
             getUsersQuery(peers);            
         });
-    // Return function in promise
-    return promise;
 }
 
 
 // Get list with all rooms
 function getAllRooms() {
-    let promise = new Promise((resolve, reject) => {
+        // Return promise
+    return new Promise((resolve, reject) => {
             /// getRoomList function from official API
             easyrtc.getRoomList(
                 // if success
@@ -216,8 +210,6 @@ function getAllRooms() {
                 }
             );
         });
-    // Return function in promise
-    return promise;
 }
 
 
@@ -277,7 +269,7 @@ function hangupCall() {
     getQuestions();
     callHistory.push(`Начало разговора: ${dataCall.callStart}, конец зраговора: ${dataCall.callEnd}, токен пользовател: ${dataCall.withUser} / ${dataCall.emergencyCallUser}`);
     buildHistoryList();
-    document.getElementById('hangupCall').classList.add('is-hidden');
+    toggleElement('hangupCall');
 }
 
 
@@ -310,13 +302,11 @@ function buildHistoryList() {
 function muteMyVideo(){ 
     if(dataWidget.muteVideo === false) {
         dataWidget.muteVideo = true;
-        document.getElementById('cameraOff').classList.remove('is-hidden');
-        document.getElementById('cameraOn').classList.add('is-hidden');
     } else {
         dataWidget.muteVideo = false;
-        document.getElementById('cameraOn').classList.remove('is-hidden');
-        document.getElementById('cameraOff').classList.add('is-hidden');
     }
+    toggleElement('cameraOn');
+    toggleElement('cameraOff');
     // SDK API function
     easyrtc.enableCamera(dataWidget.muteVideo);
 }
@@ -326,13 +316,11 @@ function muteMyVideo(){
 function muteMyMicrophone(){
     if(dataWidget.muteMicrophone === false ){
         dataWidget.muteMicrophone = true;
-        document.getElementById('microphoneOff').classList.remove('is-hidden');
-        document.getElementById('microphoneOn').classList.add('is-hidden');
     } else {
         dataWidget.muteMicrophone = false;
-        document.getElementById('microphoneOn').classList.remove('is-hidden');
-        document.getElementById('microphoneOff').classList.add('is-hidden');
     }
+    toggleElement('microphoneOn');
+    toggleElement('microphoneOff');
     // SDK API function
     easyrtc.enableMicrophone(dataWidget.muteMicrophone);
 }
@@ -342,7 +330,7 @@ function muteMyMicrophone(){
 function changeCallInterval(value) {
     dataWidget.callInterval = value;
     
-    document.getElementById('succNotif').classList.remove('is-hidden');
+    toggleElement('succNotif');
     
     clearInterval(dataWidget.timerWorkerCall);
     
@@ -366,20 +354,19 @@ function cancelSuspend() {
     // Set global state
     dataWidget.suspendTime = null;
     
-    document.getElementById(tmp).classList.remove('is-hidden');
+    toggleElement(tmp);
     
     [`${tmp}-notif`, 'cancelSuspend'].forEach(e => {
-            document.getElementById(e).classList.add('is-hidden');
+            toggleElement(e);
         });
 }
 
 
 // finction for show or hide buttons with suspend
 function showNotifAndButton(id) {
-    [`${id}-notif`, 'cancelSuspend'].forEach(e => {
-                document.getElementById(e).classList.remove('is-hidden');
+    [`${id}-notif`, 'cancelSuspend', id].forEach(e => {
+                toggleElement(e);
             }); 
-    document.getElementById(id).classList.add('is-hidden');
 }
 
 
@@ -392,7 +379,7 @@ function suspendCalls(state) {
     }
     
     suspendTimer = setTimeout(() => {
-            document.getElementById('suspendEnd').classList.remove('is-hidden');
+            toggleElement('suspendEnd');
             
             let tmp = null;
             
@@ -405,7 +392,7 @@ function suspendCalls(state) {
             }
             
             [`${tmp}-notif`, 'cancelSuspend'].forEach(e => {
-                    document.getElementById(e).classList.add('is-hidden');
+                    toggleElement(e);
                 });
             
             dataWidget.timerWorkerCall = setInterval(() => {
@@ -502,7 +489,8 @@ function notCall() {
 
     dataQueries.usersQuery.push(tmp);
 
-    document.getElementById('modalCall').classList.remove('is-active');
+    toggleModal('modalCall');
+    
     document.getElementById('appState').setAttribute('name', 'notNeedOpen');
 }
 
@@ -515,7 +503,8 @@ function pleaseCall(){
     
     dataQueries.usersQuery.splice(dataQueries.usersQuery.indexOf(dataQueries.usersQuery[0]), 1);
     
-    document.getElementById('modalCall').classList.remove('is-active');
+    toggleModal('modalCall');
+    
     document.getElementById('appState').setAttribute('name', 'notNeedOpen');
 }
 
@@ -527,7 +516,7 @@ function queryCall() {
         if(dataQueries.usersQuery.length !== 0) {
             if(dataQueries.iTalkedTo.indexOf(dataQueries.usersQuery[0]) === -1)
                 if(easyrtc.getConnectStatus(dataQueries.usersQuery[0]) === 'not connected') {
-                    document.getElementById('modalCall').classList.add('is-active');
+                    toggleModal('modalCall');
                     document.getElementById('appState').setAttribute('name', 'needOpen');
                     getUserInfo('modal-call');
                 } else {
@@ -573,7 +562,7 @@ function clickAnswerButton(elm) {
 function getQuestions() {
     dataWidget.callInterval = 60000;
     changeCallInterval(dataWidget.callInterval);
-    document.getElementById('modalAnswers').classList.add('is-active');
+    toggleModal('modalAnswers');
 }
 
 
@@ -603,7 +592,8 @@ function answerPolls() {
     xmlhttp.open("POST", "https://videochat.sdvor.com/journals/answers/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(answObj));
-    document.getElementById('modalAnswers').classList.remove('is-active');
+    
+    toggleModal('modalAnswers');
     
     dataWidget.callInterval = 6000;
     changeCallInterval(dataWidget.callInterval);
@@ -627,7 +617,7 @@ function notAnswerPolls() {
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(answObj));
     
-    document.getElementById('modalAnswers').classList.remove('is-active');
+    toggleModal('modalAnswers');
     
     dataWidget.callInterval = 6000;
     changeCallInterval(dataWidget.callInterval);
@@ -650,13 +640,13 @@ function addCallEntry() {
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(tmpEntry));
     
-    document.getElementById('modalAnswers').classList.remove('is-active');
+    toggleModal('modalAnswers');
 }
 
 
 // open user info modal
 function openInfo() {
-    document.getElementById('modalInfo').classList.add('is-active');
+    toggleModal('modalInfo');
     getUserInfo('modal-window');
 }
 

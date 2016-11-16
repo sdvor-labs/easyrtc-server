@@ -80,3 +80,18 @@ function toggleList(e) {
 function toggleModal(e) {
     document.getElementById(e).classList.toggle('is-active');
 }
+
+function toggleElement(e) {
+    console.log(e);
+    
+    let element = document.getElementById(e);
+    
+    element.classList.contains('is-hidden');
+    
+    if(element.classList.contains('is-hidden') === true) {
+        element.classList.remove('is-hidden');
+    } else {
+        element.classList.add('is-hidden');
+    }
+    
+}

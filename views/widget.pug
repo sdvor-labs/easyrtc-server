@@ -52,7 +52,7 @@ html
                                 div#city Не известно
                                 div#username Аноним
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='closeInfo();') Закрыть
+                            a.button.is-primary(onclick='toggleModal("modalInfo");') Закрыть
                             
             div.modal#modalCallHistory
                 div.modal-background
@@ -125,7 +125,7 @@ html
                                 h4.title.is-4 Внимание! Вы хотите нажали кноку вызова пользователя вне очереди. Если вы нажмете "соединить" любой текущий диалог будет прерван!
                         footer.modal-card-foot
                             a.button.is-primary(onclick='pleaseEmergencyCall();') Соеденить
-                            a.button.is-danger(onclick='cancelEmergencyCall();') Отменить
+                            a.button.is-danger(onclick='toggleModal("modalEmergencyCall");') Отменить
                             
         else
             div.modal#modalCall
@@ -341,6 +341,7 @@ html
                                     div.columns
                                         div.column
                                             a.button.is-fullwidth(onclick='toggleModal("modalCallHistory");') История звонков
+                            
                             div#call-menu-block.is-hidden
                                 strong Работа с пользователем
                                 p.control

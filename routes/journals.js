@@ -5,6 +5,7 @@ let express = require('express'),
     load_menu = require('../middleware/load_menu'),
     load_rooms = require('../middleware/load_rooms'),
     EntryConnect = require('../models/log_connect'),
+    User = require('..models/user'),
     router = express.Router(),
     utils = require('../utils');
 
@@ -24,8 +25,8 @@ router.get('/userentry/:rtc_token', (req, res) => {
             if(err) {
                 utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type lOG_CONNECT with token- ${req.body.easyRtcToken}. Error message: ${err}.`);
                 res.json({
-                        success: false,
-                        message: 'Fail create token'
+                        "success": "false",
+                        "message": 'Fail find token'
                     });
             } else {
                 res.json(entry);
