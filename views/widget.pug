@@ -21,6 +21,26 @@ html
             script(type='text/javascript', src='/client/js/ui.js')
     body(onload=onload)
         if(userType === 'worker')
+            div.modal#modalEmptyWorkers
+                div.modal-background
+                    div.modal-card.is-margin-top-persent
+                        header.modal-card-head
+                            p.modal-card-title Комната без сотрудников
+                        section.modal-card-body
+                            p В данный момент в комнате нет сотрудникв, кроме Вас.
+                        footer.modal-card-foot
+                            a.button.is-primary(onclick='toggleModal("modalEmptyWorkers");') Закрыть
+                            
+            div.modal#modalEmptyCustomers
+                div.modal-background
+                    div.modal-card.is-margin-top-persent
+                        header.modal-card-head
+                            p.modal-card-title Комната без клиентов
+                        section.modal-card-body
+                            p На данный момент в комнате нет клиентов. Оставайтесь на связи - как только появятся клиенты будет включен автоматический дозвон!
+                        footer.modal-card-foot
+                            a.button.is-primary(onclick='toggleModal("modalEmptyCustomers");') Закрыть
+                            
             div.modal#modalInfo
                 div.modal-background
                     div.modal-card.is-margin-top-persent
@@ -33,6 +53,18 @@ html
                                 div#username Аноним
                         footer.modal-card-foot
                             a.button.is-primary(onclick='closeInfo();') Закрыть
+                            
+            div.modal#modalCallHistory
+                div.modal-background
+                    div.modal-card.is-margin-top-persent.not-margin-top
+                        header.modal-card-head
+                            p.modal-card-title История звонков
+                        section.modal-card-body
+                            div#historyList
+                                h4.title.is-4 История звонков пока пуста
+                        footer.modal-card-foot
+                            a.button.is-pimary(onclick='toggleModal("modalCallHistory");') Закрыть
+                            
             div.modal#modalCall
                 div.modal-background
                     div.modal-card.is-margin-top-persent
@@ -53,6 +85,7 @@ html
                         footer.modal-card-foot
                             a.button.is-primary(onclick='pleaseCall();') Соединить
                             a.button.is-danger(onclick='notCall();') Отложить
+                            
             div.modal#modalAnswers
                 div.modal-background
                     div.modal-card.is-margin-top-persent.not-margin-top
@@ -81,6 +114,7 @@ html
                         footer.modal-card-foot
                             a.button.is-primary(onclick='answerPolls();') Ответить
                             a.button.is-danger(onclick='notAnswerPolls();') Закрыть
+                            
             div.modal#modalEmergencyCall
                 div.modal-background
                     div.modal-card.is-margin-top-persent
@@ -92,6 +126,7 @@ html
                         footer.modal-card-foot
                             a.button.is-primary(onclick='pleaseEmergencyCall();') Соеденить
                             a.button.is-danger(onclick='cancelEmergencyCall();') Отменить
+                            
         else
             div.modal#modalCall
                 div.modal-background
@@ -292,9 +327,20 @@ html
                                         a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(60000);') 1 минута
                                         
                                 div.panel-block
-                                    strong Очередь пользователей
-                                    div#queryDiv
-                                    div#queryDivWorker
+                                    div.columns
+                                        div.column
+                                            strong Очередь пользователей  
+                                    div.columns
+                                        div.column#queryDiv Очередь пуста
+                                    div.columns
+                                        div.column
+                                            strong Сотрудники (вне очереди)
+                                    div.columns
+                                        div.column#queryDivWorker Список сотрудников пуст
+                                    hr
+                                    div.columns
+                                        div.column
+                                            a.button.is-fullwidth(onclick='toggleModal("modalCallHistory");') История звонков
                             div#call-menu-block.is-hidden
                                 strong Работа с пользователем
                                 p.control

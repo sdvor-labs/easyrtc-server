@@ -1,14 +1,20 @@
 function unhideTab(item) {
     document.getElementById(item).classList.remove('is-hidden');
 }
+
+
 function hideTab(item) {
     document.getElementById(item).classList.add('is-hidden');
 }
+
+
 function activeThisTab(item) {
     document.getElementById(activeTab).classList.remove('is-active');
     activeTab = item;
     document.getElementById(activeTab).classList.add('is-active');
 }
+
+
 function clickTab(name) {
     switch(name) {
         case 'all-menu':
@@ -55,9 +61,13 @@ function clickTab(name) {
     }
     
 }
+
+
 function hideNotification(id) {
     document.getElementById(id).classList.add('is-hidden');
 }
+
+
 function toggleList(e) {
     let tmpElement = document.getElementById(e);
     if(tmpElement.classList.contains('is-hidden') === true) {
@@ -65,4 +75,8 @@ function toggleList(e) {
     } else {
         tmpElement.classList.add('is-hidden');
     }
+}
+
+function toggleModal(e) {
+    document.getElementById(e).classList.toggle('is-active');
 }

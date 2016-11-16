@@ -37,6 +37,10 @@ let activeTab = 'users-menu',
         withUser: null,
         emergencyCallUser: null,
     },
+    
+    
+// Local history of calls
+    callHistory = [],
 
 
 // Data queries
@@ -104,21 +108,31 @@ function pleaseEmergencyCall() {
 function uiLinkTypeBuilder(type, funcName, item) {
     let link = document.createElement('a');
     
-    link.className = link.className.concat('panel-block');
-    
     if(type === 'button') {
+        // Set onclick function
         if(funcName) {
-            link.onclick = function(item) {
-                return function() {
-                    if(funcName === 'call'){
-                        performCallWithQuestion(item);
-                    } else {
-                        queryRebuid(item);
-                    } 
-                };
-            }(item);
+                link.onclick = function(item) {
+                    return function() {
+                        if(funcName === 'call'){
+                            performCallWithQuestion(item);
+                        } else if (funcName === 'empty-worker') {
+                            toggleModal('modalEmptyWorkers');
+                        } else if (funcName === 'empty-customer') {
+                            toggleModal('modalEmptyCustomers');
+                        } else {
+                            queryRebuid(item);
+                        } 
+                    };
+                }(item);
+        }
+        // Set button class
+        if (funcName === 'empty-worker' || funcName === 'empty-customer') {
+            link.className = link.className.concat('button is-fullwidth is-warning');
+        } else {
+            link.className = link.className.concat('button is-fullwidth');
         }
     } else {
+        link.className = link.className.concat('panel-block');
         link.href = `./${item}`;
     }
     return link;
@@ -126,51 +140,43 @@ function uiLinkTypeBuilder(type, funcName, item) {
 
 
 // tag inner constructor
-function uiButtonBuilder(funcName, item, iconName, buttonText, targetDiv) {
-    let promise = new Promise((resolve, reject) => {
-   
-        let link = uiLinkTypeBuilder('button', funcName, item),
-            span = document.createElement('span'),
-            icon = document.createElement('i'),
-            label = document.createTextNode(buttonText);
-            
-        span.className = span.className.concat('panel-icon');
-        link.appendChild(span);
-        
-        icon.className = icon.className.concat(`fa fa-${iconName}`);
-        span.appendChild(icon);
-        
-        link.appendChild(label);
-        targetDiv.appendChild(link);
+function uiButtonBuilder(funcName, item, iconName, buttonText, targetDiv, state) {
+    return new Promise((resolve, reject) => {
+                let link = uiLinkTypeBuilder('button', funcName, item),
+                    span = document.createElement('span'),
+                    icon = document.createElement('i'),
+                    label = document.createTextNode(buttonText);
+                    
+                span.className = span.className.concat('panel-icon');
+                link.appendChild(span);
+                
+                icon.className = icon.className.concat(`fa fa-${iconName}`);
+                span.appendChild(icon);
+                
+                link.appendChild(label);
+                targetDiv.appendChild(link);
     });
-   
-    return promise;
 }
 
 
 // build ui link
-function uiLinkBuilder(item, iconName, linkText, targetDiv) {
-    let promise = new Promise((resolve, reject)=>{
-   
-            let link = uiLinkTypeBuilder('link', null, item),
-                span = document.createElement('span'),
-                icon = document.createElement('i'),
-                label = document.createTextNode(`${linkText} ${item}`);
+function uiLinkBuilder(item, iconName, linkText, targetDiv, button) {
+    return new Promise((resolve, reject)=>{
+                let link = uiLinkTypeBuilder('link', null, item),
+                    span = document.createElement('span'),
+                    icon = document.createElement('i'),
+                    label = document.createTextNode(`${linkText} ${item}`);
+                    
+                span.className = span.className.concat('panel-icon');
+                link.appendChild(span);
                 
-            span.className = span.className.concat('panel-icon');
-            link.appendChild(span);
-            
-            icon.className = icon.className.concat(`fa fa-${iconName}`);
-            span.appendChild(icon);
-            
-            link.appendChild(label);
-            targetDiv.appendChild(link);
-            
+                icon.className = icon.className.concat(`fa fa-${iconName}`);
+                span.appendChild(icon);
+                
+                link.appendChild(label);
+                targetDiv.appendChild(link);    
         });
-   
-    return promise;
 }
-
 
 // Function for get all users in this room
 function getUserRoom() {
@@ -179,11 +185,11 @@ function getUserRoom() {
                         // Get all peers in room
             let peers = easyrtc.getRoomOccupantsAsArray(dataWidget.roomName) || [],
                 otherClientDiv = document.getElementById('otherClients');
-            // Iterate peers array
-            peers.forEach(peer => {
-                    // Create buttons
-                    uiButtonBuilder('call', peer, 'user', easyrtc.idToName(peer), otherClientDiv).then();
-                });
+
+                peers.forEach(peer => {
+                        // Create buttons
+                        uiButtonBuilder('call', peer, 'user', easyrtc.idToName(peer), otherClientDiv, 'not-empty').then();
+                    });
             // users in query
             getUsersQuery(peers);            
         });
@@ -269,7 +275,34 @@ function hangupCall() {
     dataCall.callEnd = Date.now();
     addCallEntry();
     getQuestions();
+    callHistory.push(`Начало разговора: ${dataCall.callStart}, конец зраговора: ${dataCall.callEnd}, токен пользовател: ${dataCall.withUser} / ${dataCall.emergencyCallUser}`);
+    buildHistoryList();
     document.getElementById('hangupCall').classList.add('is-hidden');
+}
+
+
+//build list of call history
+function buildHistoryList() {
+    let targetDiv = document.getElementById('historyList'),
+        ul = document.createElement('ul'),
+        tmpLi = null,
+        tmpText = null,
+        tmpLst = callHistory;
+
+        tmpLst.push('end');
+        
+        console.log(tmpLst);
+        
+        tmpLst.forEach(e => {
+                        if (e !== 'end') {
+                                tmpLi = document.createElement('li');
+                                tmpText = document.createTextNode(e);
+                                tmpLi.appendChild(tmpText);
+                                ul.appendChild(tmpLi);
+                        } else {
+                                targetDiv.appendChild(tmpLi);    
+                        }
+                });
 }
 
 
@@ -419,10 +452,14 @@ function workerQueryButton() {
             let queryDiv = document.getElementById('queryDivWorker');
 
             queryDiv.innerHTML = '';
-
-            dataQueries.workerQuery.forEach((peer) => {
-                    uiButtonBuilder('rebuild', peer, 'plus', `Добавить сотрудника ${easyrtc.idToName(peer)} в очередь`, queryDiv).then();
-                });
+            
+            if (dataQueries.workerQuery.length === 0) {
+                uiButtonBuilder('empty-worker', null, null, 'Нет сотрудников', queryDiv).then();
+            } else {
+                dataQueries.workerQuery.forEach((peer) => {
+                        uiButtonBuilder('rebuild', peer, 'plus', `Сотрудник ${easyrtc.idToName(peer)} в очередь`, queryDiv).then();
+                    });
+            }
         });
     return promise;
 }
@@ -434,10 +471,14 @@ function clientQueryButton() {
             let queryDiv = document.getElementById('queryDiv');
 
             queryDiv.innerHTML = '';
-
-            dataQueries.usersQuery.forEach((peer) => {
-                uiButtonBuilder('rebuild', peer, 'arrow-up', `Передвинуть клиента ${peer} наверх`, queryDiv).then();
-            });
+            
+            if (dataQueries.usersQuery.length === 0) {
+                uiButtonBuilder('empty-customer', null, null, 'Очередь пуста', queryDiv).then();
+            } else {
+                dataQueries.usersQuery.forEach((peer) => {
+                    uiButtonBuilder('rebuild', peer, 'arrow-up', `Передвинуть клиента ${peer} наверх`, queryDiv).then();
+                });
+            }
         });
     return promise;
 }
