@@ -457,7 +457,7 @@ function buildQueryButtons() {
 function notCall() {
     let tmp = dataQueries.usersQuery[0];
 
-    dataQueries.usersQuery..splice(usersQuery.indexOf(tmp), 1);
+    dataQueries.usersQuery.splice(usersQuery.indexOf(tmp), 1);
 
     dataQueries.usersQuery.push(tmp);
 
