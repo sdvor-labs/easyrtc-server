@@ -238,6 +238,7 @@ function performCall(otherEasyrtcid) {
     // Function/ callback for success or fail
     let successCB = () => {
             dataCall.callStart = Date.now();
+            document.getElementById('hangupCall').classList.remove('is-hidden');
         },
         failureCB = () => {};
     // API function call
@@ -268,6 +269,7 @@ function hangupCall() {
     dataCall.callEnd = Date.now();
     addCallEntry();
     getQuestions();
+    document.getElementById('hangupCall').classList.add('is-hidden');
 }
 
 
@@ -668,7 +670,7 @@ function showInWindow(string) {
 }
 
 
-//
+// update & show user information in call modal
 function showInCallModal(string) {
     dataCustomer = JSON.parse(string);
     
@@ -682,14 +684,14 @@ function showInCallModal(string) {
 }
 
 
-
 // set timer for update user query
 dataWidget.timerUsersUpdate = setInterval(() => {
         document.getElementById('otherClients').innerHTML = '';
         getUserRoom(dataWidget.roomName).then();
     }, dataWidget.userQueryInterval);
+
+
 // repeat calls
 dataWidget.timerWorkerCall = setInterval(() => {
         queryCall();
     }, dataWidget.callInterval);
-
