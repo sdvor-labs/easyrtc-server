@@ -2,6 +2,8 @@
 
 let clientData = {},
     notificationColors = ['none', 'is-primary', 'is-info', 'is-success', 'is-warning', 'is-danger'];
+    
+    
 // Ser default values to new client
 function setDefaultClientData() {
     let promise = new Promise((resolve,reject) => {
@@ -25,6 +27,8 @@ function setDefaultClientData() {
         });
     return promise;
 }
+
+
 // Return random number from min to max
 function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
@@ -32,7 +36,9 @@ function getRandomArbitrary(min, max) {
 function getRandomArbitraryFloor(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
-// Function chack answer
+
+
+// Function check answer
 function checkAnswer(id) {
     clientData.randArray.forEach((item) => {
             document.getElementById(`btn-${item}`).classList.remove('is-choosen');
@@ -44,6 +50,8 @@ function checkAnswer(id) {
         clientData.needCall = false;
     }
 }
+
+
 // Function to translate bulma class to russian
 function answerToRus(word) {
     let checker = null;
@@ -61,16 +69,27 @@ function answerToRus(word) {
         case 'is-info':return 'Синий';   
     }
 }
-// Draw questuin
+
+
+// Draw question
 function drawQuestion(answer) {
-    let promise = new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
         document.getElementById('questionDiv').appendChild(document.createTextNode(`Для того, чтобы подключиться к сервису выберите "${answerToRus(answer)}" и нажмите "Да, позвонить мне"`));
     });
-    return promise;
 }
+
+
+function redrawQuestion(answer) {
+    return new Promise(function(resolve, reject) {
+        document.getElementById('questionDiv').innerHTML ='';
+        document.getElementById('questionDiv').appendChild(document.createTextNode(`Вы выбрали не правильный цвет! Для того, чтобы подключиться к сервису выберите "${answerToRus(answer)}" и нажмите "Да, позвонить мне"`));
+    });
+}
+
+
 // Function build div & link
 function buildCapchaButtons(targetDiv, item) {
-    let promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         // Declarete variable
         let tmpDiv = null,
             tmpLink  = null,
@@ -92,12 +111,12 @@ function buildCapchaButtons(targetDiv, item) {
         tmpDiv.appendChild(tmpLink);
         targetDiv.appendChild(tmpDiv);
     });
-    // Return promise
-    return promise;
 }
+
+
 // Function to build capcha
-function buildCapcha() {
-    let promise = new Promise((resolve, reject) => {
+function buildCapcha(state) {
+    return new Promise((resolve, reject) => {
         // Declarate variables
         let max = notificationColors.length-1,
             randArray = [],
@@ -115,7 +134,13 @@ function buildCapcha() {
         // Set true answer
         clientData.trueAnswer = tmp;
         // Async draw question
-        drawQuestion(tmp).then();
+        console.log(state);
+        if (state === 'redraw') {
+            redrawQuestion(tmp).then();
+        } else {
+            drawQuestion(tmp).then();
+
+        }
         // Get target div for buttons
         tmp = document.getElementById('capchaDiv');
         // Iterate array
@@ -123,16 +148,19 @@ function buildCapcha() {
             buildCapchaButtons(tmp, item).then();
         });
     });
-    return promise;
 }
-// Main functoin connecting client
+
+
+// Main function connecting client
 function my_init() {
     //buildCapcha().then();
     setDefaultClientData().then((res) => {
         document.getElementById('modalCall').classList.add('is-active');
-        buildCapcha().then();
+        buildCapcha('draw').then();
     });
 }
+
+
 // Function after success connection and join to EasyRTC APP
 function joinSuccess(roomName) {
     // Wait connection
@@ -152,10 +180,14 @@ function joinSuccess(roomName) {
             
         }, 200);
 }
+
+
 // Close user chat
 function hangupCall() {
     easyrtc.hangup(otherEasyrtcid);
 }
+
+
 // Mute video function
 function muteMyVideo(){
     if(clientData.muteVideo === false) {
@@ -169,6 +201,8 @@ function muteMyVideo(){
     }
     easyrtc.enableCamera(clientData.muteVideo);
 }
+
+
 // Mute my microphone
 function muteMyMicrophone(){
     if(clientData.muteMicrophone === false ){
@@ -183,6 +217,7 @@ function muteMyMicrophone(){
     easyrtc.enableMicrophone(clientData.muteMicrophone);
 }
 
+
 // Function exec after success get token EasyRTC
 function loginSuccess(easyrtcid) {
     clientData.myEasyrtcId = easyrtcid;
@@ -193,20 +228,25 @@ function loginSuccess(easyrtcid) {
             city: clientData.city,
             easyRtcToken: clientData.myEasyrtcId
         };
-    console.log(objToAdd);
     let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+
     xmlhttp.open("POST", "https://videochat.sdvor.com/journals/connections/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(objToAdd));
-    document.getElementById('haveCalled').classList.remove('is-active');
-    
+
+    document.getElementById('haveCalled').classList.remove('is-active');    
     document.getElementById('iam').innerHTML = `Мой ID: ${easyrtc.cleanId(clientData.myEasyrtcId)}`; 
+
     easyrtc.joinRoom(roomName, null, joinSuccess(roomName), loginFailure);
 }
+
+
 // Message function
 function loginFailure(errorCode, message) {
     easyrtc.showError(errorCode, message);
 }
+
+
 // Connection user based on 
 function connectMe(answer) {
     let promise = new Promise((reject, resolve) => {
@@ -222,6 +262,8 @@ function connectMe(answer) {
     });
     return promise;
 }
+
+
 // Please not call me
 function notCall() {
     if(clientData.needCall === true) {
@@ -230,13 +272,20 @@ function notCall() {
     toggleModal('close').then();
     connectMe(clientData.needCall).then();
 }
+
+
 // Please call me
 function pleaseCall() {
     if(clientData.needCall !== false) {
         connectMe(clientData.needCall).then();
+        toggleModal('close').then();
+    } else {
+        document.getElementById('capchaDiv').innerHTML = '';
+        buildCapcha('redraw');
     }
-    toggleModal('close').then();
 }
+
+
 // Toggle modal call
 function toggleModal(toState) {
     let promise = new Promise ((reject, resolve) => {
@@ -244,10 +293,14 @@ function toggleModal(toState) {
             document,getElementById('modalCall').classList.add('is-active');
         } else {
             document.getElementById('modalCall').classList.remove('is-active');
+            drawQuestion();
         }
     });
     return promise;
 }
+
+
+
 // observe disconnett
 let timerHaveCalled = setInterval(() => {
         if(easyrtc.getConnectionCount() === 0) {
@@ -309,6 +362,8 @@ function clickAnswerButton(elm) {
         });
     
 }
+
+
 // new functional for polls
 function answerPolls() {
     let tmpLst = document.getElementsByClassName('is-choosen'),
@@ -335,6 +390,8 @@ function answerPolls() {
     document.getElementById('haveCalled').classList.remove('is-active');
     clientData.iHaveAnswered = true;
 }
+
+
 // Function for close window without answer on polls
 function notAnswerPolls() {
     let answObj = {

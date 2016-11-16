@@ -457,9 +457,9 @@ function buildQueryButtons() {
 function notCall() {
     let tmp = dataQueries.usersQuery[0];
 
-    usersQuery.splice(usersQuery.indexOf(tmp), 1);
+    dataQueries.usersQuery..splice(usersQuery.indexOf(tmp), 1);
 
-    usersQuery.push(tmp);
+    dataQueries.usersQuery.push(tmp);
 
     document.getElementById('modalCall').classList.remove('is-active');
     document.getElementById('appState').setAttribute('name', 'notNeedOpen');
