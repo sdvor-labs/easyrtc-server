@@ -2024,7 +2024,7 @@ router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, re
                                     '$lte': dateEnd
                                     };
                             } else {
-                                let tmpDate = new Date();
+                                let tmpDate.callStart = new Date();
                                 filterObject = {
                                     '$gte': tmpDate.setHours(0,0,0,0),
                                     '$lte': tmpDate.setHours(24,0,0,0)
