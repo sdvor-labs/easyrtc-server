@@ -1423,7 +1423,7 @@ router.get('/downloads/answers/:date_from/:date_to', load_user, load_menu, load_
                                         json2csv({ data: resultat, fields: fields}, function(err, csv) {
                                            if (err) console.log(err);
                                             console.log(csv);
-                                            res.attachment('data.csv');
+                                            res.attachment('polls.csv');
                                             res.send(csv);
                                         });
                                     }
@@ -1561,7 +1561,7 @@ router.get('/downloads/server/:date_from/:date_to', load_user, load_menu, load_r
                                         json2csv({ data: resultat, fields: fields}, function(err, csv) {
                                            if (err) console.log(err);
                                             console.log(csv);
-                                            res.attachment('calls.csv');
+                                            res.attachment('server.csv');
                                             res.send(csv);
                                         });
                                     }
@@ -1696,7 +1696,7 @@ router.get('/downloads/tokenize/:date_from/:date_to', load_user, load_menu, load
                                         json2csv({ data: resultat, fields: fields}, function(err, csv) {
                                            if (err) console.log(err);
                                             console.log(csv);
-                                            res.attachment('calls.csv');
+                                            res.attachment('tokenize.csv');
                                             res.send(csv);
                                         });
                                     }
@@ -1830,7 +1830,7 @@ router.get('/downloads/missed/:date_from/:date_to', load_user, load_menu, load_r
                                         json2csv({ data: resultat, fields: fields}, function(err, csv) {
                                            if (err) console.log(err);
                                             console.log(csv);
-                                            res.attachment('calls.csv');
+                                            res.attachment('missed.csv');
                                             res.send(csv);
                                         });
                                     }
@@ -1872,7 +1872,6 @@ router.get('/reporting/report-connections', load_user, load_menu, load_rooms, (r
                             if (req.param('filterDayEnd'))
                                 dateObject.dayEnd = req.param('filterDayEnd');
                             
-                            console.log(dateObject);
                             
                             if (Object.keys(dateObject).length === 6) {                                
                                 date = new Date(dateObject.year, dateObject.month, dateObject.day);
@@ -1946,8 +1945,7 @@ router.get('/downloads/connections/:date_from/:date_to', load_user, load_menu, l
                                 };
                             }
                             
-                            console.log(filterObject);
-
+                            
                             EntryConnect.find(filterObject, (errEntry, entries) => {
                             
                                     if (errEntry) {
@@ -1971,7 +1969,7 @@ router.get('/downloads/connections/:date_from/:date_to', load_user, load_menu, l
                                         json2csv({ data: resultat, fields: fields}, function(err, csv) {
                                            if (err) console.log(err);
                                             console.log(csv);
-                                            res.attachment('calls.csv');
+                                            res.attachment('connections.csv');
                                             res.send(csv);
                                         });
                                     }
@@ -2015,7 +2013,6 @@ router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, re
                             if (req.param('filterDayEnd'))
                                 dateObject.dayEnd = req.param('filterDayEnd');
                             
-                            console.log(dateObject);
                             
                             if (Object.keys(dateObject).length === 6) {                                
                                 date = new Date(dateObject.year, dateObject.month, dateObject.day);
@@ -2027,16 +2024,21 @@ router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, re
                                     '$gte': date,
                                     '$lte': dateEnd
                                     };
+                            } else {
+                                let tmpDate = new Date();
+                                filterObject = {
+                                    '$gte': tmpDate.setHours(0,0,0,0),
+                                    '$lte': tmpDate.setHours(24,0,0,0)
+                                };
                             }
                             
-                            console.log('Filter object ', filterObject);
                             
                             logEntryCall.find(filterObject, (errAnswers, calls) => {
                                     if (errAnswers) {
                                         utils.appLogger('fails', 'Fail finding document (log_answers)', `Fail, when app try finding all documents with type LOG_ANSWERS. Error message: ${errAnswers}`);
                                     } else {
-                                        correctCalls = [],
-                                        tmp = null;
+                                        let correctCalls = [],
+                                            tmp = null;
                                         
                                         calls.forEach(c => {
                                                 tmp = c;
@@ -2047,9 +2049,7 @@ router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, re
                                                     tmp.callEnd = new Date(parseInt(c.callEnd));
                                                 }
                                                 correctCalls.push(tmp);
-                                            });
-                                        
-                                        
+                                            });                                        
                                         res.render('report-calls', {
                                                 menuItems: req.menuItems,
                                                 user: user,
@@ -2085,18 +2085,18 @@ router.get('/downloads/report-calls/:date_from/:date_to', load_user, load_menu, 
                         if (user.admin === true) {
                              let filterObject = {};
                             if (req.params.date_from === 'null' || req.params.date_to === 'null') {
-                                console.log(filterObject);
+                                let tmpDate = new Date();
+                                filterObject = {
+                                        '$gte': tmpDate.setHours(0,0,0,0),
+                                        '$lte': tmpDate.setHours(24,0,0,0)
+                                    };
                             } else {
                                 filterObject.callStart = {
                                     '$gte': req.params.date_from,
                                     '$lte': req.params.date_to
                                 };
                             }
-                            console.log(filterObject);
                             logEntryCall.find(filterObject, (errCalls, calls) => {
-                                
-                                    console.log(calls);
-                                
                                     if (errCalls) {
                                         utils.appLogger('fails', 'Fail finding document (log_calls)', `Fail, when app try finding all documents with type LOG_CALLS. Error message: ${errAnswers}`);
                                     } else {
@@ -2104,7 +2104,6 @@ router.get('/downloads/report-calls/:date_from/:date_to', load_user, load_menu, 
                                             tmp = null,
                                             fields = ['Начало звонка', 'Конец звонка', 'Токен сотрудника', 'Токен клиента'];
                                         calls.forEach(e => {
-                                                console.log(e);
                                                 tmp = {
                                                     'Начало звонка': e.callStart,
                                                     'Конец звонка': e.callEnd,
@@ -2115,7 +2114,6 @@ router.get('/downloads/report-calls/:date_from/:date_to', load_user, load_menu, 
                                             });
                                         json2csv({ data: resultat, fields: fields}, function(err, csv) {
                                            if (err) console.log(err);
-                                            console.log(csv);
                                             res.attachment('calls.csv');
                                             res.send(csv);
                                         });
