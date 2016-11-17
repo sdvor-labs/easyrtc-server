@@ -442,7 +442,7 @@ function addMissedCall() {
     };
     
     let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    xmlhttp.open("POST", "https://127.0.0.1:5000/journals/missed-calls/add");
+    xmlhttp.open("POST", "https://videochat.sdvor.com/journals/missed-calls/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.send(JSON.stringify(missedCall));
 }
