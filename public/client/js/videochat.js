@@ -164,7 +164,6 @@ function my_init() {
     setDefaultClientData().then((res) => {
         document.getElementById('modalCall').classList.add('is-active');
         buildCapcha('draw').then();
-        initMissedTimer();
     });
 }
 
@@ -300,6 +299,7 @@ function pleaseCall() {
     if(clientData.needCall !== false) {
         connectMe(clientData.needCall).then();
         toggleModal('close').then();
+        initMissedTimer();
     } else {
         document.getElementById('capchaDiv').innerHTML = '';
         buildCapcha('redraw');
@@ -450,7 +450,5 @@ function addMissedCall() {
 function initMissedTimer() {
     clientData.missedTimer = setTimeout(()=>{
         addMissedCall();
-        alert('60 seconds');
     }, 60000);
-    console.log(clientData.missedTimer);
 }
