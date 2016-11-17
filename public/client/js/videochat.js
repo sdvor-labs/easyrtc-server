@@ -450,5 +450,6 @@ function addMissedCall() {
 function initMissedTimer() {
     clientData.missedTimer = setTimeout(()=>{
         addMissedCall();
-    }, 60000);
+        document.getElementById('sorry').classList.remove('is-hidden');
+    }, 300000);
 }
