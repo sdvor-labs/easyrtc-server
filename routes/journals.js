@@ -4,6 +4,7 @@ let express = require('express'),
 //    load_user = require('../middleware/load_user'),
 //    load_menu = require('../middleware/load_menu'),
 //    load_rooms = require('../middleware/load_rooms'),
+    settingServer = require('../models/settings');
     EntryConnect = require('../models/log_connect'),
     missedCalls = require('../models/missed_calls'),
     logFailedTokenize = require('../models/failed_tokenize'),
@@ -19,6 +20,21 @@ router.get('/', (req, res) => {
         });
 });
 
+/* GET root journals */
+router.get('/wgt', (req, res) => {
+    settingServer.findOne({
+            name: 'displayWidgets'
+        }, (errSet, result) => {
+                if (errSet) {
+                    res.json({
+                            "status": "fail",
+                            "message": errSet
+                        });
+                } else {
+                    res.json(result);
+                }
+            });
+});
 
 // Adding missed calls
 router.get('/missed-calls', (req, res) => {

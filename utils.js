@@ -14,6 +14,7 @@ let User = require('./models/user'),
     EntryConnect = require('./models/log_connect'),
     logFailedTokenize = require('./models/failed_tokenize'),
     missedCalls = require('./models/missed_calls'),
+    settingServer = require('./models/settings'),
     Page = require('./models/page');
 
 // Create default room, user_status, user_type if it
@@ -454,6 +455,32 @@ function testMissedCallsJournals() {
         });
 }
 
+function defaultSettingGeneration() {
+    return new Promise((resolve, reject) => {
+            settingServer.find({}, (err, lst) => {
+                    if (err) {
+                        throw err;
+                    } else {
+                        if (lst.length === 0) {
+                            let defaultSettings = settingServer({
+                                    name: 'displayWidgets',
+                                    value: true
+                                });
+                            defaultSettings.save(function(err) {
+                                if (err) {
+                                    throw err;
+                                } else {
+                                    console.log('Добавлены настройки сервера по умолчанию');
+                                    resolve(true);
+                                }
+                            });
+                        } else {
+                            resolve(false);
+                        }
+                    }
+                });
+        });
+}
 
 // TODO: Rewrite this on promise all
 /* Function for first run */
@@ -485,7 +512,10 @@ function doFirstRun() {
                                                                                                 console.log('Testing journal of tokenize error: ', errTokenize);
                                                                                                 testMissedCallsJournals().then((errMissedCalls) => {
                                                                                                         console.log('Testing journal of index call: ', errMissedCalls);
-                                                                                                        resolve(true);
+                                                                                                        defaultSettingGeneration().then((errSettings) => {
+                                                                                                                console.log('Default server settings: ', errSettings);
+                                                                                                                resolve(true);
+                                                                                                            });
                                                                                                     });
                                                                                             });
                                                                                         });

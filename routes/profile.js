@@ -1390,7 +1390,6 @@ router.get('/downloads/answers/:date_from/:date_to', load_user, load_menu, load_
                     } else {
                         
                         if (user.admin === true) {
-                            console.log('hi');
                             
                             let filterObject = {};
                             if (req.params.date_from === 'null' || req.params.date_to === 'null') {
@@ -1401,7 +1400,7 @@ router.get('/downloads/answers/:date_from/:date_to', load_user, load_menu, load_
                                     '$lte': req.params.date_to
                                 };
                             }
-                            console.log(filterObject);
+                            
                             logAnswers.find(filterObject, (errAnswers, answers) => {
                                     if (errAnswers) {
                                         utils.appLogger('fails', 'Fail finding document (log_answers)', `Fail, when app try finding all documents with type LOG_ANSWERS. Error message: ${errAnswers}`);

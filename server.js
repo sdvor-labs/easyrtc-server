@@ -1,6 +1,9 @@
 #!/usr/bin/nodejs
 let Room = require('./models/room.js'),
     logEntry = require('./models/log_entry'),
+    logEntryCall = require('./models/log_calls'),
+    EntryConnect = require('./models/log_connect'),
+    missedCalls = require('./models/missed_calls'),
     app = require('./app'),
     fs = require('fs'),
     http = require('http'),
@@ -98,6 +101,45 @@ easyrtc.events.on("roomLeave", function (connectionObj, roomName, roomParameter,
         if(err) {
             utils.appLogger('fail', 'Finding document', `Error, when app finding document. Error message: ${err}.`);
         } else {
+            logEntryCall.findOne({
+                    customerToken: user_rtc.rtc_token
+                }, (errCallEntry, entry) => {
+                        if (errCallEntry) {
+                            utils.appLogger('fail', 'Fail finding document(log_calls)', `Fail, when app try finding document with type LOG_CALL with token ${user_rtc.rtc_token}. Error message: ${err}.`);
+                        } else {
+                            if (entry === null) {
+                                EntryConnect.findOne({
+                                        easyRtcToken: user_rtc.rtc_token
+                                    }, (errConnect, thisConnect) => {
+                                            if (errConnect) {
+                                                utils.appLogger('fail', 'Fail finding document(log_connecet)', `Fail, when app try finding document with type LOG_CONNECT with token ${user_rtc.rtc_token}. Error message: ${err}.`);
+                                            } else {
+                                                let tmpMissedCalls = null;
+                                                if (thisConnect !== null) {
+                                                    tmpMissedCalls = missedCalls({
+                                                         userInfo: `Логин: ${thisConnect.username}, ФИО: ${thisConnect.userfio}, город: ${thisConnect.city}`,
+                                                         date: Date.now(),
+                                                         easyRtcToken: user_rtc.rtc_token
+                                                    });
+                                                } else {
+                                                    tmpMissedCalls = missedCalls({
+                                                            userInfo:  'Логин: не известно, ФИО: не известно, город: не известно',
+                                                            date: Date.now(),
+                                                            easyRtcToken: user_rtc.rtc_token
+                                                        });
+                                                }
+                                                tmpMissedCalls.save(function(errSave) {
+                                                            if (errSave) {
+                                                                utils.appLogger('fail', 'Fail save document(missed_calls)', `Fail, when app try save with type MISSED_CALLS(${tmpMissedCalls}). Error message: ${err}.`);
+                                                            } else {
+                                                                utils.appLogger('success', 'Success adding document(missed_calls)', `Success, when app try save with type MISSED_CALLS(${tmpMissedCalls}).`);
+                                                            }
+                                                        });
+                                            }
+                                        });
+                            }
+                        }
+                    });
             user_rtc.update({rtc_token: null}).exec(function(err) {
                     if(err) {
                         utils.appLogger('fail', 'Fail adding document', `Fail, when app try adding UserRtcRoken ${user_rtc}. Error message: ${err}.`);
@@ -150,11 +192,13 @@ let myEasyrtcApp = function (err, appObj) {
 };
 
 // Listen http & https servers on different ports
-httpServer.listen(3030, '77.244.221.70', function () {
+// httpServer.listen(3030, '77.244.221.70', function () {
+httpServer.listen(3030, '10.0.45.183',function () {
     utils.appLogger('run', 'Starting HTTP server', 'Run http server & listener');
     console.log('<SERVER>: Listening on http://videochat.sdvor.com:3030');
 });
-httpsServer.listen(5000, '77.244.221.70', function () {
+// httpsServer.listen(5000, '77.244.221.70', function () {
+httpsServer.listen(5000, '10.0.45.185',function () {
     utils.appLogger('run','Starting HTTPS server', 'Run http server & listener');
     console.log('<SERVER>: Listening on https://videochat.sdvor.com:5000')
 });

@@ -13,7 +13,7 @@ let clientData = {},
     
 // Ser default values to new client
 function setDefaultClientData() {
-    let promise = new Promise((resolve,reject) => {
+    return new Promise((resolve,reject) => {
             clientData.myEasyrtcId = null;
             clientData.muteMicrophone = false;
             clientData.muteVideo = true;
@@ -30,9 +30,9 @@ function setDefaultClientData() {
             clientData.username = document.getElementById('username').getAttribute('info');
             clientData.userfio = document.getElementById('userfio').getAttribute('info');
             clientData.city = document.getElementById('city').getAttribute('info');
+            clientData.missedTimer = null;
             resolve(true);
         });
-    return promise;
 }
 
 
@@ -164,6 +164,7 @@ function my_init() {
     setDefaultClientData().then((res) => {
         document.getElementById('modalCall').classList.add('is-active');
         buildCapcha('draw').then();
+        initMissedTimer();
     });
 }
 
@@ -250,7 +251,20 @@ function loginSuccess(easyrtcid) {
 
 // Message function
 function loginFailure(errorCode, message) {
-    easyrtc.showError(errorCode, message);
+     let objToAdd = {
+            userInfo: clientData,
+            date: Date.now(),
+            userAgent: window.navigator.userAgent,
+            error: `${errCode}: ${message}`
+        },
+        
+    xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+
+    xmlhttp.open("POST", "https://videochat.sdvor.com/journals/failed-tokenize/add");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(objToAdd));
+        
+     easyrtc.showError(errorCode, message);
 }
 
 
@@ -322,7 +336,11 @@ let timerHaveCalled = setInterval(() => {
         } else {
             document.getElementById('notCalled').classList.remove('is-active');
             if(clientData.iHaveCalled === false) {
+                console.log('CLEAR');
                 clientData.iHaveCalled = true;
+                console.log(clientData.missedTimer);
+                clearTimeout(clientData.missedTimer);
+                console.log(clientData.missedTimer);
             }
         }
     }, 500),
@@ -415,4 +433,24 @@ function notAnswerPolls() {
     xmlhttp.send(JSON.stringify(answObj));
     document.getElementById('haveCalled').classList.remove('is-active');
     clientData.iHaveAnswered = true;
+}
+
+function addMissedCall() {
+    let missedCall = {
+      userInfo: `Логин: ${clientData.username}, ФИО: ${clientData.userfio}, город: ${clientData.city}`,
+      easyRtcToken: clientData.myEasyrtcId
+    };
+    
+    let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+    xmlhttp.open("POST", "https://127.0.0.1:5000/journals/missed-calls/add");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(missedCall));
+}
+
+function initMissedTimer() {
+    clientData.missedTimer = setTimeout(()=>{
+        addMissedCall();
+        alert('60 seconds');
+    }, 60000);
+    console.log(clientData.missedTimer);
 }
