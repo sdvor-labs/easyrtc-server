@@ -12,6 +12,8 @@ let User = require('./models/user'),
     logAnswers = require('./models/log_answers'),
     question = require('./models/question'),
     EntryConnect = require('./models/log_connect'),
+    logFailedTokenize = require('./models/failed_tokenize'),
+    missedCalls = require('./models/missed_calls'),
     Page = require('./models/page');
 
 // Create default room, user_status, user_type if it
@@ -361,7 +363,7 @@ function testingQuestions() {
 }
 /* Function for test jiurnals connection */
 function testConnectionJournal() {
-    let promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
             EntryConnect.find({}, function(err, lst) {
                     if(err) {
                         throw err;
@@ -390,11 +392,73 @@ function testConnectionJournal() {
                     }
                 });
         });
-    return promise;
 }
+
+
+function testFailedTokenize() {
+    return new Promise((resolve, reject) => {
+            logFailedTokenize.find({}, (err, lst) => {
+                    if (err) {
+                        throw err;
+                    } else {
+                        if (lst.length === 0) {
+                            let tmpEntry = logFailedTokenize({
+                                    userInfo: 'No user info',
+                                    date: Date.now(),
+                                    userAgent: 'No user agent',
+                                    error: 'Test entry'
+                                });
+                            tmpEntry.save(function(err) {
+                                    if (err) {
+                                        console.log(err);
+                                        resolve(false);
+                                    } else {
+                                        console.log('Добавлена тестовая запись в журнал неуспешных соединений');
+                                        resolve(true);
+                                    }
+                                });
+                        } else {
+                            resolve(false);
+                        }
+                    }
+                });
+        });
+}
+
+function testMissedCallsJournals() {
+    return new Promise((resolve, reject) => {
+            missedCalls.find({}, (err, lst) => {
+                    if (err) {
+                        throw err;
+                    } else {
+                        if (lst.length === 0) {
+                            let tmpEntry = missedCalls({
+                                    userInfo: 'No user info',
+                                    date: Date.now(),
+                                    easyRtcToken: 'no token'
+                                });
+                            tmpEntry.save(function(err) {
+                                    if (err) {
+                                        console.log(err);
+                                        resolve(false);
+                                    } else {
+                                        console.log('Добавленка тестовая запись в журнал пропущенных звонков');
+                                        resolve(true);
+                                    }
+                                });
+                        } else {
+                            resolve(false);
+                        }
+                    }
+                });
+        });
+}
+
+
+// TODO: Rewrite this on promise all
 /* Function for first run */
 function doFirstRun() {
-    let promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         findCompany().then((resCompany) => {
                 console.log('Need to create company: ', resCompany);
                 findRooms().then((resRooms) => {
@@ -416,8 +480,14 @@ function doFirstRun() {
                                                                                 testingQuestions().then((resTestingQuestion) => {
                                                                                         console.log('Testing question list (create testing entry): ', resTestingQuestion);
                                                                                         testConnectionJournal().then((resTest) => {
-                                                                                            console.log('Testing connection list (create testing entry): ', resTest);
-                                                                                            resolve(true);    
+                                                                                            console.log('Testing connection journals', resTest);
+                                                                                            testFailedTokenize().then((errTokenize) => {
+                                                                                                console.log('Testing journal of tokenize error: ', errTokenize);
+                                                                                                testMissedCallsJournals().then((errMissedCalls) => {
+                                                                                                        console.log('Testing journal of index call: ', errMissedCalls);
+                                                                                                        resolve(true);
+                                                                                                    });
+                                                                                            });
                                                                                         });
                                                                                     });
                                                                             });
@@ -430,7 +500,6 @@ function doFirstRun() {
                     });
             });
     });
-    return promise;
 }
 
 function doVerifityToken(token, callback, res) {

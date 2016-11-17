@@ -13,7 +13,11 @@ let express = require('express'),
     router = express.Router(),
     logAnswers = require('../models/log_answers'),
     logEntryCall = require('../models/log_calls'),
+    EntryConnect = require('../models/log_connect'),
+    missedCalls = require('../models/missed_calls'),
+    logFailedTokenize = require('../models/failed_tokenize'),
     json2csv = require('json2csv'),
+    logEntry = require('../models/log_entry'),
     utils = require('../utils');
 //router.use(token_check.token_check);
 router.get('/', load_user, load_menu, load_rooms,function(req, res) {
@@ -43,7 +47,8 @@ router.get('/', load_user, load_menu, load_rooms,function(req, res) {
                                                 rooms: req.rooms,
                                                 company: company,
                                                 isLogin: true,
-                                                isActive: 'profile'});   
+                                                isActive: 'profile',
+                                                });   
                             }
                         });
                     }     
@@ -1338,6 +1343,12 @@ router.get('/reporting/report-polls', load_user, load_menu, load_rooms, (req, re
                                     '$gte': date,
                                     '$lte': dateEnd
                                     };
+                            } else {
+                                let tmpDate = new Date();
+                                filterObject.date = {
+                                    '$gte': tmpDate.setHours(0,0,0,0),
+                                    '$lte': tmpDate.setHours(24,0,0,0)
+                                };
                             }
                             
                             console.log(filterObject);
@@ -1426,6 +1437,556 @@ router.get('/downloads/answers/:date_from/:date_to', load_user, load_menu, load_
         res.redirect('/login');
     }
 });
+/* Reports to server*/
+router.get('/reporting/report-server', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                          if (user.admin === true) {
+                            let dateObject = {},
+                                date = null,
+                                dateEnd = null,
+                                filterObject = {};
+
+                            if (req.param('filterYear'))
+                                dateObject.year = parseInt(req.param('filterYear'));
+                            if (req.param('filterMonth'))
+                                dateObject.month = '' + (parseInt(req.param('filterMonth')) - 1);
+                            if (req.param('filterDay'))
+                               dateObject.day = req.param('filterDay');
+                            if (req.param('filterYearEnd'))
+                                dateObject.yearEnd = req.param('filterYearEnd');
+                            if (req.param('filterMonthEnd'))
+                                dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
+                            if (req.param('filterDayEnd'))
+                                dateObject.dayEnd = req.param('filterDayEnd');
+                            
+                            if (Object.keys(dateObject).length === 6) {                                
+                                date = new Date(dateObject.year, dateObject.month, dateObject.day);
+                                dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
+                            }
+                            
+                            if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
+                                filterObject.date = {
+                                    '$gte': date,
+                                    '$lte': dateEnd
+                                    };
+                            } else {
+                                let tmpDate = new Date();
+                                filterObject.date = {
+                                    '$gte': tmpDate.setHours(0,0,0,0),
+                                    '$lte': tmpDate.setHours(24,0,0,0)
+                                };
+                            }
+                            
+                            console.log(filterObject);
+                            
+                            logEntry.find(filterObject, (errEntries, entries) => {
+                                    if (errEntries) {
+                                        utils.appLogger('fails', 'Fail finding document (log_entry)', `Fail, when app try finding all documents with type LOG_ENTRY. Error message: ${errEntries}`);
+                                    } else {
+                                        
+                                        res.render('report-server', {
+                                                menuItems: req.menuItems,
+                                                user: user,
+                                                rooms: req.rooms,
+                                                entries: entries,
+                                                isLogin: true,
+                                                isActive: 'report-server',
+                                                filters: dateObject,
+                                                dateFrom: date,
+                                                dateTo: dateEnd
+                                            });
+                                    }
+                                });    
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+router.get('/downloads/server/:date_from/:date_to', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                        
+                        if (user.admin === true) {
+                             let filterObject = {};
+                            if (req.params.date_from === 'null' || req.params.date_to === 'null') {
+                                let tmpDate = new Date();
+                                filterObject.date = {
+                                    '$gte': tmpDate.setHours(0,0,0,0),
+                                    '$lte': tmpDate.setHours(24,0,0,0)
+                                };
+                            } else {
+                                filterObject.date = {
+                                    '$gte': req.params.date_from,
+                                    '$lte': req.params.date_to
+                                };
+                            }
+                            
+                            console.log(filterObject);
+
+                            logEntry.find(filterObject, (errEntry, entries) => {
+                            
+                                    if (errEntry) {
+                                        utils.appLogger('fails', 'Fail finding document (log_entry)', `Fail, when app try finding all documents with type LOG_ENTRY. Error message: ${errAnswers}`);
+                                    } else {
+                                        let resultat = [],
+                                            tmp = null,
+                                            fields = ['Тип события', 'Дата', 'Действие', 'Описание'];
+                                            
+                                        console.log(entries);
+                                        
+                                        entries.forEach(e => {
+                                                tmp = {
+                                                    'Тип события': e.type_error,
+                                                    'Дата': e.date,
+                                                    'Дейстие': e.action,
+                                                    'Описание': e.description,
+                                                };
+                                                resultat.push(tmp);
+                                            });
+                                        json2csv({ data: resultat, fields: fields}, function(err, csv) {
+                                           if (err) console.log(err);
+                                            console.log(csv);
+                                            res.attachment('calls.csv');
+                                            res.send(csv);
+                                        });
+                                    }
+                                });                           
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+/* Reports to fail tokenization*/
+router.get('/reporting/report-error-tokenize', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                          if (user.admin === true) {
+                            let dateObject = {},
+                                date = null,
+                                dateEnd = null,
+                                filterObject = {};
+
+                            if (req.param('filterYear'))
+                                dateObject.year = parseInt(req.param('filterYear'));
+                            if (req.param('filterMonth'))
+                                dateObject.month = '' + (parseInt(req.param('filterMonth')) - 1);
+                            if (req.param('filterDay'))
+                               dateObject.day = req.param('filterDay');
+                            if (req.param('filterYearEnd'))
+                                dateObject.yearEnd = req.param('filterYearEnd');
+                            if (req.param('filterMonthEnd'))
+                                dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
+                            if (req.param('filterDayEnd'))
+                                dateObject.dayEnd = req.param('filterDayEnd');
+                            
+                            if (Object.keys(dateObject).length === 6) {                                
+                                date = new Date(dateObject.year, dateObject.month, dateObject.day);
+                                dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
+                            }
+                            
+                            if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
+                                filterObject.date = {
+                                    '$gte': date,
+                                    '$lte': dateEnd
+                                    };
+                            } else {
+                                let tmpDate = new Date();
+                                filterObject.date = {
+                                    '$gte': tmpDate.setHours(0,0,0,0),
+                                    '$lte': tmpDate.setHours(24,0,0,0)
+                                };
+                            }
+                            
+                            logFailedTokenize.find(filterObject, (errEntries, entries) => {
+                                    if (errEntries) {
+                                        utils.appLogger('fails', 'Fail finding document (failed_tokenize)', `Fail, when app try finding all documents with type FAILED_TOKENIZE. Error message: ${errEntries}`);
+                                    } else {
+                                        
+                                        res.render('report-error-tokenize', {
+                                                menuItems: req.menuItems,
+                                                user: user,
+                                                rooms: req.rooms,
+                                                entries: entries,
+                                                isLogin: true,
+                                                isActive: 'report-error-tokenize',
+                                                filters: dateObject,
+                                                dateFrom: date,
+                                                dateTo: dateEnd
+                                            });
+                                    }
+                                });    
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+router.get('/downloads/tokenize/:date_from/:date_to', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                        
+                        if (user.admin === true) {
+                             let filterObject = {};
+                            if (req.params.date_from === 'null' || req.params.date_to === 'null') {
+                                let tmpDate = new Date();
+                                filterObject.date = {
+                                    '$gte': tmpDate.setHours(0,0,0,0),
+                                    '$lte': tmpDate.setHours(24,0,0,0)
+                                };
+                            } else {
+                                filterObject.date = {
+                                    '$gte': req.params.date_from,
+                                    '$lte': req.params.date_to
+                                };
+                            }
+                            
+
+                            logFailedTokenize.find(filterObject, (errEntry, entries) => {
+                            
+                                    if (errEntry) {
+                                        utils.appLogger('fails', 'Fail finding document (failed_tokenize)', `Fail, when app try finding all documents with type FAILED_TOKENIZR. Error message: ${errAnswers}`);
+                                    } else {
+                                        let resultat = [],
+                                            tmp = null,
+                                            fields = ['Пользователь', 'Дата', 'Обрудование','Ошибка'];
+                                            
+                                        console.log(entries);
+                                        
+                                        entries.forEach(e => {
+                                                tmp = {
+                                                    'Пользователь': e.userInfo,
+                                                    'Дата': e.date,
+                                                    'Оборудование': e.userAgent,
+                                                    'Ошибка': e.error
+                                                };
+                                                resultat.push(tmp);
+                                            });
+                                        json2csv({ data: resultat, fields: fields}, function(err, csv) {
+                                           if (err) console.log(err);
+                                            console.log(csv);
+                                            res.attachment('calls.csv');
+                                            res.send(csv);
+                                        });
+                                    }
+                                });                           
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+/* Reports to missed calls*/
+router.get('/reporting/report-missed-calls', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                          if (user.admin === true) {
+                            let dateObject = {},
+                                date = null,
+                                dateEnd = null,
+                                filterObject = {};
+
+                            if (req.param('filterYear'))
+                                dateObject.year = parseInt(req.param('filterYear'));
+                            if (req.param('filterMonth'))
+                                dateObject.month = '' + (parseInt(req.param('filterMonth')) - 1);
+                            if (req.param('filterDay'))
+                               dateObject.day = req.param('filterDay');
+                            if (req.param('filterYearEnd'))
+                                dateObject.yearEnd = req.param('filterYearEnd');
+                            if (req.param('filterMonthEnd'))
+                                dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
+                            if (req.param('filterDayEnd'))
+                                dateObject.dayEnd = req.param('filterDayEnd');
+                            
+                            if (Object.keys(dateObject).length === 6) {                                
+                                date = new Date(dateObject.year, dateObject.month, dateObject.day);
+                                dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
+                            }
+                            
+                            if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
+                                filterObject.date = {
+                                    '$gte': date,
+                                    '$lte': dateEnd
+                                    };
+                            } else {
+                                let tmpDate = new Date();
+                                filterObject.date = {
+                                    '$gte': tmpDate.setHours(0,0,0,0),
+                                    '$lte': tmpDate.setHours(24,0,0,0)
+                                };
+                            }
+                            
+                            missedCalls.find(filterObject, (errEntries, entries) => {
+                                    if (errEntries) {
+                                        utils.appLogger('fails', 'Fail finding document (missed_calls)', `Fail, when app try finding all documents with type MISSED_CALLS. Error message: ${errEntries}`);
+                                    } else {
+                                        
+                                        res.render('report-missed-calls', {
+                                                menuItems: req.menuItems,
+                                                user: user,
+                                                rooms: req.rooms,
+                                                entries: entries,
+                                                isLogin: true,
+                                                isActive: 'report-missed-calls',
+                                                filters: dateObject,
+                                                dateFrom: date,
+                                                dateTo: dateEnd
+                                            });
+                                    }
+                                });    
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+router.get('/downloads/missed/:date_from/:date_to', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                        
+                        if (user.admin === true) {
+                             let filterObject = {};
+                            if (req.params.date_from === 'null' || req.params.date_to === 'null') {
+                                let tmpDate = new Date();
+                                filterObject.date = {
+                                    '$gte': tmpDate.setHours(0,0,0,0),
+                                    '$lte': tmpDate.setHours(24,0,0,0)
+                                };
+                            } else {
+                                filterObject.date = {
+                                    '$gte': req.params.date_from,
+                                    '$lte': req.params.date_to
+                                };
+                            }
+                            
+
+                            missedCalls.find(filterObject, (errEntry, entries) => {
+                            
+                                    if (errEntry) {
+                                        utils.appLogger('fails', 'Fail finding document (missed_call)', `Fail, when app try finding all documents with type MISSED_CALL. Error message: ${errAnswers}`);
+                                    } else {
+                                        let resultat = [],
+                                            tmp = null,
+                                            fields = ['Пользователь', 'Дата', 'Токен'];
+                                            
+                                        console.log(entries);
+                                        
+                                        entries.forEach(e => {
+                                                tmp = {
+                                                    'Пользователь': e.userInfo,
+                                                    'Дата': e.date,
+                                                    'Дейстие': e.easyRtcToken,
+                                                };
+                                                resultat.push(tmp);
+                                            });
+                                        json2csv({ data: resultat, fields: fields}, function(err, csv) {
+                                           if (err) console.log(err);
+                                            console.log(csv);
+                                            res.attachment('calls.csv');
+                                            res.send(csv);
+                                        });
+                                    }
+                                });                           
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+/* Reports to connections */
+router.get('/reporting/report-connections', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                          if (user.admin === true) {
+                            let dateObject = {},
+                                date = null,
+                                dateEnd = null,
+                                filterObject = {};
+
+                            if (req.param('filterYear'))
+                                dateObject.year = parseInt(req.param('filterYear'));
+                            if (req.param('filterMonth'))
+                                dateObject.month = '' + (parseInt(req.param('filterMonth')) - 1);
+                            if (req.param('filterDay'))
+                               dateObject.day = req.param('filterDay');
+                            if (req.param('filterYearEnd'))
+                                dateObject.yearEnd = req.param('filterYearEnd');
+                            if (req.param('filterMonthEnd'))
+                                dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
+                            if (req.param('filterDayEnd'))
+                                dateObject.dayEnd = req.param('filterDayEnd');
+                            
+                            console.log(dateObject);
+                            
+                            if (Object.keys(dateObject).length === 6) {                                
+                                date = new Date(dateObject.year, dateObject.month, dateObject.day);
+                                dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
+                            }
+                            
+                            if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
+                                filterObject.date = {
+                                    '$gte': date,
+                                    '$lte': dateEnd
+                                    };
+                            } else {
+                                let tmpDate = new Date();
+                                filterObject.date = {
+                                        '$gte': tmpDate.setHours(0,0,0,0),
+                                        '$lte': tmpDate.setHours(24,0,0,0)
+                                };
+                            }
+                        
+                            
+                            EntryConnect.find(filterObject, (errConnect, entries) => {
+                                    if (errConnect) {
+                                        utils.appLogger('fails', 'Fail finding document (log_connect)', `Fail, when app try finding all documents with type LOG_CONNETCT. Error message: ${errAnswers}`);
+                                    } else {
+                                        
+                                        console.log(entries);
+                                        
+                                        res.render('report-connections', {
+                                                menuItems: req.menuItems,
+                                                user: user,
+                                                rooms: req.rooms,
+                                                entries: entries,
+                                                isLogin: true,
+                                                isActive: 'report-connections',
+                                                filters: dateObject,
+                                                dateFrom: date,
+                                                dateTo: dateEnd
+                                            });
+                                    }
+                                });    
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+router.get('/downloads/connections/:date_from/:date_to', load_user, load_menu, load_rooms, (req, res) => {
+    if (req.user) {
+        User.findOne({
+                token: req.cookies.token
+            }, function (err, user) {
+                    if (err) {
+                        utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
+                    } else {
+                        
+                        if (user.admin === true) {
+                             let filterObject = {};
+                            if (req.params.date_from === 'null' || req.params.date_to === 'null') {
+                                let tmpDate = new Date();
+                                filterObject.date = {
+                                    '$gte': tmpDate.setHours(0,0,0,0),
+                                    '$lte': tmpDate.setHours(24,0,0,0)
+                                };
+                            } else {
+                                filterObject.date = {
+                                    '$gte': req.params.date_from,
+                                    '$lte': req.params.date_to
+                                };
+                            }
+                            
+                            console.log(filterObject);
+
+                            EntryConnect.find(filterObject, (errEntry, entries) => {
+                            
+                                    if (errEntry) {
+                                        utils.appLogger('fails', 'Fail finding document (log_connect)', `Fail, when app try finding all documents with type LOG_CONNECT. Error message: ${errAnswers}`);
+                                    } else {
+                                        let resultat = [],
+                                            tmp = null,
+                                            fields = ['Username', 'ФИО', 'Город', 'Токен', 'Дата'];
+                                            
+                                        
+                                        entries.forEach(e => {
+                                                tmp = {
+                                                    'Username': e.username,
+                                                    'ФИО': e.userfio,
+                                                    'Город': e.city,
+                                                    'Токен': e.easyRtcToken,
+                                                    'Дата': e.date
+                                                };
+                                                resultat.push(tmp);
+                                            });
+                                        json2csv({ data: resultat, fields: fields}, function(err, csv) {
+                                           if (err) console.log(err);
+                                            console.log(csv);
+                                            res.attachment('calls.csv');
+                                            res.send(csv);
+                                        });
+                                    }
+                                });                           
+                        } else {
+                            res.redirect('/profile');
+                        }
+                    }
+                });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
 /* Reports to calls*/
 router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, res) => {
     if (req.user) {
@@ -1488,7 +2049,6 @@ router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, re
                                                 correctCalls.push(tmp);
                                             });
                                         
-                                        console.log(correctCalls);
                                         
                                         res.render('report-calls', {
                                                 menuItems: req.menuItems,

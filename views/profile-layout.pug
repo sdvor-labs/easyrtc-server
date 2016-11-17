@@ -26,7 +26,7 @@ block content
                                 ul.menu-list
                                     li
                                         a(onclick='toggleList("reportList")') Отчеты
-                                        if(isActive === 'report-calls' || isActive === 'report-polls')
+                                        if(isActive === 'report-error-tokenize' ||isActive === 'report-missed-calls' || isActive === 'report-calls' || isActive === 'report-polls' || isActive === 'report-server' || isActive === 'report-connections')
                                             ul#reportList
                                                 li
                                                     if(isActive === 'report-calls')
@@ -38,6 +38,26 @@ block content
                                                         a.is-active(href = '/profile/reporting/report-polls') Отчет по опросам
                                                     else
                                                         a(href = '/profile/reporting/report-polls') Отчет по опросам
+                                                li
+                                                    if(isActive === 'report-server')
+                                                        a.is-active(href = '/profile/reporting/report-server') Отчет по серверу
+                                                    else
+                                                        a(href = '/profile/reporting/report-server') Отчет по серверу
+                                                li
+                                                    if(isActive === 'report-connections')
+                                                        a.is-active(href = '/profile/reporting/report-connections') Отчет по соединениям
+                                                    else
+                                                        a(href = '/profile/reporting/report-connections') Отчет по соединениям
+                                                li
+                                                    if(isActive === 'report-missed-calls')
+                                                        a.is-active(href = '/profile/reporting/report-missed-calls') Журнал пропущенных вызовов
+                                                    else
+                                                        a(href = '/profile/reporting/report-missed-calls') Журна провпущенных вызовов
+                                                li
+                                                    if(isActive === 'report-error-tokenize')
+                                                        a.is-active(href = '/profile/reporting/report-error-tokenize') Ошибки выдачи токенов
+                                                    else
+                                                        a(href = '/profile/reporting/report-error-tokenize') Ошибки выдачи токенов
                                         else
                                             ul#reportList.is-hidden
                                                 li
@@ -49,7 +69,28 @@ block content
                                                     if(isActive === 'report-polls')
                                                         a.is-active(href = '/profile/reporting/report-polls') Отчет по опросам
                                                     else
-                                                        a(href = '/profile/reporting/report-polls') Отчет по опросам                                            
+                                                        a(href = '/profile/reporting/report-polls') Отчет по опросам
+                                                li
+                                                    if(isActive === 'report-server')
+                                                        a.is-active(href = '/profile/reporting/report-server') Отчет по серверу
+                                                    else
+                                                        a(href = '/profile/reporting/report-server') Отчет по серверу
+                                                li
+                                                    if(isActive === 'report-connections')
+                                                        a.is-active(href = '/profile/reporting/report-connections') Отчет по соединениям
+                                                    else
+                                                        a(href = '/profile/reporting/report-connections') Отчет по соединениям
+                                                li
+                                                    if(isActive === 'report-missed-calls')
+                                                        a.is-active(href = '/profile/reporting/report-missed-calls') Журнал пропущенных вызовов
+                                                    else
+                                                        a(href = '/profile/reporting/report-missed-calls') Журна пропущенных вызовов
+                                                li
+                                                    if(isActive === 'report-error-tokenize')
+                                                        a.is-active(href = '/profile/reporting/report-error-tokenize') Ошибки выдачи токенов
+                                                    else
+                                                        a(href = '/profile/reporting/report-error-tokenize') Ошибки выдачи токенов
+                                                        
                                         a(onclick='toggleList("createList")') Создать
                                         if(isActive === 'create-company' || isActive === 'create-room' || isActive === 'create-user' || isActive === 'create-question' || isActive === 'create-page')
                                             ul#createList

@@ -1,7 +1,14 @@
 // Main object to work script
 
 let clientData = {},
-    notificationColors = ['none', 'is-primary', 'is-info', 'is-success', 'is-warning', 'is-danger'];
+    notificationColors = [
+                          'none',
+                          'is-primary',
+                          'is-info',
+                          'is-success',
+                          'is-warning',
+                          'is-danger'
+                          ];
     
     
 // Ser default values to new client
@@ -227,8 +234,8 @@ function loginSuccess(easyrtcid) {
             userfio: clientData.userfio, 
             city: clientData.city,
             easyRtcToken: clientData.myEasyrtcId
-        };
-    let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+        },
+        xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
 
     xmlhttp.open("POST", "https://videochat.sdvor.com/journals/connections/add");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

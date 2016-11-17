@@ -1,0 +1,63 @@
+extend profile-layout
+
+block content
+    form(method='GET')
+        div.columns
+            div.column
+                div.columns
+                    div.column
+                        h3.title.is-3 Дата с
+                    div.column
+                        h3.title.id3 Дата до
+                    div.column
+                div.columns
+                    div.column
+                        label.label(for='filterYear') Год
+                        p.control
+                            input.input#filterYear(name='filterYear', type="text" placeholder="2016", value=filters.year ,required)
+                        label.label(for='filterMonth') Месяц
+                        p.control
+                            input.input#filterMonth(name='filterMonth', type='text', placeholder='1', value=filters.month, required)
+                        label.label(for='filterDay') День
+                        p.control
+                            input.input#filterDay(name='filterDay', type='text', placeholder='1', value=filters.day, required)
+                    div.column
+                        label.label(for='filterYearEnd') Год
+                        p.control
+                            input.input#filterYearEnd(name='filterYearEnd', type='text', placeholder='2017', value=filters.yearEnd, required)
+                        label.label(for='filterMonthEnd') Месяц
+                        p.control
+                            input.input#filterMonthEnd(name='filterMonthEnd', type='text', placeholder='1', value=filters.monthEnd, required)
+                        label.label(for='filterDayEnd') День
+                        p.control
+                            input.input#filterDayEnd(name='filterDayEnd', type='text', placeholder='1', value=filters.dayEnd, required)
+                    div.column
+                        div.columns
+                            div.column
+                                p.control
+                                    button.button.is-primary.is-fullwidth.is-large Отфильтровать
+                        div.columns
+                            div.column
+                                a.button.is-success.is-large.is-fullwidth(target='_blank', href='/profile/downloads/server/'+dateFrom+'/'+dateTo) Выгрузить
+    div.columns
+        div.column
+            table.table
+                thead
+                    tr
+                        th Тип события
+                        th Дата
+                        th Действие
+                        th Описание
+                tfoot
+                    tr
+                        th Тип события
+                        th Дата
+                        th Действие
+                        th Описание
+                tbody    
+                    each entry in entries
+                        tr
+                            td #{entry.type_error}
+                            td #{entry.date}
+                            td #{entry.action}
+                            td #{entry.description}
