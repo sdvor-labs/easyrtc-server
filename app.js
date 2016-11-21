@@ -16,7 +16,7 @@ let express = require('express'),
     config = require('./config'),
     utils = require('./utils'),
     mongoExpress = require('mongo-express/lib/middleware'),
-    mongoExpressConfig = require('./mongo_express_config'),
+    mongoExpressConfig = require('./mongo-config'),
     routes = require('./routes/index'),
     profile = require('./routes/profile'),
     widget = require('./routes/widget'),
@@ -28,8 +28,8 @@ let express = require('express'),
     journals = require('./routes/journals');
 
 let mongoose = require('mongoose');
-//mongoose.connect('mongodb://10.0.16.101/newDB');
-mongoose.connect('mongodb://testvideo:3pm9skn5@localhost:27017/test');
+mongoose.connect('mongodb://10.0.16.101/newDB');
+
 /* Set title EasyRTC server*/
 process.title = 'node-easyrtc';
 /* Create express application */
@@ -67,7 +67,7 @@ app.use('/journals', journals);
  * @description This function create collections in MongoDB when application run first time
  */
 utils.utils('firstRun').then((resRun) => {
-        console.log('First run function: ', resRun); 
+        console.log('First run function: ', resRun);
     });
 /**
  * Catch 404 and forwarding to error handler
@@ -76,7 +76,7 @@ utils.utils('firstRun').then((resRun) => {
  * @param {object} - object response
 */
 app.use(function(req, res, next) {
-    utils.appLogger('error', 'ERROR 404', `Error 404 (Not found). Error message: ${err}.`);        
+    utils.appLogger('error', 'ERROR 404', `Error 404 (Not found). Error message: ${err}.`);
     var err = new Error('Not Found');
     err.status = 404;
     next(err);

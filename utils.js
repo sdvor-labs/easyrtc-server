@@ -30,15 +30,15 @@ function findCompany() {
                 if(lst.length === 0 ) {
                     // create object defaul company
                     let defaultCompany = Company({
-                        name: 'Строительный двор',
-                        address: 'г.Тюмень, ул. Панфиловцев 86',
-                        site: 'sdvor.com',
-                        additionsl_information: 'Компания создана автоматически' 
+                        name: 'DefaultCompany',
+                        address: 'none',
+                        site: 'defaultsite.com',
+                        additionsl_information: 'Default company'
                     });
                     // save defaule company
                     defaultCompany.save(function(err){
                             if(err) throw err;
-                            console.log('Default company created!');
+                            console.log('Added default company');
                             resolve(true);
                         });
                 } else {
@@ -59,23 +59,23 @@ function findRooms() {
             // if find without errors
             if(lst.length === 0) {
                 // find default company
-                Company.find({name: 'Строительный двор'}, function(err, company) {
+                Company.find({name: 'DefaultCompany'}, function(err, company) {
                         if(!err) {
                                 let defaultRoom = Room({
                                         name: 'testroom',
-                                        label: 'Тестовая комната',
+                                        label: 'Testing Room',
                                         visiability: 'private',
                                         company: company
                                     });
                                 defaultRoom.save(function() {
                                         if(err) throw err;
-                                        console.log('Default room created!');
+                                        console.log('Added default room');
                                         resolve(true);
                                     });
                             } else {
                             throw err;
                         }
-                        
+
                     });
             } else {
                 resolve(false);
@@ -91,13 +91,13 @@ function findUserStatus() {
         UserStatus.find({}, function(err, lst) {
                 if(!err) {
                     if(lst.length === 0) {
-                        ['Онлайн', 'Офлайн', 'Занят', 'Отошёл'].forEach((i) => {
+                        ['Online', 'Offline', 'Busy', 'Departed'].forEach((i) => {
                                 let tmp = UserStatus({
                                         name: i
                                     });
                                 tmp.save(function(err){
                                         if(err) throw err;
-                                        console.log('Добавлен статус ', i);
+                                        console.log('Adding status: ', i);
                                         resolve(true);
                                     });
                             });
@@ -120,20 +120,20 @@ function findPages() {
                         if(lst.length === 0) {
                             let tmp = Page({
                                     name: 'index',
-                                    title: 'Сервис видеочата компании',
-                                    subtitle: 'Подзаголовок страницы',
-                                    text: 'текст'
+                                    title: 'WebRTC company service',
+                                    subtitle: 'About service',
+                                    text: 'Default text'
                                 });
                             tmp.save(function(err) {
                                 if(err){
                                     throw err;
                                 }else{
-                                    console.log('Добавлена главная страница');
+                                    console.log('Added main page');
                                     resolve(true);
                                 }
                             });
                         }else {
-                            resolve(false);   
+                            resolve(false);
                         }
                     } else {
                         throw err;
@@ -158,7 +158,7 @@ function findMenuItems() {
                                         } else {
                                             let tmp = menuItem({
                                                 name: 'index',
-                                                label: 'Главная',
+                                                label: 'Main',
                                                 visiability: true,
                                                 page: findedPage
                                             });
@@ -166,7 +166,7 @@ function findMenuItems() {
                                                 if(err) {
                                                     throw err;
                                                 } else {
-                                                    console.log('Добавлен пункт меню для главной страницы');
+                                                    console.log('Added menu item to main page');
                                                     resolve(true);
                                                 }
                                             });
@@ -186,13 +186,13 @@ function findUserType() {
     UserType.find({}, function(err, lst){
             if(!err) {
                 if(lst.length === 0) {
-                    ['клиент', 'сотрудник'].forEach((i) => {
+                    ['customer', 'worker'].forEach((i) => {
                             let tmp = UserType({
                                     name: i
                                 });
                             tmp.save(function(err) {
                                     if(err) throw err;
-                                    console.log('Добавлен тип пользователя ', i);
+                                    console.log('Added user type ', i);
                                     resolve(true);
                                 });
                         });
@@ -212,27 +212,27 @@ function findUsers() {
         User.find({}, function(err, lst) {
                 if(!err) {
                     if(lst.length === 0 ) {
-                        Company.find({name: 'Строительный двор'}, function(errc, company) {
+                        Company.find({name: 'DefaultCompany'}, function(errc, company) {
                                 if(errc) {
                                     throw errc;
                                 } else {
-                                    UserStatus.find({name: 'Офлайн'}, function(errs, status) {
+                                    UserStatus.find({name: 'Offline'}, function(errs, status) {
                                             if(errs) {
                                                 throw errs;
                                             } else {
-                                                UserType.find({name: 'сотрудник'}, function(errt, userType) {
+                                                UserType.find({name: 'worker'}, function(errt, userType) {
                                                         if(errt) {
                                                             throw errt;
                                                         } else {
                                                             let defauleUser = User({
-                                                                name: 'Иван',
-                                                                surname: 'Иванович',
-                                                                lastname: 'Иванов',
+                                                                name: 'Jastin',
+                                                                surname: 'Piter',
+                                                                lastname: 'Grifen',
                                                                 username: 'testuser',
                                                                 password: 'testuser123',
-                                                                admin: false,
-                                                                location: 'Тестовое расположение',
-                                                                mobile: '89324700000',
+                                                                admin: true,
+                                                                location: 'none',
+                                                                mobile: 'none',
                                                                 status: status,
                                                                 company: company,
                                                                 user_type: userType,
@@ -240,13 +240,14 @@ function findUsers() {
                                                                 last_online: null,
                                                                 updated_at: null,
                                                                 token: null,
-                                                                additional_info: 'Пользователь по умолчанию'
+                                                                additional_info: 'Defaule user'
                                                             });
                                                             defauleUser.save(function(err) {
                                                                     if(err) {
                                                                         console.log('Default user not created, error: ', err);
+                                                                        throw err;
                                                                     } else {
-                                                                        console.log('Default user created!');
+                                                                        console.log('Added default user');
                                                                         resolve(true);
                                                                     }
                                                                 });
@@ -256,7 +257,7 @@ function findUsers() {
                                         });
                                 }
                             });
-        
+
                     } else {
                         resolve(false);
                     }
@@ -277,15 +278,15 @@ function testingCallLog() {
                                     let tmp = logEntryCall({
                                             callStart: Date.now(),
                                             callEnd: Date.now(),
-                                            employeeToken: 'Без сотрудника',
-                                            customerToken: 'Без клиента',
-                                            description: 'Тестовая запись'
+                                            employeeToken: 'none',
+                                            customerToken: 'none',
+                                            description: 'Testing call entry'
                                         });
                                     tmp.save(function(err) {
                                         if(err) {
                                             throw err;
                                         } else {
-                                            console.log('Добавлена тестовая запись в журнал звонков');
+                                            console.log('Added testing entry to call collection');
                                             resolve(true);
                                         }
                                     });
@@ -308,16 +309,16 @@ function testingAnswerJournal() {
                                     let tmp = logAnswers({
                                             pollsType: 'testing',
                                             date: Date.now(),
-                                            answersToPolls: ['Tisting answer!'],
-                                            employeeRtcToken: "123",
-                                            custometRtcToken: "231" ,
-                                            comments: 'Тестовая запись' 
+                                            answersToPolls: ['Test', 'this', 'collection, ', 'Man!'],
+                                            employeeRtcToken: "none",
+                                            custometRtcToken: "none" ,
+                                            comments: 'Testing entry. Delete this after get you firts answered polls'
                                         });
                                     tmp.save(function(err) {
                                         if(err) {
                                             throw err;
                                         } else {
-                                            console.log('Добавлена тестовая запись в журнал ответов на опоросы');
+                                            console.log('Added testing entry to answers collection');
                                             resolve(true);
                                         }
                                     });
@@ -340,17 +341,17 @@ function testingQuestions() {
                                     let tmp = question({
                                             pollsType: 'testing',
                                             date: Date.now(),
-                                            questionText: 'Вы видите текст тестового вопроса?',
-                                            answerOne: 'Да',
-                                            answerTwo: 'Нет',
-                                            answerThree: 'Не знаю',
-                                            answerFore: 'Не скажу'
+                                            questionText: 'You see this question?',
+                                            answerOne: 'Yeap',
+                                            answerTwo: 'Nope',
+                                            answerThree: 'Do not know',
+                                            answerFore: 'WTF'
                                         });
                                     tmp.save(function(err) {
                                         if(err) {
                                             throw err;
                                         } else {
-                                            console.log('Добавлена тестовая запись в список вопросов');
+                                            console.log('Added testing entry to question entry');
                                             resolve(true);
                                         }
                                     });
@@ -373,8 +374,8 @@ function testConnectionJournal() {
                             let tmpEntry = EntryConnect({
                                     clientInfo: true,
                                     username: 'anonymous',
-                                    userfio: 'Анонимный Пользователь',
-                                    city: 'Без города',
+                                    userfio: 'Casual Carl',
+                                    city: 'none',
                                     easyRtcToken: 'none',
                                     date: Date.now()
                                 });
@@ -383,7 +384,7 @@ function testConnectionJournal() {
                                         console.log(err);
                                         resolve(false);
                                     } else {
-                                        console.log('Добавлена тестовая запись в журнал соединений');
+                                        console.log('Added testing entry to connection collection');
                                         resolve(true);
                                     }
                                 });
@@ -414,7 +415,7 @@ function testFailedTokenize() {
                                         console.log(err);
                                         resolve(false);
                                     } else {
-                                        console.log('Добавлена тестовая запись в журнал неуспешных соединений');
+                                        console.log('Added testing entry to feiled tokenization collection');
                                         resolve(true);
                                     }
                                 });
@@ -443,7 +444,7 @@ function testMissedCallsJournals() {
                                         console.log(err);
                                         resolve(false);
                                     } else {
-                                        console.log('Добавленка тестовая запись в журнал пропущенных звонков');
+                                        console.log('Added testing entry to meiised call coolection');
                                         resolve(true);
                                     }
                                 });
@@ -470,7 +471,7 @@ function defaultSettingGeneration() {
                                 if (err) {
                                     throw err;
                                 } else {
-                                    console.log('Добавлены настройки сервера по умолчанию');
+                                    console.log('Added default server settings.');
                                     resolve(true);
                                 }
                             });
@@ -493,7 +494,7 @@ function doFirstRun() {
                         findUserStatus().then((resStatus) => {
                                 console.log('Need to create statuses: ', resStatus);
                                 findUserType().then((resTypes) => {
-                                        console.log('Need to create user types: ', resTypes);                      
+                                        console.log('Need to create user types: ', resTypes);
                                         findUsers().then((resUser) => {
                                                 console.log('Need to create default user: ', resUser);
                                                 findPages().then((resPages) => {
@@ -533,7 +534,7 @@ function doFirstRun() {
 }
 
 function doVerifityToken(token, callback, res) {
-    let promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
             if(token) {
                 User.findOne({
                     token: token
@@ -562,7 +563,6 @@ function doVerifityToken(token, callback, res) {
                     resolve(false);
                 }
             });
-    return promise;
 }
 
 let utils = function(command, cookies) {
@@ -586,7 +586,7 @@ let unless_route = function(path, middleware) {
 let appLogger = function(type ,action, description) {
     console.log('<LOGGER>: Adding entry to log');
     let logEntryToCreate = logEntry({
-            type_error: type, 
+            type_error: type,
             date: Date.now(),
             action: action,
             description: description

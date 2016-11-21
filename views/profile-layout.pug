@@ -2,200 +2,200 @@ extends layout
 
 append head
     script(type='text/javascript', src='/client/js/ui.js')
-    
+
 block content
     section.section
         div.container
             div.columns
                 div.column.is-one-quarter
                     aside.menu
-                        p.menu-label Профиль пользователя
+                        p.menu-label Worker profile
                         ul.menu-list
                             li
                                 if(isActive === 'profile')
-                                        a.is-active(href='/profile') Мой профиль
+                                        a.is-active(href='/profile') My page
                                 else
-                                    a(href='/profile') Мой профиль
+                                    a(href='/profile') My page
                             li
                                 if(isActive === 'settings')
-                                    a.is-active(href='/profile/settings') Настройки
+                                    a.is-active(href='/profile/settings') Settings
                                 else
-                                    a(href='/profile/settings') Найстройки
+                                    a(href='/profile/settings') Settings
                         if(user.admin === true)
-                            p.menu-label Модерация
+                            p.menu-label Moderation
                                 ul.menu-list
                                     li
-                                        a(onclick='toggleList("reportList")') Отчеты
+                                        a(onclick='toggleList("reportList")') Reports
                                         if(isActive === 'report-error-tokenize' ||isActive === 'report-missed-calls' || isActive === 'report-calls' || isActive === 'report-polls' || isActive === 'report-server' || isActive === 'report-connections')
                                             ul#reportList
                                                 li
                                                     if(isActive === 'report-calls')
-                                                        a.is-active(href = '/profile/reporting/report-calls') Отчет по звонкам
+                                                        a.is-active(href = '/profile/reporting/report-calls') Report calls
                                                     else
-                                                        a(href = '/profile/reporting/report-calls') Отчет по звонкам
+                                                        a(href = '/profile/reporting/report-calls') Report calls
                                                 li
                                                     if(isActive === 'report-polls')
-                                                        a.is-active(href = '/profile/reporting/report-polls') Отчет по опросам
+                                                        a.is-active(href = '/profile/reporting/report-polls') Report polls
                                                     else
-                                                        a(href = '/profile/reporting/report-polls') Отчет по опросам
+                                                        a(href = '/profile/reporting/report-polls') Report polls
                                                 li
                                                     if(isActive === 'report-server')
-                                                        a.is-active(href = '/profile/reporting/report-server') Отчет по серверу
+                                                        a.is-active(href = '/profile/reporting/report-server') Report server events
                                                     else
-                                                        a(href = '/profile/reporting/report-server') Отчет по серверу
+                                                        a(href = '/profile/reporting/report-server') Report server events
                                                 li
                                                     if(isActive === 'report-connections')
-                                                        a.is-active(href = '/profile/reporting/report-connections') Отчет по соединениям
+                                                        a.is-active(href = '/profile/reporting/report-connections') Report connections
                                                     else
-                                                        a(href = '/profile/reporting/report-connections') Отчет по соединениям
+                                                        a(href = '/profile/reporting/report-connections') Repor connections
                                                 li
                                                     if(isActive === 'report-missed-calls')
-                                                        a.is-active(href = '/profile/reporting/report-missed-calls') Журнал пропущенных вызовов
+                                                        a.is-active(href = '/profile/reporting/report-missed-calls') Report missed calls
                                                     else
-                                                        a(href = '/profile/reporting/report-missed-calls') Журна провпущенных вызовов
+                                                        a(href = '/profile/reporting/report-missed-calls') Report missed calls
                                                 li
                                                     if(isActive === 'report-error-tokenize')
-                                                        a.is-active(href = '/profile/reporting/report-error-tokenize') Ошибки выдачи токенов
+                                                        a.is-active(href = '/profile/reporting/report-error-tokenize') Report error tokenization
                                                     else
-                                                        a(href = '/profile/reporting/report-error-tokenize') Ошибки выдачи токенов
+                                                        a(href = '/profile/reporting/report-error-tokenize') Report error tokenization
                                         else
                                             ul#reportList.is-hidden
                                                 li
                                                     if(isActive === 'report-calls')
-                                                        a.is-active(href = '/profile/reporting/report-calls') Отчет по звонкам
+                                                        a.is-active(href = '/profile/reporting/report-calls') Report calls
                                                     else
-                                                        a(href = '/profile/reporting/report-calls') Отчет по звонкам
+                                                        a(href = '/profile/reporting/report-calls') Report calls
                                                 li
                                                     if(isActive === 'report-polls')
-                                                        a.is-active(href = '/profile/reporting/report-polls') Отчет по опросам
+                                                        a.is-active(href = '/profile/reporting/report-polls') Report polls
                                                     else
-                                                        a(href = '/profile/reporting/report-polls') Отчет по опросам
+                                                        a(href = '/profile/reporting/report-polls') Report polls
                                                 li
                                                     if(isActive === 'report-server')
-                                                        a.is-active(href = '/profile/reporting/report-server') Отчет по серверу
+                                                        a.is-active(href = '/profile/reporting/report-server') Report server events
                                                     else
-                                                        a(href = '/profile/reporting/report-server') Отчет по серверу
+                                                        a(href = '/profile/reporting/report-server') Report server events
                                                 li
                                                     if(isActive === 'report-connections')
-                                                        a.is-active(href = '/profile/reporting/report-connections') Отчет по соединениям
+                                                        a.is-active(href = '/profile/reporting/report-connections') Report connections
                                                     else
-                                                        a(href = '/profile/reporting/report-connections') Отчет по соединениям
+                                                        a(href = '/profile/reporting/report-connections') Report connections
                                                 li
                                                     if(isActive === 'report-missed-calls')
-                                                        a.is-active(href = '/profile/reporting/report-missed-calls') Журнал пропущенных вызовов
+                                                        a.is-active(href = '/profile/reporting/report-missed-calls') Report missed calls
                                                     else
-                                                        a(href = '/profile/reporting/report-missed-calls') Журна пропущенных вызовов
+                                                        a(href = '/profile/reporting/report-missed-calls') Report missed calls
                                                 li
                                                     if(isActive === 'report-error-tokenize')
-                                                        a.is-active(href = '/profile/reporting/report-error-tokenize') Ошибки выдачи токенов
+                                                        a.is-active(href = '/profile/reporting/report-error-tokenize') Report error tokenization
                                                     else
-                                                        a(href = '/profile/reporting/report-error-tokenize') Ошибки выдачи токенов
-                                                        
-                                        a(onclick='toggleList("createList")') Создать
+                                                        a(href = '/profile/reporting/report-error-tokenize') Report error tokenization
+
+                                        a(onclick='toggleList("createList")') Create
                                         if(isActive === 'create-company' || isActive === 'create-room' || isActive === 'create-user' || isActive === 'create-question' || isActive === 'create-page')
                                             ul#createList
                                                 li
                                                     if(isActive === 'create-company')
-                                                        a.is-active(href='/profile/create-company') Компаню
+                                                        a.is-active(href='/profile/create-company') Company
                                                     else
-                                                        a(href='/profile/create-company') Компанию
+                                                        a(href='/profile/create-company') Company
                                                 li
                                                     if(isActive === 'create-room')
-                                                        a.is-active(href='/prosile/create-room') Комнату
+                                                        a.is-active(href='/prosile/create-room') Room
                                                     else
-                                                        a(href='/profile/create-room') Комнату
+                                                        a(href='/profile/create-room') Room
                                                 li
                                                     if(isActive === 'create-user')
-                                                        a.is-active(href='/profile/create-user') Пользователя
+                                                        a.is-active(href='/profile/create-user') User
                                                     else
-                                                        a(href='/profile/create-user') Пользователя
+                                                        a(href='/profile/create-user') User
                                                 li
                                                     if(isActive === 'create-page')
-                                                        a.is-active(href='/profile/create-page') Страницу
+                                                        a.is-active(href='/profile/create-page') Page
                                                     else
-                                                        a(href='/profile/create-page') Страницу
+                                                        a(href='/profile/create-page') Page
                                                 li
                                                     if(isActive === 'create-question')
-                                                        a.is-active(href='/profile/create-question') Вопрос
+                                                        a.is-active(href='/profile/create-question') Question
                                                     else
-                                                        a(href='/profile/create-question') Вопрос
+                                                        a(href='/profile/create-question') Question
 
                                         else
                                             ul#createList.is-hidden
                                                 li
                                                     if(isActive === 'create-company')
-                                                        a.is-active(href='/profile/create-company') Компаню
+                                                        a.is-active(href='/profile/create-company') Company
                                                     else
-                                                        a(href='/profile/create-company') Компанию
+                                                        a(href='/profile/create-company') Company
                                                 li
                                                     if(isActive === 'create-room')
-                                                        a.is-active(href='/profile/create-room') Комнату
+                                                        a.is-active(href='/profile/create-room') Room
                                                     else
-                                                        a(href='/profile/create-room') Комнату
+                                                        a(href='/profile/create-room') Room
                                                 li
                                                     if(isActive === 'create-user')
-                                                        a.is-active(href='/profile/create-user') Пользователя
+                                                        a.is-active(href='/profile/create-user') User
                                                     else
-                                                        a(href='/profile/create-user') Пользователя
+                                                        a(href='/profile/create-user') User
                                                 li
                                                     if(isActive === 'create-page')
-                                                        a.is-active(href='/profile/create-page') Страницу
+                                                        a.is-active(href='/profile/create-page') Page
                                                     else
-                                                        a(href='/profile/create-page') Страницу
+                                                        a(href='/profile/create-page') Page
                                                 li
                                                     if(isActive === 'create-question')
-                                                        a.is-active(href='/profile/create-question') Вопрос
+                                                        a.is-active(href='/profile/create-question') Question
                                                     else
-                                                        a(href='/profile/create-question') Вопрос
+                                                        a(href='/profile/create-question') Question
                                     li
-                                        a(onclick='toggleList("editList");') Редактировать
+                                        a(onclick='toggleList("editList");') Edit
                                         if(isActive === 'edit-companies' || isActive === 'edit-rooms' || isActive === 'edit-page' || isActive === 'edit-question')
                                             ul#editList
                                                 li
                                                     if(isActive === 'edit-companies')
-                                                        a.is-active(href='/profie/companies') Компанию
+                                                        a.is-active(href='/profie/companies') Company
                                                     else
-                                                        a(href='/profile/companies') Компанию
+                                                        a(href='/profile/companies') Company
                                                 li
                                                     if(isActive === 'edit-rooms')
-                                                        a.is-active(href='/profile/rooms') Комнату
+                                                        a.is-active(href='/profile/rooms') Room
                                                     else
-                                                        a(href='/profile/rooms') Комнату
+                                                        a(href='/profile/rooms') Room
                                                 li
                                                     if(isActive === 'edit-page')
-                                                        a.is-active(href='/profile/pages') Страницу
+                                                        a.is-active(href='/profile/pages') Page
                                                     else
-                                                        a(href='/profile/pages') Страницу
+                                                        a(href='/profile/pages') Page
                                                 li
                                                     if(isActive === 'edit-question')
-                                                        a.is-active(href='/profile/questions') Вопрос
+                                                        a.is-active(href='/profile/questions') Question
                                                     else
-                                                        a(href='/profile/questions') Вопрос
+                                                        a(href='/profile/questions') Question
                                         else
                                             ul#editList.is-hidden
                                                 li
                                                     if(isActivate === 'edit-companies')
-                                                        a.is-active(href='/profie/companies') Компанию
+                                                        a.is-active(href='/profie/companies') Company
                                                     else
-                                                        a(href='/profile/companies') Компанию
+                                                        a(href='/profile/companies') Company
                                                 li
                                                     if(isActive === 'edit-rooms')
-                                                        a.is-active(href='/profile/rooms') Комнату
+                                                        a.is-active(href='/profile/rooms') Room
                                                     else
-                                                        a(href='/profile/rooms') Комнату
+                                                        a(href='/profile/rooms') Room
                                                 li
                                                     if(isActive === 'edit-page')
-                                                        a.is-active(href='/profile/pages') Страницу
+                                                        a.is-active(href='/profile/pages') Page
                                                     else
-                                                        a(href='/profile/pages') Страницу
+                                                        a(href='/profile/pages') Page
                                                 li
                                                     if(isActive === 'edit-question')
-                                                        a.is-active(href='/profile/questions') Вопрос
+                                                        a.is-active(href='/profile/questions') Question
                                                     else
-                                                        a(href='/profile/questions') Вопрос
-                        p.menu-label Действия
+                                                        a(href='/profile/questions') Question
+                        p.menu-label Actions
                             ul.menu-list
                                 li
-                                    a(href='/logout') Выйти
+                                    a(href='/logout') Exit
                 div.column
                     block content

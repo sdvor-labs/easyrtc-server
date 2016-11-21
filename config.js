@@ -6,7 +6,7 @@
  * @description File with secret key
  * @author Nikita Kotov
  */
-let secret = 'very_secret_secret'
+let secret = 'very__very_secret_secret'
 /**
  * Export variable secret from module config.js
  * @exports secret

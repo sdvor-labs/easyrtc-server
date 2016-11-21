@@ -4,48 +4,48 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
-                div.message-header Изменения комнаты #{room.label} успешно сохранены
+                div.message-header Change #{room.label} succefull saved
                 div.message-body
-                    strong Поздравляем!
-                    span  Изменения в комнате #{room.name} (#{room.label}) успешно созранены!
+                    strong Congratilations!
+                    span  Changes in #{room.name} (#{room.label}) succefull saved!
         else
             article.message.is-danger
-                div.message-header Ошибка при сохранении изменений в #{room.label}
+                div.message-header Fail save #{room.label}
                 div.message-body
-                    strong Ошибка!
-                    span  Во время сохранений изменений в комнате #{room.name} (#{room.label}) возникли какие-то проблемы. Попробуйте чуть позже или обратитесь к администратору.
+                    strong Error!
+                    span  Fail, when try save changes in #{room.name} (#{room.label}). Try later or contact with administrator.
     div.box
         div.columns
             div.column.is-fullwidth
-                h3.title.is-3 Редактирование комнаты: #{room.label}
+                h3.title.is-3 Editing room: #{room.label}
         div.columns
             div.column.is-fullwidth
                 form(method='post')
                     div.columns
                         div.column.is-fullwidth
                             p.control
-                                label.label(for='name') Имя комнаты в БД (анг.)
+                                label.label(for='name') Room name
                                 input.input#name(name='name', type='text', placeholder='testroom', value=room.name)
                     div.columns
                         div.column.is-fullwidth
                             p.control
-                                label.label(for='label') Наименование комнаты (рус.)
-                                input.input#label(name='label', type='text', placeholder='Тестовая комната', value=room.label)
+                                label.label(for='label') Room label
+                                input.input#label(name='label', type='text', placeholder='Testing room', value=room.label)
                     div.columns
                         div.column
                             p.control
-                                label.label(for='visiability') Область видимоси
+                                label.label(for='visiability') Visiability
                                 span.select.is-fullwidth
                                     select#visiability(name='visiability')
                                         if(room.visiability === 'private')
-                                            option(value='private', selcted) Внутренняя
-                                            option(value='public') Внешняя
+                                            option(value='private', selcted) Private
+                                            option(value='public') Public
                                         else
-                                            option(value='private') Внутреняя
-                                            option(value='public', selected) Внешняя
+                                            option(value='private') Private
+                                            option(value='public', selected) Public
                         div.column
                             each c in companies
-                                label.label(for='company') Компания
+                                label.label(for='company') Company
                                 span.select.is-fullwidth
                                     select#company(name='company')
                                         if(room.company.toString() === c._id.toString())
@@ -55,5 +55,5 @@ block content
                     div.columns
                         div.column.is-fullwidth
                             p.control
-                                button.button.is-primary Сохранить
-                                a.button.is-link(href='/profile') Назад
+                                button.button.is-primary Save
+                                a.button.is-link(href='/profile') Cancel

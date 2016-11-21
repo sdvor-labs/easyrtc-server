@@ -25,75 +25,75 @@ html
                 div.modal-background
                     div.modal-card.is-margin-top-persent
                         header.modal-card-head
-                            p.modal-card-title Комната без сотрудников
+                            p.modal-card-title Room without workers
                         section.modal-card-body
-                            p В данный момент в комнате нет сотрудникв, кроме Вас.
+                            p At the moment, there is no staff in the room, but you.
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='toggleModal("modalEmptyWorkers");') Закрыть
-                            
+                            a.button.is-primary(onclick='toggleModal("modalEmptyWorkers");') Close
+
             div.modal#modalEmptyCustomers
                 div.modal-background
                     div.modal-card.is-margin-top-persent
                         header.modal-card-head
-                            p.modal-card-title Комната без клиентов
+                            p.modal-card-title Room without customer
                         section.modal-card-body
-                            p На данный момент в комнате нет клиентов. Оставайтесь на связи - как только появятся клиенты будет включен автоматический дозвон!
+                            p Currently there is no room in the clients. Stay tuned - as soon as the customers will be using the automatic dial-up!
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='toggleModal("modalEmptyCustomers");') Закрыть
-                            
+                            a.button.is-primary(onclick='toggleModal("modalEmptyCustomers");') Close
+
             div.modal#modalInfo
                 div.modal-background
                     div.modal-card.is-margin-top-persent
                         header.modal-card-head
-                            p.modal-card-title Информация о пользователе
+                            p.modal-card-title Customer info
                         section.modal-card-body
                             div#userInfo
-                                div#userfio Анонимный Пользователь
-                                div#city Не известно
-                                div#username Аноним
+                                div#userfio Anonymous
+                                div#city Anonymous
+                                div#username Anonymous
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='toggleModal("modalInfo");') Закрыть
-                            
+                            a.button.is-primary(onclick='toggleModal("modalInfo");') Close
+
             div.modal#modalCallHistory
                 div.modal-background
                     div.modal-card.is-margin-top-persent.not-margin-top
                         header.modal-card-head
-                            p.modal-card-title История звонков
+                            p.modal-card-title History of calls
                         section.modal-card-body
                             div#historyList
-                                h4.title.is-4 История звонков пока пуста
+                                h4.title.is-4 Call history is empty
                         footer.modal-card-foot
-                            a.button.is-pimary(onclick='toggleModal("modalCallHistory");') Закрыть
-                            
+                            a.button.is-pimary(onclick='toggleModal("modalCallHistory");') Close
+
             div.modal#modalCall
                 div.modal-background
                     div.modal-card.is-margin-top-persent
                         header.modal-card-head
-                            p.modal-card-title Ожидается звонок пользователю
+                            p.modal-card-title It is expected the call to the user
                         section.modal-card-body
                             div.columns
                                 div.column
-                                    h4.title.is-4 Внимание! Cкоро будет осуществлен звонок пользователю!
+                                    h4.title.is-4 Attention! Coming soon will be made call to the user!
                             div.columns
                                 div.column.has-text-centered
-                                    h5.title.is-5 Информация о ползователе
+                                    h5.title.is-5 Customer info
                             div.columns
                                 div.column
-                                        div#userfio-call-modal Анонимный пользователь
-                                        div#city-call-modal Не известно
-                                        div#username-call-modal Аноним
+                                        div#userfio-call-modal Anonymous
+                                        div#city-call-modal Anonymous
+                                        div#username-call-modal Anonymous
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='pleaseCall();') Соединить
-                            a.button.is-danger(onclick='notCall();') Отложить
-                            
+                            a.button.is-primary(onclick='pleaseCall();') Connect
+                            a.button.is-danger(onclick='notCall();') Do not connect
+
             div.modal#modalAnswers
                 div.modal-background
                     div.modal-card.is-margin-top-persent.not-margin-top
                         header.modal-card-head
-                            p.modal-card-title Оценка сервиса
+                            p.modal-card-title Evaluation service
                         section.modal-card-body
                             p
-                                h4.title.is-4 Просим уделить еще пару минут своего времени и оценить качество сервиса!
+                                h4.title.is-4 Please pay another couple of minutes of your time and evaluate the quality of service!
                                 each question in myQuestions
                                     h5.title.is-5 #{question.questionText}
                                     div.columns
@@ -110,23 +110,23 @@ html
                                             div.column
                                                 a.button.is-danger(id='answerFore-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerFore}
                             p.control
-                                input.input#comments(name='comments', type='text', placeholder='Текст вашего комментария')
+                                input.input#comments(name='comments', type='text', placeholder='Comments')
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='answerPolls();') Ответить
-                            a.button.is-danger(onclick='notAnswerPolls();') Закрыть
-                            
+                            a.button.is-primary(onclick='answerPolls();') Answering
+                            a.button.is-danger(onclick='notAnswerPolls();') Close without answering
+
             div.modal#modalEmergencyCall
                 div.modal-background
                     div.modal-card.is-margin-top-persent
                         header.modal-card-head
-                            p.modal-card-title Срочный звонок
+                            p.modal-card-title Urgent call
                         section.modal-card-body
                             p
-                                h4.title.is-4 Внимание! Вы хотите нажали кноку вызова пользователя вне очереди. Если вы нажмете "соединить" любой текущий диалог будет прерван!
+                                h4.title.is-4 Attention! You want to knock user pressed the call out of turn. If you press the "connect" any ongoing dialogue will be interrupted!
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='pleaseEmergencyCall();') Соеденить
-                            a.button.is-danger(onclick='toggleModal("modalEmergencyCall");') Отменить
-                            
+                            a.button.is-primary(onclick='pleaseEmergencyCall();') Call
+                            a.button.is-danger(onclick='toggleModal("modalEmergencyCall");') Cancel
+
         else
             div.modal#modalCall
                 div.modal-background
@@ -138,8 +138,8 @@ html
                                 div.column.is-fullwidth#questionDiv
                             div.columns#capchaDiv
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='pleaseCall();') Да, позвонить мне
-                            a.button.is-danger(onclick='notCall();') Нет, не надо мне звонить
+                            a.button.is-primary(onclick='pleaseCall();') Yes, call me
+                            a.button.is-danger(onclick='notCall();') No, do not call me
             div.modal#emptyRoom
                 div.modal-background
                     div.is-margin-top-persent.modal-card
@@ -148,23 +148,23 @@ html
                         section.modal-card-body
                             div.columns
                                 div.column.is-fullwidth
-                                    span Извините, но на данный момент ни одного менеджера нет на месте. Вы можете отпраивть нам email на
-                                    a(href='mailto: example@test.ru')  электронную почту
-                                    span  и мы свяжемся с вами как только будет возможность. Извините за недобства =)
+                                    span Sorry, but at the moment there is no manager on site. You can send us a message
+                                    a(href='mailto: example@test.ru')  email
+                                    span  and we will contact you as soon as possible. Sorry for the inconvenience =)
                             div.columns#capchaDiv
                         footer.modal-card-foot
             div.modal#notCalled
                 div.modal-background
                     div.is-margin-top-persent.modal-card
                         header.modal-card-head
-                            p.modal-card-title Ожидайте звонка
+                            p.modal-card-title Waiting for calling
                         section.modal-card-body
                             div.columns
                                 div.column.is-fullwidth
-                                    p Извините, но все менеджеры пока заняты. Оставайтесь на связи и мы вам перезвоним в ближайшее время
-                            div.colunms.is-hidden#sorry 
+                                    p Sorry, but all managers is busy. Stay in touch and we will call you back shortly
+                            div.colunms.is-hidden#sorry
                                 div.column.is-fullwidth
-                                    h5.title.is-5 Извините, но наши операторы очень заняты, свяжитесь с нами по номеру 8 800 333-555-77    
+                                    h5.title.is-5 Sorry, but our operators are busy, please contact us at the number 8 800 333-555-77
                             div.columns
                                 div.column.is-fullwidth#userCount
                             div.columns#capchaDiv
@@ -173,10 +173,10 @@ html
                 div.modal-background
                     div.is-margin-top-persent.modal-card.not-margin-top
                         header.modal-card-head
-                            p.modal-card-title Спасибо за звонок
+                            p.modal-card-title Thank you for the call
                         section.modal-card-body
                             p
-                                h4.title.is-4 Просим уделить еще пару минут своего времени и оценить качество сервиса!
+                                h4.title.is-4 Please pay another couple of minutes of your time and evaluate the quality of service!
                                 each question in myQuestions
                                     h5.title.is-5 #{question.questionText}
                                     div.columns
@@ -193,20 +193,20 @@ html
                                             div.column
                                                 a.button.is-danger(id='answerFore-'+question._id, onclick='clickAnswerButton(this);', element-group=question._id) #{question.answerFore}
                             p.control
-                                input.input#comments(name='comments', type='text', placeholder='Текст вашего комментария')
-                                
+                                input.input#comments(name='comments', type='text', placeholder='Comments')
+
                         footer.modal-card-foot
-                            a.button.is-primary(onclick='answerPolls();') Ответить
-                            a.button.is-danger(onclick='notAnswerPolls();') Закрыть
+                            a.button.is-primary(onclick='answerPolls();') Answering
+                            a.button.is-danger(onclick='notAnswerPolls();') Close without answering
             div.modal#haveAnswered
                 div.modal-background
                     div.is-margin-top-persent.modal-card
                         header.modal-card-head
-                            p.modal-card-title Спасибо за звонок
+                            p.modal-card-title Thank you for the call
                         section.modal-card-body
                             p
-                                h4.title.is-4 Спасибо за звонок, теперь можете закрыть окно!
-                            
+                                h4.title.is-4 Thank you for calling, can now close the window!
+
         div#if-not-posible.is-hidden
             div.card.is-fullwidth.is-fullheight.is-hidden#softwareError
                 div.card-image
@@ -218,16 +218,16 @@ html
                             figure.image.is-32x32
                                 image(src='/images/error-icon.png', alt='Error')
                         div.media-content
-                            p.title.is-5 Извините, ваш браузер не поддерживается!
-                            p.subtitle.is-6 Вы используете устаревшую версию браузера
+                            p.title.is-5 Sorry, you browser ot supported!
+                            p.subtitle.is-6 You use legacy version of internet browser
                     div.content
-                        span Для того, чтобы воспользоваться сервисом установите поддерживаемый браузер или закажите обратную связь
+                        span To use the service install a supported browser or order feedback
                         br
                         div.columns.is-mobile
                             div.column
-                                a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Скачать Google Chrome
+                                a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Download Google Chrome
                             div.column
-                                a.button.is-fullwidth(href='#') Обратная связь
+                                a.button.is-fullwidth(href='#') Feedback
             div.card.is-fullwidth.is-fullheight.is-hidden#hardwareError
                 div.card-image
                     figure.image.is-2by1
@@ -238,16 +238,16 @@ html
                             figure.image.is-32x32
                                 image(src='/images/error-icon.png', alt='Error')
                         div.media-content
-                            p.title.is-5 Извините, но возникли неполадки с вашим обрудованием!
-                            p.subtitle.is-6 Проверьте подключение web-камеры и микрофона
+                            p.title.is-5 Sorry, but you are having trouble with your equipment!
+                            p.subtitle.is-6 Check your web-camera and microphone
                     div.content
-                        span Нам не удалось получить доступ к вашему микрофону и/или web-камере. Проверьте настройки системы и их подключение.
+                        span We were not able to access your microphone and / or web-camera. Check the system setup and connection.
                         br
                         div.columns.is-mobile
                             div.column
-                                a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Скачать Google Chrome
+                                a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Download Google Chrome
                             div.column
-                                a.button.is-fullwidth(href='#') Обратная связь
+                                a.button.is-fullwidth(href='#') Feedback
             div.card.is-fullwidth.is-fullheight.is-hidden#deviceError
                 div.card-image
                     figure.image.is-2by1
@@ -258,17 +258,17 @@ html
                             figure.image.is-32x32
                                 image(src='/images/error-icon.png', alt='Error')
                         div.media-content
-                            p.title.is-5 Извините, но мобильные устройства временно не поддерживаются
-                            p.subtitle.is-6 Не поддерживаемый класс устройств
+                            p.title.is-5 Sorry, but mobile devices are currently not supported
+                            p.subtitle.is-6 Devide not wupported
                     div.content
-                        span Мы еще разрабатываем мобильную версию сервиса. Пока просим воспользоваться декстопной!
+                        span We are still developing a mobile version of the service. So far, please use desktop!
                         br
                         div.columns.is-mobile
                             div.column
-                                a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Скачать Google Chrome
+                                a.button.is-fullwidth(href='https://www.google.ru/chrome/browser/desktop/') Download Google Chrome
                             div.column
-                                a.button.is-fullwidth(href='#') Обратная связь
-                                
+                                a.button.is-fullwidth(href='#') Feedback
+
         div#if-possible.is-hidden
             nav.nav.is-darken
                 div.nav-left
@@ -277,7 +277,7 @@ html
                             span.icon
                                 i.fa.fa-comments-o
                             span#roomname(name=roomName) #{roomLabel}
-                        
+
             div.columns
                 div.column.sidebar#sidebar(name=userType)
                     div.box.self-video-box
@@ -286,12 +286,12 @@ html
                             div#appState(name='notNeedOpen')
                     if(userType === 'worker')
                         nav.panel
-                            p.panel-heading.has-text-centered#iam Идет соединение
+                            p.panel-heading.has-text-centered#iam Connecting...
                             p.panel-tabs
-                                a#users-menu.is-active(onclick='clickTab(this.id);', href='#') Пользователи
-                                a#rooms-menu(onclick='clickTab(this.id);', href='#') Комнаты
-                                a#call-menu(onclick='clickTab(this.id);', href='#!') Звонок
-                                a#query-menu(onclick='clickTab(this.id);', href='#') Очередь
+                                a#users-menu.is-active(onclick='clickTab(this.id);', href='#') Users
+                                a#rooms-menu(onclick='clickTab(this.id);', href='#') Rooms
+                                a#call-menu(onclick='clickTab(this.id);', href='#!') Call
+                                a#query-menu(onclick='clickTab(this.id);', href='#') Query
                             div#users-menu-block
                                 div#otherClients
                             div#rooms-menu-block.is-hidden
@@ -300,102 +300,103 @@ html
                                 div.panel-block
                                     div.notification.is-success.is-hidden#suspendEnd
                                         button.delete#closeBtn(onclick='hideNotification("suspendEnd");')
-                                        strong Внимание!
-                                        span Завершился период в течении коготорого Вы не учавствуете в звонках пользователей!
+                                        strong Attention!
+                                        span Completed the period during which you are not on the user's call!
                                     div.notification.is-success.is-hidden#succNotif
                                         button.delete#closeBtn(onclick='hideNotification("succNotif");')
-                                        span Поздравяем! Интервал успешно изменен!
+                                        span Congratulations! The interval was successfully changed!
                                     div.notification.is-warning.is-hidden#suspendFifteen-notif
-                                        strong Перерыв на 15 минут
-                                        br 
-                                        span Следующий звонок будет осуществлен только через 15 минут. Приятного перерыва!
+                                        strong Delay 15 min
+                                        br
+                                        span The next call will be made only after 15 min. Have a good dinner!
                                     div.notification.is-warning.is-hidden#suspendHour-notif
-                                        strong Перерыв на 1 час
+                                        strong Delay 1 hour
                                         br
-                                        span Следующий звонок будет осуществлен только через 1 час. Удачного совещения!
+                                        span The next call will be made only after 1 hour. Have a good meeting!
                                     div.notification.is-warning.is-hidden#suspendDay-notif
-                                        strong Вы не принимаете звонки
+                                        strong Delay 24 hours
                                         br
-                                        span Данная задержка анлог статуса "Не беспокоить". Вам могут позвонить только ваши коллеги. Не забудьте отменить статус, как закончите свои дела!
-                                    
-                                    strong Задержка следующим перед звонком
-                                        a.button.is-success.is-fullwidth.is-margin-bottom.is-hidden#cancelSuspend(onclick='cancelSuspend();') Отменить задержку
-                                        a.button.is-info.is-fullwidth.is-margin-bottom#suspendFifteen(onclick='suspendCall(this.id, 900000);') Перерыв 15 минут
-                                        a.button.is-info.is-fullwidth.is-margin-bottom#suspendHour(onclick='suspendCall(this.id, 3600000);') Перерыв 1 час
-                                        a.button.is-info.is-fullwidth.is-margin-bottom#suspendDay(onclick='suspendCall(this.id, 86400000);') Перерыв 24 часа
-                                    strong Перерыв между звонками
+                                        span This delay anlog status "Do not disturb". You can only call your colleagues. Do not forget to cancel the membership, have finished their business!
+
+                                    strong Delay before next call
+                                        a.button.is-success.is-fullwidth.is-margin-bottom.is-hidden#cancelSuspend(onclick='cancelSuspend();') Cancel delay
+                                        a.button.is-info.is-fullwidth.is-margin-bottom#suspendFifteen(onclick='suspendCall(this.id, 900000);') Delay 15 min
+                                        a.button.is-info.is-fullwidth.is-margin-bottom#suspendHour(onclick='suspendCall(this.id, 3600000);') Delay 1 hour
+                                        a.button.is-info.is-fullwidth.is-margin-bottom#suspendDay(onclick='suspendCall(this.id, 86400000);') Delay 24 hours
+                                    strong Between call interval
                                     p.control
-                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(6000);') 6 секунд
-                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(30000);') 30 секунд
-                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(60000);') 1 минута
-                                        
+                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(6000);') 6 sec
+                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(30000);') 30 sec
+                                        a.button.is-info.is-fullwidth.is-margin-bottom(onclick='changeCallInterval(60000);') 1 sec
+
                                 div.panel-block
                                     div.columns
                                         div.column
-                                            strong Очередь пользователей  
+                                            strong Customer query
                                     div.columns
-                                        div.column#queryDiv Очередь пуста
+                                        div.column#queryDiv Call Query is empty
                                     div.columns
                                         div.column
-                                            strong Сотрудники (вне очереди)
+                                            strong Workers (not in query)
                                     div.columns
-                                        div.column#queryDivWorker Список сотрудников пуст
+                                        div.column#queryDivWorker Worker list empty
                                     hr
                                     div.columns
                                         div.column
-                                            a.button.is-fullwidth(onclick='toggleModal("modalCallHistory");') История звонков
-                            
+                                            a.button.is-fullwidth(onclick='toggleModal("modalCallHistory");') Call History
+
                             div#call-menu-block.is-hidden
-                                strong Работа с пользователем
+                                strong Customer
                                 p.control
                                     a.button.is-default.is-margin-bottom.is-fullwidth(onclick='openInfo();')
                                         span.icon
                                             i.fa.fa-info
-                                        span Информация о пользователе
+                                        span Customer Info
                                     a.button.is-default.is-margin-bottom.is-fullwidth.is-hidden.is-danger#hangupCall(onclick='hangupCall();')
                                         span.icon
                                             i.fa.fa-phone
-                                        span Положить трубку
+                                        span Hangup Call
                                     a.button.is-success.is-margin-bottom.is-fullwidth#cameraOff(onclick='muteMyVideo();')
                                         span.icon
                                             i.fa.fa-video-camera
-                                        span Выключить камеру
+                                        span Camera Off
                                     a.button.is-danger.is-margin-bottom.is-fullwidth.is-hidden#cameraOn(onclick='muteMyVideo();')
                                         span.icon
                                             i.fa.fa-ban
-                                        span Включить камеру
+                                        span Camera On
                                     a.button.is-success.is-margin-bottom.is-fullwidth#microphoneOn(onclick='muteMyMicrophone();')
                                         span.icon
                                             i.fa.fa-microphone-slash
-                                        span Выключить микрофон
+                                        span Microphone Off
                                     a.button.is-danger.is-margin-bottom.is-fullwidth.is-hidden#microphoneOff(onclick='muteMyMicrophone();')
                                         span.icon
                                             i.fa.fa-microphone
-                                        span Выключить микрофон
+                                        span Microphone On
+
                     else
                          nav.panel
-                            p.panel-heading.has-text-centered#iam Идет соединение
+                            p.panel-heading.has-text-centered#iam Connecting
                                 div#clientData
                                     span
                                         div#userfio(info=clientData.userfio) #{clientData.userfio},
                                         div#city(info=clientData.city) #{clientData.city} /
                                         div#username(info=clientData.username) #{clientData.username}
-                                        
+
                             a.panel-block#cameraOff(href='#', onclick='muteMyVideo();')
                                 span.panel-icon
                                     i.fa.fa-ban
-                                span Выключить камеру
+                                span Camera Off
                             a.panel-block.is-hidden#cameraOn(href='#', onclick='muteMyVideo();')
                                 span.panel-icon
                                     i.fa.fa-video-camera
-                                span Включить камеру
+                                span Camera On
                             a.panel-block#microphoneOff(href='#', onclick='muteMyMicrophone();')
                                 span.panel-icon
                                     i.fa.fa-microphone-slash
-                                span Выключить микрофон
+                                span Microphone On
                             a.panel-block.is-hidden#microphoneOn(href='#', onclick='muteMyMicrophone();')
                                 span.panel-icon
                                     i.fa.fa-microphone
-                                span Включить микрофон
+                                span Microphone Off
                 div.column.main-screen
                     video#callerVideo.is-fullwidth(autoplay="autoplay")

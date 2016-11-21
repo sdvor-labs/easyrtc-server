@@ -4,49 +4,49 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
-                div.message-header Комната успешно создана
+                div.message-header Room created
                 div.message-body
-                    strong Поздравляем,
-                    span   комната создана!
+                    strong Congratilations,
+                    span   room are created!
         else
             article.message.is-danger
-                div.messate-header Ошибка при создании комнаты
+                div.messate-header Room not created
                 div.message-body
-                    strong Ошибка,
-                    span  по какой-то причине комната не была создана (возможно комната с таким именем уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+                    strong Error,
+                    span  room do not created. Try later or contact with administrator.
     div.box
         div.columns
             div.column.is-fullwidth
-                h3.title.is-3 Создние комнаты
+                h3.title.is-3 Create room
         div.columns
             div.column.is-fullwidth
                 form(method='post')
                     div.columns
                         div.column.is-12
                             p.control
-                                label.label(for='name') Имя комнаты в БД (англ.)
+                                label.label(for='name') Room name
                                 input.input#name(name='name', type='text', placeholder='testroom' required)
                     div.columns
                         div.column.is-12
                             p.control
-                                label.label(for='label') Название комнаты (рус.)
-                                input.input#label(name='label', type='text', placeholder='Тестовая комната', required)
+                                label.label(for='label') Room label
+                                input.input#label(name='label', type='text', placeholder='Rlyeh', required)
                     div.columns
                         div.column
                             p.control
-                                label.label(for='visiability') Видимость комнаты
+                                label.label(for='visiability') Visiability
                                 span.select.is-fullwidth
                                     select#visiability(name='visiability')
-                                        option#private(name='private') Внутренняя
-                                        option#public(name='public') Внешняя
+                                        option#private(name='private') Private
+                                        option#public(name='public') Public
                         div.column
                             p.control
-                                label.label(for='company') Компания
+                                label.label(for='company') Company
                                 span.select.is-fullwidth
                                     select#company(name='company')
                                         each item in companies
                                             option(id=item.name, name=item.name) #{item.name}
                     p.control
                     p.control
-                        button.button.is-primary Создать
-                        a.button.is-link(href='/profile') Отмена
+                        button.button.is-primary Save
+                        a.button.is-link(href='/profile') Cancel

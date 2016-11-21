@@ -4,40 +4,40 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
-                div.message-header Изменени в "#{company.name}" успешно сохранены
+                div.message-header Changes "#{company.name}" succefull saved
                 div.message-body
-                    strong Поздравляем!
-                    span  Изменения успешно сохранены
+                    strong Congratulations!
+                    span  All changes saved
         else
             article.message.is-danger
-                div.message-header Ошибка при сохранении изменений в "#{company.name}"
+                div.message-header Fail saved change "#{company.name}"
                 div.message-body
-                    strong Прозошла ошибка!
-                    span  Изменения в компании "#{company.name}" не были произведены. Попробуйте чуть позже или обратитесь к администратору сервиса.
+                    strong Error!
+                    span  Changes "#{company.name}" do not saved. Try later or contact with administrator.
     div.box
         div.columns
             div.column.is-fullwidth
-                h3.title.is-3 Редактирование компании: #{company.name}
+                h3.title.is-3 Editing company: #{company.name}
         div.columns
             div.column.is-fullwidth
                 form(method='post')
                     div.columns
                         div.column.is-fullwidtj
                             p.control
-                                label.label(for='name') Наименование организации
-                                input.input#name(name='name', type='text', placeholder='ООО "Рога и Копыта"', value=company.name, required)
+                                label.label(for='name') Company name
+                                input.input#name(name='name', type='text', placeholder='Company, ltd.', value=company.name, required)
                     div.columns
                         div.column.is-fullwidth
                             p.control
-                                label.label(for='address') Адрес компании
-                                input.input#address(name='address', type='text', placeholder='Россия, Москва, ул.Перечистенка, 24 (Калабуховский дом)', value=company.address, required)
+                                label.label(for='address') Address
+                                input.input#address(name='address', type='text', placeholder='Russia, Moscow, Prechistenka street 24 (Kalabuhovsky house)', value=company.address, required)
                     div.columns
                         div.column.is-fullwidth
                             p.control
-                                label.label(for='site') Адрес сайта компании
+                                label.label(for='site') URL
                                 input.input#site(name='site', type='text', placeholder='http://linux.org.ru', value=company.site, required)
                     div.columns
                         div.column
                             p.control
-                                button.button.is-primary Сохранить
-                                a.button.is-link(href='/profile') Назад 
+                                button.button.is-primary Save
+                                a.button.is-link(href='/profile') Cancel

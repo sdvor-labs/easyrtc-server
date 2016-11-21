@@ -4,53 +4,53 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
-                div.message-header Вопрос был успешно создан
+                div.message-header Question created
                 div.message-body
-                    strong Поздравляем,
-                    span   вопрос создан!
+                    strong Congratulations,
+                    span   questino are creted!
         else
             article.message.is-danger
-                div.message-header Вопрос не получилось создать =(
+                div.message-header Question do not created
                 div.message-body
-                    strong Ошибка,
-                    span  по какой-то причине вопрос не был создан (возможно такой вопрос уже кто-то создал). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+                    strong Error,
+                    span  questin do not created. Try later or contact width administrator.
     div.box
         div.columns
             div.column.is-fullwidth
-                h3.title.is-3 Создание вопроса 
+                h3.title.is-3 Create question
         div.columns
             div.column.is-fullwidth
                 form(method='post')
                     div.columns
                         div.column
                             p.control
-                                label.label(for='pollsType') Определите категорию опроса
+                                label.label(for='pollsType') Type polls
                                 span.select.is-fullwidth
                                     select#pollsType(name='pollsType')
-                                        option(value='worker') Для сотрудников
-                                        option(value='client') Для клиентов
+                                        option(value='worker') For workers
+                                        option(value='client') For customers
                         div.column
                             p.control
-                                label.label(for='questionText') Текст вопроса
-                                input.input#questionText(name='questionText', type='text', placeholder='Как пройти вечером в библиотеку?', required)
+                                label.label(for='questionText') Question
+                                input.input#questionText(name='questionText', type='text', placeholder='When the wake up Cthulhu?', required)
                     div.columns
                         div.column
                             p.control
-                                label.label(for='answerOne') Ответ 1
-                                input.input#answerOne(name='answerOne', type='text', placeholder='Да', required)
+                                label.label(for='answerOne') Answer 1
+                                input.input#answerOne(name='answerOne', type='text', placeholder='Yes', required)
                         div.column
                             p.control
-                                label.label(for='answerTwo') Ответ 2
-                                input.input#answerTwo(name='answerTwo', type='text', placeholder='Нет', required)
+                                label.label(for='answerTwo') Answer 2
+                                input.input#answerTwo(name='answerTwo', type='text', placeholder='No', required)
                     div.columns
                         div.column
                             p.control
                                 label.label(for='answerThree') Ответ 3
-                                input.input#answerThree(name='answerThree', type='text', placeholder='Не знаю', required)
+                                input.input#answerThree(name='answerThree', type='text', placeholder='Do not know', required)
                         div.column
                             p.control
                                 label.label(for='answerFore') Ответ 4
-                                input.input#answerFore(name='answerFore', type='text', placeholder='Не скажу', required)
+                                input.input#answerFore(name='answerFore', type='text', placeholder='Nevermore', required)
                     p.control
-                        button.button.is-primary Создать
-                        a.button.is-link(href='/profile') Отмена
+                        button.button.is-primary Save
+                        a.button.is-link(href='/profile') Cancel

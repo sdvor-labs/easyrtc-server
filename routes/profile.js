@@ -48,10 +48,10 @@ router.get('/', load_user, load_menu, load_rooms,function(req, res) {
                                                 company: company,
                                                 isLogin: true,
                                                 isActive: 'profile',
-                                                });   
+                                                });
                             }
                         });
-                    }     
+                    }
                 }
             });
         } else {
@@ -89,7 +89,7 @@ router.get('/settings', load_user, load_menu, load_rooms, function(req, res) {
                                                 company: company,
                                                 isLogin: true,
                                                 isSaved: null,
-                                                isActive: 'settings'});   
+                                                isActive: 'settings'});
                                     }
                             });
                     }
@@ -146,7 +146,7 @@ router.get('/create-company', load_user, load_menu,load_rooms, function(req, res
                             res.render('error', {
                                     error: err
                                 });
-                        } else { 
+                        } else {
                             if(user.admin === true) {
                                 res.render('create-company', {
                                         menuItems: req.menuItems,
@@ -175,12 +175,12 @@ router.post('/create-company', load_user, load_menu, load_rooms, function(req, r
                                 error: err
                             });
                     } else {
-                        if(user.admin === true ){            
+                        if(user.admin === true ){
                             let companyToCreate = Company({
                                     name: req.body.name,
                                     address: req.body.address,
                                     site: req.body.site });
-                            
+
                             Company.findOne({
                                             name: companyToCreate.name
                                             }, function(err, company) {
@@ -293,19 +293,19 @@ router.post('/create-room', load_user, load_menu, load_rooms, function(req, res)
                                                             name: req.body.name,
                                                             label: req.body.label,
                                                         });
-                                    
+
                                     companies.forEach((e) => {
                                                             if(e.name === req.body.company) {
                                                                 roomToCreate.company = e;
                                                             }
                                                         });
-                                    
+
                                     if(req.body.visiability === 'Внутреняя') {
                                         roomToCreate.visiability = 'private';
                                     } else {
                                             roomToCreate.visiability = 'public';
                                     }
-                                    
+
                                     Room.findOne({
                                             name: roomToCreate.name
                                         }, function(err, room){
@@ -347,10 +347,10 @@ router.post('/create-room', load_user, load_menu, load_rooms, function(req, res)
                                                                     });
                                                 }
                                                                 }
-                                                            
+
                                     });
                                 }
-                            });       
+                            });
                         } else {
                             res.redirect('/profile');
                         }
@@ -410,7 +410,7 @@ router.get('/create-user', load_user, load_menu, load_rooms,function(req, res){
                                             }
                                         });
                                     }
-                                });       
+                                });
                             } else {
                                 res.redirect('/profile');
                             }
@@ -468,25 +468,25 @@ router.post('/create-user', load_user, load_menu, load_rooms, function(req, res)
                                                                                 token: null,
                                                                                 additional_info: req.body.additional_info
                                                                             });
-                                                        
+
                                                         statuses.forEach((s) => {
                                                                                 if(s.name === 'Офлайн') {
                                                                                     userToCreate.status = s;
                                                                                 }
                                                         });
-                                                        
+
                                                         types.forEach((t) => {
                                                                                 if(t.name === req.body.user_type) {
                                                                                     userToCreate.user_type = t;
                                                                                 }
                                                         });
-                                                        
+
                                                         companies.forEach((c) => {
                                                                                     if(c.name === req.body.company) {
                                                                                         userToCreate.company = c;
                                                                                     }
                                                         });
-                                                        
+
                                                         if(req.body.password === req.body.password1) {
                                                             userToCreate.password = req.body.password;
                                                         } else {
@@ -503,7 +503,7 @@ router.post('/create-user', load_user, load_menu, load_rooms, function(req, res)
                                                                                 isActive: 'create-user'
                                                                 });
                                                         }
-                                                        
+
                                                         userToCreate.save(function(err){
                                                             isSaved = false;
                                                             if(err) {
@@ -524,7 +524,7 @@ router.post('/create-user', load_user, load_menu, load_rooms, function(req, res)
                                                                                 isActive: 'create-user'
                                                                 });
                                                         });
-                                                    }   
+                                                    }
                                                 });
                                             }
                                         });
@@ -572,7 +572,7 @@ router.get('/companies', load_user, load_menu, load_rooms, function(req, res) {
                                 res.redirect('/profile');
                             }
                         }
-            });    
+            });
         } else {
             res.redirect('/login');
         }
@@ -649,7 +649,7 @@ router.post('/companies/:company_id', load_user, load_menu, load_rooms, function
                                                                     utils.appLogger('fail', 'Fail save document (company)', `Fail, when app try finding in document with type COMPANY with ID ${req.params.company_id} . Error message: ${err}.`);
                                                                 } else {
                                                                     utils.appLogger('success', 'Success save document (company)', `Success saving document ${company}.`);
-                                                                       
+
                                                                 }
                                                                 res.render('edit-company', {
                                                                                     menuItems: req.menuItems,
@@ -689,7 +689,7 @@ router.get('/rooms', load_user, load_menu, load_rooms, function(req, res) {
                                     utils.appLogger('fail', 'Fail finding document (room)', `Fail, when app try finding list all documents with type ROOM. Error message: ${err}.`);
                                     res.render('error', {
                                                     error: err
-                                        });                                        
+                                        });
                                 } else {
                                     res.render('rooms', {
                                             menuItems: req.menuItems,
@@ -702,7 +702,7 @@ router.get('/rooms', load_user, load_menu, load_rooms, function(req, res) {
                                 res.redirect('/profile');
                             }
                         }
-            });                       
+            });
         } else {
             res.redirect('/login');
         }
@@ -721,13 +721,13 @@ router.get('/rooms/:room_name', load_user, load_menu, load_rooms,function(req, r
                         } else {
                             if(user.admin === true) {
                                 let editingRoom = null;
-                                
+
                                 req.rooms.forEach((e) => {
                                                         if(e.name === req.params.room_name) {
                                                         editingRoom = e;
                                                     }
                                     });
-                                
+
                                 Company.find({}, function(err, companies) {
                                     if(err) {
                                         utils.appLogger('fail', 'Fail finding document (company)', `Fail, when app try finding list all documents with type COMPANY. Error message: ${err}.`);
@@ -750,7 +750,7 @@ router.get('/rooms/:room_name', load_user, load_menu, load_rooms,function(req, r
                                 res.redirect('/profile');
                             }
                         }
-            });                       
+            });
         } else {
             res.redirect('/login');
         }
@@ -769,13 +769,13 @@ router.post('/rooms/:room_name', load_user, load_menu, load_rooms,function(req, 
                         } else {
                             if(user.admin === true) {
                                 let editingRoom = null;
-                                
+
                                 req.rooms.forEach((e) => {
                                                     if(e.name === req.params.room_name) {
                                                         editingRoom = e;
                                                     }
                                     });
-                                
+
                                 Company.find({}, function(err, companies) {
                                     if(err) {
                                         utils.appLogger('fail', 'Fail finding document (company)', `Fail, when app try finding list all documents with type COMPANY. Error message: ${err}.`);
@@ -786,7 +786,7 @@ router.post('/rooms/:room_name', load_user, load_menu, load_rooms,function(req, 
                                         editingRoom.name = req.body.name;
                                         editingRoom.label = req.body.label;
                                         editingRoom.visiability = req.body.visiability;
-                                        
+
                                         Company.findOne({
                                             name: req.body.company
                                         }, function(err, findedCompany) {
@@ -799,14 +799,14 @@ router.post('/rooms/:room_name', load_user, load_menu, load_rooms,function(req, 
                                                     editingRoom.company = findedCompany;
                                                     editingRoom.save(function(err) {
                                                         let isSaved = false;
-                                                        
+
                                                         if(err) {
                                                             utils.appLogger('fail', 'Fail save document (room)', `Fail, when app try saved change in document type ROOM (${editingRoom}). Error message: ${err}.`);
                                                         } else {
                                                             utils.appLogger('success', 'Success save document (room)', `Succes saved document type ROOM (${editingRoom}).`);
-                                                            isSaved = true;                            
+                                                            isSaved = true;
                                                         }
-                                                        
+
                                                         res.render('edit-room', {
                                                                         menuItems: req.menuItems,
                                                                         user: user,
@@ -825,7 +825,7 @@ router.post('/rooms/:room_name', load_user, load_menu, load_rooms,function(req, 
                                 res.redirect('/profile');
                             }
                         }
-            });                       
+            });
         } else {
             res.redirect('/login');
         }
@@ -914,15 +914,15 @@ router.post('/create-question', load_user, load_menu, load_rooms,function(req, r
                                     });
                                 tmpQuestion.save(function(err) {
                                         isSaved = false;
-                                        
+
                                         if(err) {
                                             utils.appLogger('fail', 'Fail save document (question)', `Fail, when app try save document type QUESTION (${tmpQuestion}). Error message: ${err}.`);
                                         } else {
                                             utils.appLogger('success', 'Success save document (question)', `Succes saved document type QUESTION (${tmpQuestion}).`);
                                             isSaved = true;
                                         }
-                                                                                
-                                                                        
+
+
                                         res.render('create-question', {
                                                         menuItems: req.menuItems,
                                                         user: user,
@@ -963,21 +963,21 @@ router.post('/create-page', load_user, load_menu, load_rooms,function(req, res) 
                                     });
                                 tmpPage.save(function(err) {
                                         isSaved = false;
-                                        
+
                                         if(err) {
                                             utils.appLogger('fail', 'Fail save document (page)', `Fail, when app try save document type PAGE (${tmpPage}). Error message: ${err}.`);
                                         } else {
                                             utils.appLogger('success', 'Success save document (page)', `Succes saved document type PAGE (${tmpPage}).`);
                                             isSaved = true;
                                         }
-                                        
+
                                         let tmpMenuItem = new menuItem({
                                                 name: tmpPage.name,
                                                 label: tmpPage.title,
                                                 visiability: true,
                                                 page: null
                                             });
-                                        
+
                                         Page.findOne({
                                                 name: tmpPage.name
                                             }, function(err, page) {
@@ -993,7 +993,7 @@ router.post('/create-page', load_user, load_menu, load_rooms,function(req, res) 
                                                                             utils.appLogger('success', 'Success save document (menu_item)', `Succes saved document type MENU_ITEM (${tmpMenuItem}).`);
                                                                             isSaved = true;
                                                                         }
-                                                                        
+
                                                                         res.render('create-page', {
                                                                                         menuItems: req.menuItems,
                                                                                         user: user,
@@ -1005,7 +1005,7 @@ router.post('/create-page', load_user, load_menu, load_rooms,function(req, res) 
                                                             });
                                                     }
                                             });
-                                        
+
                                     });
                             } else {
                                 res.redirect('/profile');
@@ -1166,17 +1166,17 @@ router.post('/questions/:question_id', load_user, load_menu, load_rooms,function
                                             thisQuestion.answerTwo = req.body.answerTwo;
                                             thisQuestion.answerThree = req.body.answerThree;
                                             thisQuestion.answerFore = req.body.answerFore;
-                                            
+
                                             thisQuestion.save(function(err) {
                                                     let isSaved = false;
-                                                    
+
                                                     if(err) {
                                                         utils.appLogger('fail', 'Fail saved document (question)', `Fail, when app try finding document type QUESTION with ID (${req.params.question_id}). Error message: ${err}.`);
                                                     } else {
                                                         utils.appLogger('success', 'Success saved document (page)', `Success saving document type QUESTION with ID (${req.params.question_id}).`);
                                                         isSaved = true;
                                                     }
-                                                    
+
                                                     res.render('edit-question', {
                                                             menuItems: req.menuItems,
                                                             user: user,
@@ -1186,7 +1186,7 @@ router.post('/questions/:question_id', load_user, load_menu, load_rooms,function
                                                             isLogin: true,
                                                             isActive: 'edit-question'
                                                         });
-                                                    
+
                                                 });
                                         }
                                 });
@@ -1268,17 +1268,17 @@ router.post('/pages/:page_name', load_user, load_menu, load_rooms,function(req, 
                                             thisPage.title = req.body.title;
                                             thisPage.subtitle = req.body.subtitle;
                                             thisPage.text = req.body.text;
-                                            
+
                                             thisPage.save(function(err){
                                                     let isSaved = false;
-                                                
+
                                                     if(err) {
                                                         utils.appLogger('fail', 'Fail saved document (page)', `Fail, when app try finding document type Page with name (${req.params.page_name}). Error message: ${err}.`);
                                                     } else {
                                                         utils.appLogger('success', 'Success saved document (page)', `Success saving document type Page with name (${req.params.page_name}).`);
                                                         isSaved = true;
                                                     }
-                                                    
+
                                                     res.render('edit-page', {
                                                             menuItems: req.menuItems,
                                                             user: user,
@@ -1288,7 +1288,7 @@ router.post('/pages/:page_name', load_user, load_menu, load_rooms,function(req, 
                                                             isLogin: true,
                                                             isActive: 'edit-page'
                                                         });
-                                                    
+
                                                 });
                                         }
                                 });
@@ -1329,10 +1329,10 @@ router.get('/reporting/report-polls', load_user, load_menu, load_rooms, (req, re
                                 dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
                             if (req.param('filterDayEnd'))
                                 dateObject.dayEnd = req.param('filterDayEnd');
-                            
+
                             console.log(dateObject);
-                            
-                            if (Object.keys(dateObject).length === 6) {                                
+
+                            if (Object.keys(dateObject).length === 6) {
                                 date = new Date(dateObject.year, dateObject.month, dateObject.day);
                                 dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
                             }
@@ -1350,9 +1350,9 @@ router.get('/reporting/report-polls', load_user, load_menu, load_rooms, (req, re
                                     '$lte': tmpDate.setHours(24,0,0,0)
                                 };
                             }
-                            
+
                             console.log(filterObject);
-                            
+
                             logAnswers.find(filterObject, (errAnswers, answers) => {
                                     if (errAnswers) {
                                         utils.appLogger('fails', 'Fail finding document (log_answers)', `Fail, when app try finding all documents with type LOG_ANSWERS. Error message: ${errAnswers}`);
@@ -1369,7 +1369,7 @@ router.get('/reporting/report-polls', load_user, load_menu, load_rooms, (req, re
                                                 dateTo: dateEnd
                                             });
                                     }
-                                });    
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -1388,9 +1388,9 @@ router.get('/downloads/answers/:date_from/:date_to', load_user, load_menu, load_
                     if (err) {
                         utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
                     } else {
-                        
+
                         if (user.admin === true) {
-                            
+
                             let filterObject = {};
                             if (req.params.date_from === 'null' || req.params.date_to === 'null') {
                                 console.log(filterObject);
@@ -1400,22 +1400,29 @@ router.get('/downloads/answers/:date_from/:date_to', load_user, load_menu, load_
                                     '$lte': req.params.date_to
                                 };
                             }
-                            
+
                             logAnswers.find(filterObject, (errAnswers, answers) => {
                                     if (errAnswers) {
                                         utils.appLogger('fails', 'Fail finding document (log_answers)', `Fail, when app try finding all documents with type LOG_ANSWERS. Error message: ${errAnswers}`);
                                     } else {
                                         let resultat = [],
                                             tmp = null,
-                                            fields = ['Тип опроса', 'Дата', 'Токен сотрудника', 'Токен клиента', 'Комментарии', 'Ответы'];
+                                            fields = [
+                                              'Type polls',
+                                              'Date',
+                                              'Worker Token',
+                                              'Customer Token',
+                                              'Comments',
+                                              'Answers'
+                                            ];
                                         answers.forEach(e => {
                                                 tmp = {
-                                                    'Тип опроса': e.pollsType,
-                                                    'Дата': e.date,
-                                                    'Токен сотрудника': e.employeeRtcToken,
-                                                    'Токен клиента': e.custometRtcToken,
-                                                    'Комментарии': e.comments,
-                                                    'Ответы': e.answersToPolls
+                                                    'Type polls': e.pollsType,
+                                                    'Date': e.date,
+                                                    'Worker Token': e.employeeRtcToken,
+                                                    'Customer Token': e.custometRtcToken,
+                                                    'Comments': e.comments,
+                                                    'Answers': e.answersToPolls
                                                 };
                                                 resultat.push(tmp);
                                             });
@@ -1463,12 +1470,12 @@ router.get('/reporting/report-server', load_user, load_menu, load_rooms, (req, r
                                 dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
                             if (req.param('filterDayEnd'))
                                 dateObject.dayEnd = req.param('filterDayEnd');
-                            
-                            if (Object.keys(dateObject).length === 6) {                                
+
+                            if (Object.keys(dateObject).length === 6) {
                                 date = new Date(dateObject.year, dateObject.month, dateObject.day);
                                 dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
                             }
-                            
+
                             if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
                                 filterObject.date = {
                                     '$gte': date,
@@ -1481,14 +1488,14 @@ router.get('/reporting/report-server', load_user, load_menu, load_rooms, (req, r
                                     '$lte': tmpDate.setHours(24,0,0,0)
                                 };
                             }
-                            
+
                             console.log(filterObject);
-                            
+
                             logEntry.find(filterObject, (errEntries, entries) => {
                                     if (errEntries) {
                                         utils.appLogger('fails', 'Fail finding document (log_entry)', `Fail, when app try finding all documents with type LOG_ENTRY. Error message: ${errEntries}`);
                                     } else {
-                                        
+
                                         res.render('report-server', {
                                                 menuItems: req.menuItems,
                                                 user: user,
@@ -1501,7 +1508,7 @@ router.get('/reporting/report-server', load_user, load_menu, load_rooms, (req, r
                                                 dateTo: dateEnd
                                             });
                                     }
-                                });    
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -1519,7 +1526,7 @@ router.get('/downloads/server/:date_from/:date_to', load_user, load_menu, load_r
                     if (err) {
                         utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
                     } else {
-                        
+
                         if (user.admin === true) {
                              let filterObject = {};
                             if (req.params.date_from === 'null' || req.params.date_to === 'null') {
@@ -1534,26 +1541,26 @@ router.get('/downloads/server/:date_from/:date_to', load_user, load_menu, load_r
                                     '$lte': req.params.date_to
                                 };
                             }
-                            
+
                             console.log(filterObject);
 
                             logEntry.find(filterObject, (errEntry, entries) => {
-                            
+
                                     if (errEntry) {
                                         utils.appLogger('fails', 'Fail finding document (log_entry)', `Fail, when app try finding all documents with type LOG_ENTRY. Error message: ${errAnswers}`);
                                     } else {
                                         let resultat = [],
                                             tmp = null,
-                                            fields = ['Тип события', 'Дата', 'Действие', 'Описание'];
-                                            
+                                            fields = ['Event type', 'Date', 'Action', 'Description'];
+
                                         console.log(entries);
-                                        
+
                                         entries.forEach(e => {
                                                 tmp = {
-                                                    'Тип события': e.type_error,
-                                                    'Дата': e.date,
-                                                    'Дейстие': e.action,
-                                                    'Описание': e.description,
+                                                    'Event type': e.type_error,
+                                                    'Date': e.date,
+                                                    'Actions': e.action,
+                                                    'Description': e.description,
                                                 };
                                                 resultat.push(tmp);
                                             });
@@ -1564,7 +1571,7 @@ router.get('/downloads/server/:date_from/:date_to', load_user, load_menu, load_r
                                             res.send(csv);
                                         });
                                     }
-                                });                           
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -1601,12 +1608,12 @@ router.get('/reporting/report-error-tokenize', load_user, load_menu, load_rooms,
                                 dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
                             if (req.param('filterDayEnd'))
                                 dateObject.dayEnd = req.param('filterDayEnd');
-                            
-                            if (Object.keys(dateObject).length === 6) {                                
+
+                            if (Object.keys(dateObject).length === 6) {
                                 date = new Date(dateObject.year, dateObject.month, dateObject.day);
                                 dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
                             }
-                            
+
                             if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
                                 filterObject.date = {
                                     '$gte': date,
@@ -1619,12 +1626,12 @@ router.get('/reporting/report-error-tokenize', load_user, load_menu, load_rooms,
                                     '$lte': tmpDate.setHours(24,0,0,0)
                                 };
                             }
-                            
+
                             logFailedTokenize.find(filterObject, (errEntries, entries) => {
                                     if (errEntries) {
                                         utils.appLogger('fails', 'Fail finding document (failed_tokenize)', `Fail, when app try finding all documents with type FAILED_TOKENIZE. Error message: ${errEntries}`);
                                     } else {
-                                        
+
                                         res.render('report-error-tokenize', {
                                                 menuItems: req.menuItems,
                                                 user: user,
@@ -1637,7 +1644,7 @@ router.get('/reporting/report-error-tokenize', load_user, load_menu, load_rooms,
                                                 dateTo: dateEnd
                                             });
                                     }
-                                });    
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -1655,7 +1662,7 @@ router.get('/downloads/tokenize/:date_from/:date_to', load_user, load_menu, load
                     if (err) {
                         utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
                     } else {
-                        
+
                         if (user.admin === true) {
                              let filterObject = {};
                             if (req.params.date_from === 'null' || req.params.date_to === 'null') {
@@ -1670,25 +1677,25 @@ router.get('/downloads/tokenize/:date_from/:date_to', load_user, load_menu, load
                                     '$lte': req.params.date_to
                                 };
                             }
-                            
+
 
                             logFailedTokenize.find(filterObject, (errEntry, entries) => {
-                            
+
                                     if (errEntry) {
                                         utils.appLogger('fails', 'Fail finding document (failed_tokenize)', `Fail, when app try finding all documents with type FAILED_TOKENIZR. Error message: ${errAnswers}`);
                                     } else {
                                         let resultat = [],
                                             tmp = null,
-                                            fields = ['Пользователь', 'Дата', 'Обрудование','Ошибка'];
-                                            
+                                            fields = ['User', 'Date', 'User Agent','Error'];
+
                                         console.log(entries);
-                                        
+
                                         entries.forEach(e => {
                                                 tmp = {
-                                                    'Пользователь': e.userInfo,
-                                                    'Дата': e.date,
-                                                    'Оборудование': e.userAgent,
-                                                    'Ошибка': e.error
+                                                    'User': e.userInfo,
+                                                    'Date': e.date,
+                                                    'User Agent': e.userAgent,
+                                                    'Error': e.error
                                                 };
                                                 resultat.push(tmp);
                                             });
@@ -1699,7 +1706,7 @@ router.get('/downloads/tokenize/:date_from/:date_to', load_user, load_menu, load
                                             res.send(csv);
                                         });
                                     }
-                                });                           
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -1736,12 +1743,12 @@ router.get('/reporting/report-missed-calls', load_user, load_menu, load_rooms, (
                                 dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
                             if (req.param('filterDayEnd'))
                                 dateObject.dayEnd = req.param('filterDayEnd');
-                            
-                            if (Object.keys(dateObject).length === 6) {                                
+
+                            if (Object.keys(dateObject).length === 6) {
                                 date = new Date(dateObject.year, dateObject.month, dateObject.day);
                                 dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
                             }
-                            
+
                             if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
                                 filterObject.date = {
                                     '$gte': date,
@@ -1754,12 +1761,12 @@ router.get('/reporting/report-missed-calls', load_user, load_menu, load_rooms, (
                                     '$lte': tmpDate.setHours(24,0,0,0)
                                 };
                             }
-                            
+
                             missedCalls.find(filterObject, (errEntries, entries) => {
                                     if (errEntries) {
                                         utils.appLogger('fails', 'Fail finding document (missed_calls)', `Fail, when app try finding all documents with type MISSED_CALLS. Error message: ${errEntries}`);
                                     } else {
-                                        
+
                                         res.render('report-missed-calls', {
                                                 menuItems: req.menuItems,
                                                 user: user,
@@ -1772,7 +1779,7 @@ router.get('/reporting/report-missed-calls', load_user, load_menu, load_rooms, (
                                                 dateTo: dateEnd
                                             });
                                     }
-                                });    
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -1790,7 +1797,7 @@ router.get('/downloads/missed/:date_from/:date_to', load_user, load_menu, load_r
                     if (err) {
                         utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
                     } else {
-                        
+
                         if (user.admin === true) {
                              let filterObject = {};
                             if (req.params.date_from === 'null' || req.params.date_to === 'null') {
@@ -1805,24 +1812,24 @@ router.get('/downloads/missed/:date_from/:date_to', load_user, load_menu, load_r
                                     '$lte': req.params.date_to
                                 };
                             }
-                            
+
 
                             missedCalls.find(filterObject, (errEntry, entries) => {
-                            
+
                                     if (errEntry) {
                                         utils.appLogger('fails', 'Fail finding document (missed_call)', `Fail, when app try finding all documents with type MISSED_CALL. Error message: ${errAnswers}`);
                                     } else {
                                         let resultat = [],
                                             tmp = null,
-                                            fields = ['Пользователь', 'Дата', 'Токен'];
-                                            
+                                            fields = ['Customer', 'Date', 'Token'];
+
                                         console.log(entries);
-                                        
+
                                         entries.forEach(e => {
                                                 tmp = {
-                                                    'Пользователь': e.userInfo,
-                                                    'Дата': e.date,
-                                                    'Дейстие': e.easyRtcToken,
+                                                    'Customer': e.userInfo,
+                                                    'Date': e.date,
+                                                    'Token': e.easyRtcToken,
                                                 };
                                                 resultat.push(tmp);
                                             });
@@ -1833,7 +1840,7 @@ router.get('/downloads/missed/:date_from/:date_to', load_user, load_menu, load_r
                                             res.send(csv);
                                         });
                                     }
-                                });                           
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -1870,13 +1877,13 @@ router.get('/reporting/report-connections', load_user, load_menu, load_rooms, (r
                                 dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
                             if (req.param('filterDayEnd'))
                                 dateObject.dayEnd = req.param('filterDayEnd');
-                            
-                            
-                            if (Object.keys(dateObject).length === 6) {                                
+
+
+                            if (Object.keys(dateObject).length === 6) {
                                 date = new Date(dateObject.year, dateObject.month, dateObject.day);
                                 dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
                             }
-                            
+
                             if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
                                 filterObject.date = {
                                     '$gte': date,
@@ -1889,15 +1896,15 @@ router.get('/reporting/report-connections', load_user, load_menu, load_rooms, (r
                                         '$lte': tmpDate.setHours(24,0,0,0)
                                 };
                             }
-                        
-                            
+
+
                             EntryConnect.find(filterObject, (errConnect, entries) => {
                                     if (errConnect) {
                                         utils.appLogger('fails', 'Fail finding document (log_connect)', `Fail, when app try finding all documents with type LOG_CONNETCT. Error message: ${errAnswers}`);
                                     } else {
-                                        
+
                                         console.log(entries);
-                                        
+
                                         res.render('report-connections', {
                                                 menuItems: req.menuItems,
                                                 user: user,
@@ -1910,7 +1917,7 @@ router.get('/reporting/report-connections', load_user, load_menu, load_rooms, (r
                                                 dateTo: dateEnd
                                             });
                                     }
-                                });    
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -1928,7 +1935,7 @@ router.get('/downloads/connections/:date_from/:date_to', load_user, load_menu, l
                     if (err) {
                         utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
                     } else {
-                        
+
                         if (user.admin === true) {
                              let filterObject = {};
                             if (req.params.date_from === 'null' || req.params.date_to === 'null') {
@@ -1943,25 +1950,25 @@ router.get('/downloads/connections/:date_from/:date_to', load_user, load_menu, l
                                     '$lte': req.params.date_to
                                 };
                             }
-                            
-                            
+
+
                             EntryConnect.find(filterObject, (errEntry, entries) => {
-                            
+
                                     if (errEntry) {
                                         utils.appLogger('fails', 'Fail finding document (log_connect)', `Fail, when app try finding all documents with type LOG_CONNECT. Error message: ${errAnswers}`);
                                     } else {
                                         let resultat = [],
                                             tmp = null,
-                                            fields = ['Username', 'ФИО', 'Город', 'Токен', 'Дата'];
-                                            
-                                        
+                                            fields = ['Username', 'Full name', 'City', 'Token', 'Date'];
+
+
                                         entries.forEach(e => {
                                                 tmp = {
                                                     'Username': e.username,
-                                                    'ФИО': e.userfio,
-                                                    'Город': e.city,
-                                                    'Токен': e.easyRtcToken,
-                                                    'Дата': e.date
+                                                    'Full name': e.userfio,
+                                                    'City': e.city,
+                                                    'Token': e.easyRtcToken,
+                                                    'Date': e.date
                                                 };
                                                 resultat.push(tmp);
                                             });
@@ -1972,7 +1979,7 @@ router.get('/downloads/connections/:date_from/:date_to', load_user, load_menu, l
                                             res.send(csv);
                                         });
                                     }
-                                });                           
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -2011,13 +2018,13 @@ router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, re
                                 dateObject.monthEnd = '' + (parseInt(req.param('filterMonthEnd')) - 1);
                             if (req.param('filterDayEnd'))
                                 dateObject.dayEnd = req.param('filterDayEnd');
-                            
-                            
-                            if (Object.keys(dateObject).length === 6) {                                
+
+
+                            if (Object.keys(dateObject).length === 6) {
                                 date = new Date(dateObject.year, dateObject.month, dateObject.day);
                                 dateEnd = new Date(dateObject.yearEnd, dateObject.monthEnd, dateObject.dayEnd);
                             }
-                            
+
                             if (date !== null && date !== undefined && dateEnd !== null && dateEnd !== undefined) {
                                 filterObject.callStart = {
                                     '$gte': date,
@@ -2030,15 +2037,15 @@ router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, re
                                     '$lte': tmpDate.setHours(24,0,0,0)
                                 };
                             }
-                            
-                            
+
+
                             logEntryCall.find(filterObject, (errAnswers, calls) => {
                                     if (errAnswers) {
                                         utils.appLogger('fails', 'Fail finding document (log_answers)', `Fail, when app try finding all documents with type LOG_ANSWERS. Error message: ${errAnswers}`);
                                     } else {
                                         let correctCalls = [],
                                             tmp = null;
-                                        
+
                                         calls.forEach(c => {
                                                 tmp = c;
                                                 if(c.callStart !== null && c.callStart !== undefined) {
@@ -2048,7 +2055,7 @@ router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, re
                                                     tmp.callEnd = new Date(parseInt(c.callEnd));
                                                 }
                                                 correctCalls.push(tmp);
-                                            });                                        
+                                            });
                                         res.render('report-calls', {
                                                 menuItems: req.menuItems,
                                                 user: user,
@@ -2061,7 +2068,7 @@ router.get('/reporting/report-calls', load_user, load_menu, load_rooms, (req, re
                                                 dateTo: dateEnd
                                             });
                                     }
-                                });    
+                                });
                         } else {
                             res.redirect('/profile');
                         }
@@ -2080,7 +2087,7 @@ router.get('/downloads/report-calls/:date_from/:date_to', load_user, load_menu, 
                     if (err) {
                         utils.appLogger('fail', 'Fail finding document (user)', `Fail, when app try finding document type USER with token (${req.cookies.token}). Error message: ${err}.`);
                     } else {
-                        
+
                         if (user.admin === true) {
                              let filterObject = {};
                             if (req.params.date_from === 'null' || req.params.date_to === 'null') {
@@ -2101,13 +2108,18 @@ router.get('/downloads/report-calls/:date_from/:date_to', load_user, load_menu, 
                                     } else {
                                         let resultat = [],
                                             tmp = null,
-                                            fields = ['Начало звонка', 'Конец звонка', 'Токен сотрудника', 'Токен клиента'];
+                                            fields = [
+                                              'Begin call',
+                                              'End call',
+                                              'Worker Token',
+                                              'Customer Token'
+                                            ];
                                         calls.forEach(e => {
                                                 tmp = {
-                                                    'Начало звонка': e.callStart,
-                                                    'Конец звонка': e.callEnd,
-                                                    'Токен сотрудника': e.employeeToken,
-                                                    'Токен клиента': e.customerToken,
+                                                    'Begin call': e.callStart,
+                                                    'End call': e.callEnd,
+                                                    'Worker Token': e.employeeToken,
+                                                    'Customer Token': e.customerToken,
                                                 };
                                                 resultat.push(tmp);
                                             });
@@ -2117,7 +2129,7 @@ router.get('/downloads/report-calls/:date_from/:date_to', load_user, load_menu, 
                                             res.send(csv);
                                         });
                                     }
-                                });                           
+                                });
                         } else {
                             res.redirect('/profile');
                         }

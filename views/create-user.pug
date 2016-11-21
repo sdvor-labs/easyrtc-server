@@ -4,70 +4,70 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
-                div.message-header Протщрваиеот успешно создан
+                div.message-header User created
                 div.message-body
-                    strong Поздравляем,
-                    span   пользователь зарегистрирован!
+                    strong Congratlations,
+                    span   user added!
         else
             article.message.is-danger
-                div.message-header Ошибка при создании пользователя
+                div.message-header User not created
                 div.message-body
-                    strong Ошибка,
-                    span  по какой-то причине пользователь не был создан (возможно пользовательс таким логином уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+                    strong Error,
+                    span  user do not created. Try later or contact with administrator.
     div.box
         div.columns
             div.column.is-fullwidth
-                h3.title.is-3 Регистрация пользователя (менеджера)
+                h3.title.is-3 Add worker
         div.columns
             div.column.is-fullwidth
                 form(method='post')
                     div.columns
                         div.column.is-12
                             p.control
-                                label.label(for='username') Логин
-                                input.input#username(name='username', type='text', placeholder='testuser' required)
+                                label.label(for='username') Login
+                                input.input#username(name='username', type='text', placeholder='cthulhu' required)
                     div.columns
                         div.column
                             p.control
-                                label.label(for='lastname') Фамилия
-                                input.input#lastname(name='lastname', type='text', placeholder='Шариков')
+                                label.label(for='lastname') Lastname
+                                input.input#lastname(name='lastname', type='text', placeholder='Griffin')
                         div.column
                             p.control
                                 label.label(for='name') Имя
-                                input.input#name(name='name', type='text', placeholder='Полиграф')
+                                input.input#name(name='name', type='text', placeholder='Jastin')
                         div.column
                             p.control
                                 label.label(for='surname') Отчество
-                                input.input#surname(name='surname', placeholder='Полиграфович')
+                                input.input#surname(name='surname', placeholder='Pitter')
                     div.columns
                         div.column
                             p.control
-                                label.label(for='password') Пароль
+                                label.label(for='password') Password
                                 input.input#password(name='password', type='password', placeholder='testuser123', required)
                         div.column
                             p.control
-                                label.label(for='password1') Повторите пароль
+                                label.label(for='password1') Repeat password
                                 input.input#password1(name='password1', type='password', placeholder='testuser123', required)
                     div.columns
                         div.column
                             p.control
-                                label.label(for='location') Располжение
-                                input.input#location(name='location', type='text', placeholder='ул. Пречистенка, 24 (Чистый переулок 1)', required)
+                                label.label(for='location') Location
+                                input.input#location(name='location', type='text', placeholder='Str. Prechistenka, 24 (Net lane 1)', required)
                         div.column
                             p.control
-                                label.label(for='mobile') Сотовый телефон
+                                label.label(for='mobile') Mobile
                                 input.input#mobile(name='mobile', type='text', placeholder='9999464629', required)
                     div.columns
                         div.column
                             p.control
-                                label.label(for='user_type') Тип пользователя
+                                label.label(for='user_type') User type
                                 span.select.is-fullwidth
                                     select#user_type(name='user_type')
                                         each item in types
                                             option(id=item.name) #{item.name}
                         div.column
                             p.control
-                                label.label(for='company') Компания
+                                label.label(for='company') Company
                                 span.select.is-fullwidth
                                     select#company(name='company')
                                         each item in companies
@@ -75,7 +75,7 @@ block content
                     div.columns
                         div.column
                             p.control
-                                textarea.textarea#additional_info(name='additional_info', placeholder='Дополнительная информация о сотреднике')
+                                textarea.textarea#additional_info(name='additional_info', placeholder='Additional information')
                     p.control
-                        button.button.is-primary Создать
-                        a.button.is-link(href='/profile') Отмена
+                        button.button.is-primary Save
+                        a.button.is-link(href='/profile') Cancel

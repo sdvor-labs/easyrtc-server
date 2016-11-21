@@ -5,41 +5,41 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
-                div.message-header Успех
+                div.message-header Success
                 div.message-body
-                    strong Поздравляем!
-                    span  Ваши данные успешно записаны.
+                    strong Congratilations!
+                    span  All data added.
         else
             article.message.is-danger
-                div.message-header Ошибка
+                div.message-header Error
                 div.message-body
-                    strong Ошибка!
-                    span Мы не смогли записать ваши данные. Попробуйте позже еще раз чуть позже. При повторении ошибки обратитесь к администратору.
+                    strong Error!
+                    span We were not able to record your data. Please try later again later. By repeating the error, contact your administrator.
     div.box
         div.columns
             div.column.is-fullwidth
-                h3.title.is-3 Изменение личных данных
+                h3.title.is-3 Changing personal data
         div.columns
             div.column.id-fullwidth
                 form(method='post')
                     div.columns
                         div.column
                             p.control
-                                label(for='user-name') Имя пользователя
+                                label(for='user-name') Name
                                 input.input#user-name(type='text',name='name', value=user.name, required)
                         div.column
                             p.control
-                                label(for='user-surname') Отчество пользователя
+                                label(for='user-surname') Surname
                                 input.input#user-surname(type='text', name='surname', value=user.surname, required)
                     div.columns
                         div.column.is-fullwidth
                             p.control
-                                label(for='user-lastname') Фамилия пользователя
+                                label(for='user-lastname') Lastname
                                 input.input#user-lastname(type='text', name='lastname', value=user.lastname, required)
                     div.columns
                         div.column
                             p.control.is-fullwidth
-                                button.button.is-success.is-fullwidth(type='submit') Сохранить
+                                button.button.is-success.is-fullwidth(type='submit') Save
                         div.column
                             p.control.is-fullwidth
-                                a.button.is-info.is-fullwidth(href='../profile') Назад
+                                a.button.is-info.is-fullwidth(href='../profile') Back

@@ -4,32 +4,32 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
-                div.message-header Компания была успешно создана
+                div.message-header Company created
                 div.message-body
-                    strong Поздравляем,
-                    span   компания создана!
+                    strong Congratulatins,
+                    span   company are created!
         else
             article.message.is-danger
-                div.message-header Компанию не получилось создать =(
+                div.message-header Company do not created
                 div.message-body
-                    strong Ошибка,
-                    span  по какой-то причине компания не была создана (возможно компания с таким именем уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+                    strong Error,
+                    span  company do ot created. Try later or contact with administrator.
     div.box
         div.columns
             div.column.is-fullwidth
-                h3.title.is-3 Создние компании
+                h3.title.is-3 Create company
         div.columns
             div.column.is-fullwidth
                 form(method='post')
                     p.control
-                        label.label(for='name') Наименование компании
-                        input.input#name(name='name', type='text', placeholder='ООО "Рога и копыта"' required)
+                        label.label(for='name') Company name
+                        input.input#name(name='name', type='text', placeholder='Company, ltd.' required)
                     p.control
-                        label.label(for='address') Адресс компании
-                        input.input#address(name='address', type='text', placeholder='Россия, Санкт-Петербург, 3-я улица Строителей, дом № 25', required)
+                        label.label(for='address') Address
+                        input.input#address(name='address', type='text', placeholder='Russia, St. Petersburg, 3rd Builders street, house number 25', required)
                     p.control
-                        label.label(for='site') Сайт компании
+                        label.label(for='site') Site
                         input.input#site(name='site', type='text', placeholder='http://linux.org.ru', required)
                     p.control
-                        button.button.is-primary Создать
-                        a.button.is-link(href='/profile') Отмена
+                        button.button.is-primary Save
+                        a.button.is-link(href='/profile') Cancel

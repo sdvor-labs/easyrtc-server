@@ -4,35 +4,35 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
-                div.message-header Страница успешно создана
+                div.message-header Page created
                 div.message-body
-                    strong Поздравляем,
-                    span   страница создана!
+                    strong Congratulations,
+                    span   page are created!
         else
             article.message.is-danger
-                div.message-header Страницу не получилось создать =(
+                div.message-header Page do not created
                 div.message-body
-                    strong Ошибка,
-                    span  по какой-то причине страница не была создана (возможно страница с таким именем уже существует). Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+                    strong Error,
+                    span  page do not created. Try later or contact with administrator.
     div.box
         div.columns
             div.column.is-fullwidth
-                h3.title.is-3 Создние страницы
+                h3.title.is-3 Create page
         div.columns
             div.column.is-fullwidth
                 form(method='post')
                     p.control
-                        label.label(for='name') Наименование страницы
+                        label.label(for='name') Page name
                         input.input#name(name='name', type='text', placeholder='war-word' required)
                     p.control
-                        label.label(for='title') Заголовок страницы
-                        input.input#title(name='title', type='text', placeholder='Нападение инопланетян', required)
+                        label.label(for='title') Page title
+                        input.input#title(name='title', type='text', placeholder='Wake up Cthilhu', required)
                     p.control
-                        label.label(for='subtitle') Подзаголовок
-                        input.input#title(name='subtitle', type='text', placeholder='По роману Г.Уэлса "Война миров"', required)
+                        label.label(for='subtitle') Page subtitle
+                        input.input#title(name='subtitle', type='text', placeholder='When king of world wake up?', required)
                     p.control
-                        label.label(for='text') Содержание страницы
-                        textarea.textarea#text(name='text', placeholder='Текст содержания страницы', required)
+                        label.label(for='text') Page content
+                        textarea.textarea#text(name='text', placeholder='In his house at Rlyeh, dead Cthulhu waits dreaming.', required)
                     p.control
-                        button.button.is-primary Создать
-                        a.button.is-link(href='/profile') Отмена
+                        button.button.is-primary Save
+                        a.button.is-link(href='/profile') Cancel

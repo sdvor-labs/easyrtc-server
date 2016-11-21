@@ -6,55 +6,55 @@ block content
             div.column
                 div.columns
                     div.column
-                        h3.title.is-3 Дата с
+                        h3.title.is-3 Date from
                     div.column
-                        h3.title.id3 Дата до
+                        h3.title.id3 Date to
                     div.column
                 div.columns
                     div.column
-                        label.label(for='filterYear') Год
+                        label.label(for='filterYear') Year
                         p.control
                             input.input#filterYear(name='filterYear', type="text" placeholder="2016", value=filters.year ,required)
-                        label.label(for='filterMonth') Месяц
+                        label.label(for='filterMonth') Month
                         p.control
                             input.input#filterMonth(name='filterMonth', type='text', placeholder='1', value=filters.month, required)
-                        label.label(for='filterDay') День
+                        label.label(for='filterDay') Day
                         p.control
                             input.input#filterDay(name='filterDay', type='text', placeholder='1', value=filters.day, required)
                     div.column
-                        label.label(for='filterYearEnd') Год
+                        label.label(for='filterYearEnd') Year
                         p.control
                             input.input#filterYearEnd(name='filterYearEnd', type='text', placeholder='2017', value=filters.yearEnd, required)
-                        label.label(for='filterMonthEnd') Месяц
+                        label.label(for='filterMonthEnd') Month
                         p.control
                             input.input#filterMonthEnd(name='filterMonthEnd', type='text', placeholder='1', value=filters.monthEnd, required)
-                        label.label(for='filterDayEnd') День
+                        label.label(for='filterDayEnd') Day
                         p.control
                             input.input#filterDayEnd(name='filterDayEnd', type='text', placeholder='1', value=filters.dayEnd, required)
                     div.column
                         div.columns
                             div.column
                                 p.control
-                                    button.button.is-primary.is-fullwidth.is-large Отфильтровать
+                                    button.button.is-primary.is-fullwidth.is-large Filtering
                         div.columns
                             div.column
-                                a.button.is-success.is-large.is-fullwidth(target='_blank', href='/profile/downloads/report-calls/'+dateFrom+'/'+dateTo+'/') Выгрузить
+                                a.button.is-success.is-large.is-fullwidth(target='_blank', href='/profile/downloads/report-calls/'+dateFrom+'/'+dateTo+'/') Save
     div.columns
         div.column
             table.table
                 thead
                     tr
-                        th Начало звонка
-                        th Конец звонка
-                        th Токен сотрудника
-                        th Токен клиента
+                        th Begin call
+                        th End call
+                        th Worker Token
+                        th Customer Token
                 tfoot
                     tr
-                        th Начало звонка
-                        th Конец звонка
-                        th Токен сотрудника
-                        th Токен клиента
-                tbody    
+                        th Begin call
+                        th End call
+                        th Worker Token
+                        th Customer Token
+                tbody
                     each entry in calls
                         tr
                             td #{entry.callStart}

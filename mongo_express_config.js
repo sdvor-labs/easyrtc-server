@@ -32,15 +32,15 @@ if (process.env.VCAP_SERVICES) {
    * @property {boolean} ssl- using SSL
    * @property {string} url - full url for connection to MongoDB
    * @property {string} username - login owner database
-   */ 
+   */
   mongo = {
     db:       'test',
     host:     'localhost',
-    password: '3pm9skn5',
+    password: '123456',
     port:     27017,
     ssl:      false,
     url:      'mongodb://localhost:27017/test',
-    username: 'testvideo',
+    username: 'test',
   };
 }
 /* exports all settings */
@@ -108,8 +108,8 @@ module.exports = {
    */
   useBasicAuth: process.env.ME_CONFIG_BASICAUTH_USERNAME !== '',
   basicAuth: {
-    username: process.env.ME_CONFIG_BASICAUTH_USERNAME || 'neuromanticsd',
-    password: process.env.ME_CONFIG_BASICAUTH_PASSWORD || '351skl9vcr',
+    username: process.env.ME_CONFIG_BASICAUTH_USERNAME || 'admin',
+    password: process.env.ME_CONFIG_BASICAUTH_PASSWORD || 'pass',
   },
   options: {
     /* Display startup text on console */
@@ -157,6 +157,6 @@ module.exports = {
    *     "city":"name"
    *   }
    *  }
-   */  
+   */
   defaultKeyNames: {},
 };

@@ -1,7 +1,7 @@
 extends profile-layout
 
 block content
-    div.box        
+    div.box
         div.columns
             div.column.is-fullwidth
                 h3.title.is-3 #{user.username}
@@ -9,25 +9,25 @@ block content
             div.column
                img(src='/images/default-user.png')
             div.column
-                h5.title.is-5 Личные данные
+                h5.title.is-5 Personal data
                 p
-                    strong Имя:
+                    strong Name:
                     span  #{user.name}
                 p
-                    strong Фамилия:
+                    strong Surname:
                     span  #{user.surname}
                 p
-                    strong Отчество:
+                    strong Lastname:
                     span  #{user.lastname}
-                hr    
+                hr
                 h5.title.is-5 Служебная информация
                 p
-                    strong Наименование:
+                    strong Company:
                     span  #{company.name}
                 p
-                    strong Сайт 
+                    strong Site
                     span
                         a(href='http://#{company.site}') #{company.site}
                 p
-                    strong Дата регистрации:
+                    strong Register date:
                     span  #{user.created_at}

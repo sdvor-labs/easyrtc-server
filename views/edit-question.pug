@@ -4,65 +4,65 @@ block content
     if(isSaved !== null)
         if(isSaved === true)
             article.message.is-success
-                div.message-header Изменения успешно сохранены
+                div.message-header Success save change
                 div.message-body
-                    strong Поздравляем,
-                    span   вопрос сохранен!
+                    strong Congratulations,
+                    span   question succefull saved!
         else
             article.message.is-danger
-                div.message-header Вопрос не получилось Сохранить=(
+                div.message-header Fail save change
                 div.message-body
-                    strong Ошибка,
-                    span  по какой-то причине измененив в вопросе #{question._id} не были сохранены. Попробуйте чуть позже еще раз снова, если ошибка воникнет снова - обратитесь к администратору.
+                    strong Error,
+                    span  when try save change in question #{question._id}. Try later or contact with administrator
     div.box
         div.columns
             div.column.is-fullwidth
-                h3.title.is-3 Редактирование вопроса
+                h3.title.is-3 Edit question
         div.columns
             div.column.is-fullwidth
                 form(method='post')
                     div.columns
                         div.column
                             p.control
-                                label.label(for='pollsType') Определите категорию опроса
+                                label.label(for='pollsType') Polls type
                                 if(question.pollsType === 'worker')
                                     span.select.is-fullwidth
                                         select#pollsType(name='pollsType')
-                                            option(value='worker', selected) Для сотрудников
-                                            option(value='client') Для клиентов
+                                            option(value='worker', selected) For workers
+                                            option(value='client') For customers
                                 else if(question.pollsType === 'costumer')
                                     span.select.is-fullwidth
                                         select#pollsType(name='pollsType')
-                                            option(value='worker') Для сотрудников
-                                            option(value='client', selected) Для клиентов
+                                            option(value='worker') For workers
+                                            option(value='client', selected) For customers
                                 else
                                     span.select.is-fullwidth
                                         select#pollsType(name='pollsType')
-                                            option(value=question.pollsType, selected) #{question.pollsType} 
-                                            option(value='worker') Для сотрудников
-                                            option(value='client') Для клиентов
+                                            option(value=question.pollsType, selected) #{question.pollsType}
+                                            option(value='worker') For workers
+                                            option(value='client') For customers
                         div.column
                             p.control
-                                label.label(for='questionText') Текст вопроса
-                                input.input#questionText(name='questionText', type='text', placeholder='Как пройти вечером в библиотеку?', value=question.questionText, required)
+                                label.label(for='questionText') Text
+                                input.input#questionText(name='questionText', type='text', placeholder='How are you?', value=question.questionText, required)
                     div.columns
                         div.column
                             p.control
-                                label.label(for='answerOne') Ответ 1
-                                input.input#answerOne(name='answerOne', type='text', placeholder='Да', value=question.answerOne, required)
+                                label.label(for='answerOne') Answer 1
+                                input.input#answerOne(name='answerOne', type='text', placeholder='Yes', value=question.answerOne, required)
                         div.column
                             p.control
-                                label.label(for='answerTwo') Ответ 2
-                                input.input#answerTwo(name='answerOne', type='text', placeholder='Нет', value=question.answerTwo,required)
+                                label.label(for='answerTwo') Answer 2
+                                input.input#answerTwo(name='answerOne', type='text', placeholder='No', value=question.answerTwo,required)
                     div.columns
                         div.column
                             p.control
-                                label.label(for='answerThree') Ответ 3
-                                input.input#answerThree(name='answerThree', type='text', placeholder='Не знаю', value=question.answerThree,required)
+                                label.label(for='answerThree') Answer 3
+                                input.input#answerThree(name='answerThree', type='text', placeholder='Do not know', value=question.answerThree,required)
                         div.column
                             p.control
-                                label.label(for='answerFore') Ответ 4
-                                input.input#answerFore(name='answerFore', type='text', placeholder='Не скажу', value=question.answerFore,required)
+                                label.label(for='answerFore') Answer 4
+                                input.input#answerFore(name='answerFore', type='text', placeholder='WTF', value=question.answerFore,required)
                     p.control
                         button.button.is-primary Сохранить
                         a.button.is-link(href='/profile') Отмена

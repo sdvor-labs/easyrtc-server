@@ -75,13 +75,13 @@ easyrtc.events.on("roomJoin", function (connectionObj, roomName, roomParameter, 
                         if(err) {
                             utils.appLogger('fail', 'Fail update document', `Fail, when app try update UserRtcRoken ${user_rtc}. Error message: ${err}.`);
                         } else {
-                            utils.appLogger('success', 'Success adding document', `Success adding UserRtcRoken ${user_rtc}.`);     
+                            utils.appLogger('success', 'Success adding document', `Success adding UserRtcRoken ${user_rtc}.`);
                         }
                     });
             }
         }
     });
-    
+
     if(connectionObj.getFieldValueSync("credential").user_id) {
         utils.appLogger('success', 'Join room', `Success join in room ${connectionObj.getFieldValueSync("credential").room_id} with user ID ${connectionObj.getFieldValueSync("credential").user_id}.`);
     }
@@ -117,13 +117,13 @@ easyrtc.events.on("roomLeave", function (connectionObj, roomName, roomParameter,
                                                 let tmpMissedCalls = null;
                                                 if (thisConnect !== null) {
                                                     tmpMissedCalls = missedCalls({
-                                                         userInfo: `Логин: ${thisConnect.username}, ФИО: ${thisConnect.userfio}, город: ${thisConnect.city}`,
+                                                         userInfo: `Login: ${thisConnect.username}, Full Name: ${thisConnect.userfio}, City: ${thisConnect.city}`,
                                                          date: Date.now(),
                                                          easyRtcToken: user_rtc.rtc_token
                                                     });
                                                 } else {
                                                     tmpMissedCalls = missedCalls({
-                                                            userInfo:  'Логин: не известно, ФИО: не известно, город: не известно',
+                                                            userInfo:  'Login: none, Full Name: none, City: none',
                                                             date: Date.now(),
                                                             easyRtcToken: user_rtc.rtc_token
                                                         });
@@ -192,12 +192,10 @@ let myEasyrtcApp = function (err, appObj) {
 };
 
 // Listen http & https servers on different ports
-// httpServer.listen(3030, '77.244.221.70', function () {
 httpServer.listen(3030, '10.0.45.183',function () {
     utils.appLogger('run', 'Starting HTTP server', 'Run http server & listener');
     console.log('<SERVER>: Listening on http://videochat.sdvor.com:3030');
 });
-// httpsServer.listen(5000, '77.244.221.70', function () {
 httpsServer.listen(5000, '10.0.45.185',function () {
     utils.appLogger('run','Starting HTTPS server', 'Run http server & listener');
     console.log('<SERVER>: Listening on https://videochat.sdvor.com:5000')

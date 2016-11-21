@@ -14,7 +14,7 @@ html
                 div.container
                     div.nav-left
                         div.nav-item
-                            img(src='/images/logo.png' alt='Строительный двор')
+                            img(src='/images/logo.png' alt='DefaultCompany')
                     div.nav-toggle
                         span
                         span
@@ -28,8 +28,8 @@ html
         //Hero content: will be in the middle
         div.hero-body#image-block
             div.container.has-text-centered
-                h1.title Видеочат
-                h2.subtitle удобный способ поговорить с нашими специалистами
+                h1.title WebRTC service
+                h2.subtitle a convenient way to talk to our experts
         // Hero footer: will stick at the bottom
         div.hero-foot
             nav.tabs
@@ -40,12 +40,12 @@ html
                                 a(href='/widget/' + room.name, target="_blank") #{room.label}
                         if(isLogin)
                             li
-                                a(href='/profile') Мой профиль
+                                a(href='/profile') Profile
                             li
-                                a(href='/widgets-and-code') Виджеты
+                                a(href='/widgets-and-code') Widgets
                         else
                             li
-                                a(href='/login') Войти в систему
+                                a(href='/login') Login
     // Content block
     block content
     // Footer
@@ -58,4 +58,3 @@ html
                 p
                     a.icon(href='http://sdvor.com')
                         i.fa.fa-home
-    
