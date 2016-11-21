@@ -30,7 +30,8 @@ function setDefaultClientData() {
             clientData.username = document.getElementById('username').getAttribute('info');
             clientData.userfio = document.getElementById('userfio').getAttribute('info');
             clientData.city = document.getElementById('city').getAttribute('info');
-            clientData.missedTimer = null;
+            clientData.missedTimer = null,
+            clientData.waitingTime = null;
             resolve(true);
         });
 }
@@ -358,7 +359,10 @@ let timerHaveCalled = setInterval(() => {
                         }
                     });
                 document.getElementById('userCount').innerHTML = '';
-                let newValue = document.createTextNode(`Пользователей в комнате ${userCount}. ${(userCount/workerCount) * 5} минут - составит примерное время ожидания.`);
+                if (clientData.waitingTime === null) {
+                    clientData.waitingTime = (userCount/workerCount) * 5;
+                }
+                let newValue = document.createTextNode(`Пользователей в комнате ${userCount}. ${clientData.waitingTime} минут - составит примерное время ожидания.`);
                 document.getElementById('userCount').appendChild(newValue);
             }
         });
